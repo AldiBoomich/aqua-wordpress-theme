@@ -1,0 +1,30 @@
+/**
+ * Small admin polish for ACF screens.
+ */
+
+.aqua-icon-option {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.aqua-icon-option__icon {
+	width: 22px;
+	color: #19409a;
+	text-align: center;
+}
+
+/* Hint messages (where a block is edited, where contacts live…). */
+.acf-field-message .aqua-hint {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 16px;
+	border-left: 4px solid #00d1f9;
+	border-radius: 4px;
+	background: #f0fbfe;
+}
+
+.acf-field-message .aqua-hint .button {
+	margin-left: auto;
+}

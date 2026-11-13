@@ -1,0 +1,432 @@
+{
+    "key": "group_aqua_general",
+    "title": "Theme Settings",
+    "fields": [
+        {
+            "key": "field_aqua_general_tab_contacts",
+            "label": "Contacts",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_contact_address",
+            "label": "Address",
+            "name": "contact_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown in the footer and on the Contact page. Also used for the map.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "123 River Street, New York, NY 10001",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_email",
+            "label": "E-mail",
+            "name": "contact_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 34,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "hello@example.com",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_phone",
+            "label": "Phone",
+            "name": "contact_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "+1 (800) 555-0199",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_fax",
+            "label": "Fax",
+            "name": "contact_fax",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Footer only. Leave empty to hide.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "+1 (800) 555-0198",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_general_tab_map",
+            "label": "Map",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_map_show",
+            "label": "Map on the Contact Page",
+            "name": "map_show",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 30,
+                "class": "",
+                "id": ""
+            },
+            "message": "Show the map",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide"
+        },
+        {
+            "key": "field_aqua_map_address",
+            "label": "Map Address",
+            "name": "map_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Leave empty to use the address from the Contacts tab.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Same as the contact address",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_map_zoom",
+            "label": "Zoom",
+            "name": "map_zoom",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "1 = world, 20 = building.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 20,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 14,
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_map_embed_url",
+            "label": "Exact Map Link (optional)",
+            "name": "map_embed_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "For a precise pin: Google Maps → Share → Embed a map → copy the link inside src=\"…\". Overrides the address.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https:\/\/www.google.com\/maps\/embed?pb=…"
+        },
+        {
+            "key": "field_aqua_general_tab_social",
+            "label": "Social Links",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_social_links",
+            "label": "Social Networks",
+            "name": "social_links",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Round icons in the footer. The icon is picked automatically.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Social Link",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_social_links_network",
+                    "label": "Network",
+                    "name": "network",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 35,
+                        "class": "aqua-social-select",
+                        "id": ""
+                    },
+                    "choices": {
+                        "facebook": "Facebook",
+                        "instagram": "Instagram",
+                        "x": "X (Twitter)",
+                        "linkedin": "LinkedIn",
+                        "youtube": "YouTube",
+                        "tiktok": "TikTok",
+                        "telegram": "Telegram",
+                        "whatsapp": "WhatsApp"
+                    },
+                    "default_value": "facebook",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_aqua_social_links"
+                },
+                {
+                    "key": "field_aqua_social_links_url",
+                    "label": "Profile Link",
+                    "name": "url",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 65,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "https:\/\/",
+                    "parent_repeater": "field_aqua_social_links"
+                }
+            ]
+        },
+        {
+            "key": "field_aqua_general_tab_forms",
+            "label": "Forms",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_subscribe_form",
+            "label": "Newsletter Form",
+            "name": "subscribe_form",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "E-mail form at the top of the footer. Leave empty to hide it.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "wpcf7_contact_form"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_aqua_general_forms_hint",
+            "label": "Form Fields & E-mails",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>Forms and the e-mail address that receives submissions are edited in Contact → Contact Forms.<\/span><a class=\"button button-primary\" href=\"http:\/\/aqua.local\/wp-admin\/admin.php?page=wpcf7\">Open Forms<\/a><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_general_tab_404",
+            "label": "404 Page",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_error_title",
+            "label": "Title",
+            "name": "error_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Page Not Found",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_error_text",
+            "label": "Text",
+            "name": "error_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "We’re sorry, the page you have looked for does not exist on our website.",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-general-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794348650
+}

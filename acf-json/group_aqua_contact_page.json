@@ -1,0 +1,261 @@
+{
+    "key": "group_aqua_contact_page",
+    "title": "Contact Page",
+    "fields": [
+        {
+            "key": "field_aqua_contact_page_hint",
+            "label": "Shared Contacts",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>Address, e-mail, phone and the map are shared across the whole site.<\/span><a class=\"button button-primary\" href=\"http:\/\/aqua.local\/wp-admin\/admin.php?page=theme-general-settings\">Edit in Theme Settings<\/a><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_contact_page_tab_heading",
+            "label": "Heading",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_contact_page_subtitle",
+            "label": "Small Heading",
+            "name": "contact_subtitle",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 35,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Let’s Connect",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_title",
+            "label": "Title",
+            "name": "contact_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 65,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Send Us a Message",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_text",
+            "label": "Intro Text",
+            "name": "contact_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_contact_page_tab_form",
+            "label": "Form",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_contact_page_form",
+            "label": "Contact Form",
+            "name": "contact_form",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Pick a Contact Form 7 form. Leave empty to show a “Call us” button instead.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "wpcf7_contact_form"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_aqua_contact_page_form_hint",
+            "label": "Form Fields & E-mails",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>Fields, messages and the e-mail that receives submissions are edited in Contact → Contact Forms.<\/span><a class=\"button button-primary\" href=\"http:\/\/aqua.local\/wp-admin\/admin.php?page=wpcf7\">Open Forms<\/a><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_contact_page_tab_cards",
+            "label": "Card Labels",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_contact_page_address_label",
+            "label": "Address Card",
+            "name": "contact_address_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Address",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_email_label",
+            "label": "E-mail Card",
+            "name": "contact_email_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Mail Us",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_phone_label",
+            "label": "Phone Card",
+            "name": "contact_phone_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 34,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Telephone",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-contact.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794348649
+}

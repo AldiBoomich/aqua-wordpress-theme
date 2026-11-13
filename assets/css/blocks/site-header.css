@@ -1,0 +1,177 @@
+/**
+ * Block: site-header
+ * Mixed with Bootstrap .navbar / .navbar-expand-lg for the responsive collapse.
+ * Desktop: transparent over the hero, becomes fixed on scroll (--sticky, set by theme.js).
+ * Desktop layout: three zones — logo | menu (centered on the page) | phone + button.
+ */
+
+.site-header {
+	position: relative;
+	z-index: 999;
+	padding: 1rem 1.5rem;
+	background: var(--aqua-white);
+}
+
+.site-header__logo {
+	display: inline-flex;
+	align-items: center;
+	gap: 1rem;
+	margin-right: 1rem;
+	padding: 0;
+	color: var(--aqua-primary);
+	font-family: var(--aqua-font-heading);
+	font-size: 2rem;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+	line-height: 1.2;
+	text-decoration: none;
+}
+
+.site-header__logo:hover {
+	color: var(--aqua-primary);
+}
+
+.site-header__logo-image {
+	max-height: 45px;
+	width: auto;
+	transition: max-height 0.5s;
+}
+
+.site-header__toggler {
+	padding: 10px 20px;
+	border: 1px solid var(--aqua-primary);
+	border-radius: 0.375rem;
+	background: transparent;
+	color: var(--aqua-primary);
+	font-size: 1.25rem;
+	line-height: 1;
+}
+
+.site-header__toggler:focus {
+	box-shadow: 0 0 0 3px rgba(0, 209, 249, 0.25);
+}
+
+.site-header__menu {
+	margin-top: 15px;
+	border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.site-header__phone {
+	display: none;
+	align-items: center;
+	gap: 12px;
+}
+
+.site-header__phone-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: rgba(0, 209, 249, 0.15);
+	color: var(--aqua-primary);
+	animation: aqua-pulse 2.4s infinite;
+}
+
+.site-header__phone-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.site-header__phone-label {
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+.site-header__phone-number {
+	color: var(--aqua-white);
+	font-weight: 700;
+	white-space: nowrap;
+	text-decoration: none;
+}
+
+.site-header__phone-number:hover {
+	color: var(--aqua-primary);
+}
+
+.site-header__cta {
+	flex-shrink: 0;
+	margin: 0.5rem 0 1rem;
+}
+
+@media (min-width: 992px) {
+	/* Equal side columns keep the menu exactly in the middle of the page. */
+	.site-header {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		column-gap: 1.5rem;
+		width: 100%;
+		padding: 0 3rem;
+		border-bottom: 1px dotted rgba(255, 255, 255, 0.35);
+		background: transparent;
+	}
+
+	.site-header__logo {
+		justify-self: start;
+		margin-right: 0;
+	}
+
+	.site-header__logo-image {
+		max-height: 60px;
+	}
+
+	/* The collapse wrapper is only needed on mobile: let its children join the header grid
+	   (overrides Bootstrap ".navbar-expand-lg .navbar-collapse { display: flex !important }"). */
+	.site-header .site-header__menu {
+		display: contents !important;
+	}
+
+	.site-header__actions {
+		display: flex;
+		align-items: center;
+		justify-self: end;
+		gap: 1.5rem;
+	}
+
+	.site-header__cta {
+		margin: 0;
+	}
+
+	.site-header--sticky {
+		position: fixed;
+		border-bottom: 0;
+		background: rgba(255, 255, 255, 0.96);
+		box-shadow: 0 10px 30px rgba(0, 20, 66, 0.08);
+		backdrop-filter: blur(8px);
+	}
+
+	.site-header--sticky .site-header__logo-image {
+		max-height: 45px;
+	}
+
+	.site-header--sticky .site-header__phone-label {
+		color: var(--aqua-text);
+	}
+
+	.site-header--sticky .site-header__phone-number {
+		color: var(--aqua-dark);
+	}
+
+	/* Logged-in users: keep the header below the WordPress admin bar (32px on desktop). */
+	.admin-bar .site-header,
+	.admin-bar .site-header--sticky {
+		top: 32px;
+	}
+}
+
+/* The phone needs enough room to keep the menu centered. */
+@media (min-width: 1280px) {
+	.site-header__phone {
+		display: flex;
+	}
+}

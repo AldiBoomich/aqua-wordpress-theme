@@ -1,0 +1,210 @@
+/**
+ * Block: contact (contact page section: form + info cards + map)
+ * Block: contact-card
+ * Block: contact-form (styles both the fallback markup and Contact Form 7 output)
+ */
+
+.contact {
+	padding: var(--aqua-section-space) 0;
+	background: var(--aqua-light);
+}
+
+.contact__map {
+	overflow: hidden;
+	border-radius: var(--aqua-radius);
+	box-shadow: var(--aqua-shadow);
+}
+
+.contact__map-frame {
+	display: block;
+	width: 100%;
+	height: 400px;
+	border: 0;
+}
+
+.contact__fallback {
+	padding: 2rem;
+	border-radius: var(--aqua-radius);
+	background: var(--aqua-white);
+	box-shadow: var(--aqua-shadow);
+	text-align: center;
+}
+
+.contact-card {
+	position: relative;
+	display: flex;
+	gap: 1.5rem;
+	height: 100%;
+	padding: 1.5rem;
+	border-radius: var(--aqua-radius);
+	background: var(--aqua-white);
+	box-shadow: var(--aqua-shadow);
+	transition: transform 0.4s var(--aqua-ease), box-shadow 0.4s ease;
+}
+
+/* Invisible strip under the card: keeps the hover state while the card is lifted. */
+.contact-card::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: 0;
+	height: 6px;
+}
+
+.contact-card:hover {
+	box-shadow: var(--aqua-shadow-hover);
+	transform: translateY(-4px);
+}
+
+.contact-card__icon {
+	flex-shrink: 0;
+	color: var(--aqua-secondary);
+	font-size: 2em;
+	line-height: 1;
+}
+
+.contact-card__title {
+	margin-bottom: 0.5rem;
+	color: var(--aqua-dark);
+	font-size: calc(1.275rem + 0.3vw);
+}
+
+.contact-card__text {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.contact-card__link {
+	color: var(--aqua-primary);
+	text-decoration: none;
+}
+
+.contact-card__link:hover {
+	color: var(--aqua-secondary);
+}
+
+@media (min-width: 1200px) {
+	.contact-card__title {
+		font-size: 1.5rem;
+	}
+}
+
+/* ---------- contact-form ---------- */
+
+.contact-form__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.5rem;
+}
+
+.contact-form__field--full {
+	grid-column: 1 / -1;
+}
+
+.contact-form__label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+.contact-form__input {
+	display: block;
+	width: 100%;
+	min-height: 58px;
+	padding: 1rem 1.25rem;
+	border: 2px solid transparent;
+	border-radius: 12px;
+	background: var(--aqua-white);
+	color: var(--aqua-dark);
+	font-size: 1rem;
+	transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.contact-form__input::placeholder {
+	color: var(--aqua-muted);
+}
+
+.contact-form__input:focus {
+	border-color: var(--aqua-primary);
+	outline: 0;
+	box-shadow: 0 0 0 3px rgba(0, 209, 249, 0.2);
+}
+
+.contact-form__input--textarea {
+	height: 175px;
+	resize: vertical;
+}
+
+.contact-form__submit {
+	width: 100%;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+@media (min-width: 1200px) {
+	.contact-form__grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+/* Contact Form 7 markup (inside .contact-form). */
+.contact-form .wpcf7-form-control-wrap {
+	display: block;
+}
+
+.contact-form .wpcf7-not-valid {
+	border-color: #e5484d;
+}
+
+.contact-form .wpcf7-not-valid-tip {
+	display: block;
+	margin-top: 6px;
+	color: #e5484d;
+	font-size: 0.85rem;
+}
+
+.contact-form .wpcf7-spinner {
+	display: none;
+}
+
+.contact-form .wpcf7-form.submitting .contact-form__submit {
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+/* The response box is shown only after a submission (CF7 sets these classes on the form). */
+.contact-form .wpcf7-form.init .wpcf7-response-output,
+.contact-form .wpcf7-form.resetting .wpcf7-response-output,
+.contact-form .wpcf7-form.submitting .wpcf7-response-output {
+	display: none;
+}
+
+.contact-form .wpcf7-response-output {
+	margin: 1.5rem 0 0 !important;
+	padding: 1rem 1.25rem !important;
+	border: 0 !important;
+	border-radius: 12px;
+	background: var(--aqua-white);
+	box-shadow: var(--aqua-shadow);
+}
+
+.contact-form .wpcf7-form.sent .wpcf7-response-output {
+	border-left: 4px solid #12a150 !important;
+}
+
+.contact-form .wpcf7-form.invalid .wpcf7-response-output,
+.contact-form .wpcf7-form.failed .wpcf7-response-output {
+	border-left: 4px solid #e5484d !important;
+}
+
+.contact-form .screen-reader-response {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+}

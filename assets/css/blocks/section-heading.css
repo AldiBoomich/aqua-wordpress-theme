@@ -1,0 +1,67 @@
+/**
+ * Block: section-heading
+ * Subtitle + title (+ optional intro text) at the top of a section.
+ * Modifiers: --start (left aligned), --light (on dark backgrounds).
+ */
+
+.section-heading {
+	max-width: 800px;
+	margin: 0 auto;
+	padding-bottom: 3rem;
+	text-align: center;
+}
+
+.section-heading--start {
+	max-width: none;
+	margin: 0;
+	padding-bottom: 0;
+	text-align: start;
+}
+
+.section-heading__subtitle {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 14px;
+	color: var(--aqua-primary);
+	font-family: var(--aqua-font-body);
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 2.5px;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+.section-heading__subtitle::before {
+	content: "";
+	width: 28px;
+	height: 2px;
+	border-radius: 2px;
+	background: currentColor;
+}
+
+.section-heading__title {
+	margin-bottom: 1rem;
+	color: var(--aqua-dark);
+	font-size: calc(1.6rem + 1.9vw);
+	font-weight: 600;
+	line-height: 1.15;
+}
+
+.section-heading__text {
+	margin: 0;
+}
+
+.section-heading--light .section-heading__title {
+	color: var(--aqua-white);
+}
+
+.section-heading--light .section-heading__text {
+	color: rgba(255, 255, 255, 0.75);
+}
+
+@media (min-width: 1200px) {
+	.section-heading__title {
+		font-size: 3.1rem;
+	}
+}

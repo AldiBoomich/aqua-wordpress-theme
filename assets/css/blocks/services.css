@@ -1,0 +1,199 @@
+/**
+ * Block: services (two columns of cards around a floating bottle illustration)
+ * Block: service-card — modifier --reverse puts the icon on the right (left column, desktop only).
+ */
+
+.services {
+	overflow: hidden;
+	padding: var(--aqua-section-space) 0;
+	background: var(--aqua-light);
+}
+
+.services__column > .service-card:last-child {
+	margin-bottom: 0;
+}
+
+.services__visual {
+	position: relative;
+	max-width: 330px;
+	margin: 0 auto;
+	padding: 30px 30px 10px;
+}
+
+.services__image {
+	position: relative;
+	z-index: 2;
+	display: block;
+	width: 100%;
+	filter: drop-shadow(0 30px 30px rgba(0, 20, 66, 0.18));
+	animation: aqua-float 6s ease-in-out infinite;
+}
+
+.services__ring {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 120%;
+	aspect-ratio: 1;
+	border: 2px dashed rgba(0, 209, 249, 0.35);
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(0, 209, 249, 0.22) 0%, rgba(0, 209, 249, 0.06) 45%, rgba(0, 209, 249, 0) 70%);
+	transform: translate(-50%, -50%);
+	animation: aqua-services-spin 40s linear infinite;
+}
+
+@keyframes aqua-services-spin {
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+.services__bubble {
+	position: absolute;
+	z-index: 1;
+	border-radius: 50%;
+	background: radial-gradient(circle at 30% 30%, #fff 0%, rgba(0, 209, 249, 0.55) 60%, rgba(0, 209, 249, 0.2) 100%);
+	animation: aqua-float 5s ease-in-out infinite;
+}
+
+.services__bubble--large {
+	top: 12%;
+	left: 0;
+	width: 26px;
+	height: 26px;
+}
+
+.services__bubble--medium {
+	top: 30%;
+	right: -4%;
+	width: 16px;
+	height: 16px;
+	animation-delay: -2s;
+}
+
+.services__bubble--small {
+	bottom: 18%;
+	left: 6%;
+	width: 12px;
+	height: 12px;
+	animation-delay: -3.5s;
+}
+
+.service-card {
+	position: relative;
+	display: flex;
+	gap: 1.5rem;
+	margin-bottom: 1.5rem;
+	padding: 1.5rem;
+	border-radius: var(--aqua-radius);
+	background: var(--aqua-white);
+	box-shadow: var(--aqua-shadow);
+	transition: transform 0.45s var(--aqua-ease), box-shadow 0.45s ease;
+}
+
+/* Invisible strip under the card: keeps the hover state while the card is lifted. */
+.service-card::before {
+	content: "";
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: 0;
+	height: 8px;
+}
+
+/* Gradient fill that fades in on hover. */
+.service-card::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	background: var(--aqua-gradient);
+	opacity: 0;
+	transition: opacity 0.45s ease;
+}
+
+.service-card:hover {
+	box-shadow: var(--aqua-shadow-hover);
+	transform: translateY(-6px);
+}
+
+.service-card:hover::after {
+	opacity: 1;
+}
+
+.service-card__icon,
+.service-card__body {
+	position: relative;
+	z-index: 2;
+}
+
+.service-card__icon {
+	display: flex;
+	flex: 0 0 70px;
+	align-items: center;
+	justify-content: center;
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	background: var(--aqua-gradient);
+	color: var(--aqua-white);
+	font-size: 2em;
+	transition: color 0.45s ease;
+}
+
+/* White disc that fades in over the gradient (a gradient itself cannot be transitioned). */
+.service-card__icon::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: var(--aqua-white);
+	opacity: 0;
+	transition: opacity 0.45s ease;
+}
+
+.service-card__icon i {
+	position: relative;
+	transition: transform 0.6s var(--aqua-ease);
+}
+
+.service-card:hover .service-card__icon {
+	color: var(--aqua-primary);
+}
+
+.service-card:hover .service-card__icon::before {
+	opacity: 1;
+}
+
+.service-card:hover .service-card__icon i {
+	transform: rotate(360deg);
+}
+
+.service-card__title {
+	margin-bottom: 0.5rem;
+	color: var(--aqua-dark);
+	font-size: calc(1.275rem + 0.3vw);
+	transition: color 0.45s ease;
+}
+
+.service-card__text {
+	margin: 0;
+	transition: color 0.45s ease;
+}
+
+.service-card:hover .service-card__title,
+.service-card:hover .service-card__text {
+	color: var(--aqua-white);
+}
+
+@media (min-width: 1200px) {
+	.service-card__title {
+		font-size: 1.5rem;
+	}
+
+	.service-card--reverse {
+		flex-direction: row-reverse;
+		text-align: end;
+	}
+}

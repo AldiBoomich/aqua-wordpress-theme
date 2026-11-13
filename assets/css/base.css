@@ -1,0 +1,86 @@
+/**
+ * Base styles: design tokens, typography and global helpers.
+ * Component styles live in assets/css/blocks/ (one file per BEM block).
+ */
+
+:root {
+	--aqua-primary: #00d1f9;
+	--aqua-secondary: #19409a;
+	--aqua-dark: #001442;
+	--aqua-light: #f2f9f9;
+	--aqua-text: #5b6a80;
+	--aqua-muted: #8a97a8;
+	--aqua-border: #e3eef3;
+	--aqua-white: #fff;
+	--aqua-radius-sm: 10px;
+	--aqua-radius: 16px;
+	--aqua-radius-lg: 20px;
+	--aqua-gradient: linear-gradient(135deg, #00d1f9 0%, #19409a 100%);
+	--aqua-shadow: 0 15px 40px rgba(0, 20, 66, 0.07);
+	--aqua-shadow-hover: 0 25px 60px rgba(0, 20, 66, 0.14);
+	--aqua-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--aqua-section-space: 6rem;
+	--aqua-font-heading: "Playfair Display", serif;
+	--aqua-font-body: "Open Sans", sans-serif;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	color: var(--aqua-text);
+	-webkit-font-smoothing: antialiased;
+}
+
+::selection {
+	background: var(--aqua-primary);
+	color: var(--aqua-white);
+}
+
+a {
+	transition: color 0.3s ease;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Keyframes shared by several blocks. */
+@keyframes aqua-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-14px);
+	}
+}
+
+@keyframes aqua-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(0, 209, 249, 0.45);
+	}
+
+	70% {
+		box-shadow: 0 0 0 12px rgba(0, 209, 249, 0);
+	}
+
+	100% {
+		box-shadow: 0 0 0 0 rgba(0, 209, 249, 0);
+	}
+}
+
+/* Respect the visitor's "reduce motion" system setting. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

@@ -1,0 +1,42 @@
+/**
+ * Block: error-page (404)
+ */
+
+.error-page {
+	padding: var(--aqua-section-space) 0;
+	text-align: center;
+}
+
+.error-page__inner {
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.error-page__icon {
+	margin-bottom: 1.5rem;
+	color: var(--aqua-primary);
+	font-size: 5rem;
+}
+
+.error-page__code {
+	margin-bottom: 0.5rem;
+	color: var(--aqua-dark);
+	font-size: calc(1.625rem + 4.5vw);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.error-page__title {
+	margin-bottom: 1.5rem;
+	color: var(--aqua-dark);
+}
+
+.error-page__text {
+	margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+	.error-page__code {
+		font-size: 5rem;
+	}
+}

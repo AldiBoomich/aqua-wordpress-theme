@@ -1,0 +1,243 @@
+{
+    "key": "group_aqua_header",
+    "title": "Header",
+    "fields": [
+        {
+            "key": "field_aqua_header_tab_logo",
+            "label": "Logo",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_logo",
+            "label": "Logo Image",
+            "name": "logo",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional. PNG or SVG, shown up to 60 px high. Without an image the text logo is used.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp, svg",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_aqua_logo_text",
+            "label": "Logo Text",
+            "name": "logo_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Also shown in the footer. Empty = site title (Settings → General).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Site title",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_header_tab_phone",
+            "label": "Phone",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_header_delivery_text",
+            "label": "Label Above the Phone",
+            "name": "header_delivery_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Free Delivery Hotline",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_header_phone_text",
+            "label": "Phone (as displayed)",
+            "name": "header_phone_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Leave empty to hide the phone block.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 33,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "+1 (800) 555-0199",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_header_phone",
+            "label": "Phone (for calls)",
+            "name": "header_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Digits used for the tap-to-call link.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 34,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "+18005550199",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_header_tab_button",
+            "label": "Button",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_header_button",
+            "label": "Header Button",
+            "name": "header_button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Highlighted button on the right of the menu. Leave empty to hide.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_aqua_header_tab_banner",
+            "label": "Page Banner",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_breadcrumb_image",
+            "label": "Default Banner Background",
+            "name": "breadcrumb_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Wide photo behind the title of inner pages, at least 1920 × 600 px. Each page can override it in its “Page Banner” box.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp",
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-header-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794348650
+}

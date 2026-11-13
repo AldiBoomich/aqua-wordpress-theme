@@ -1,0 +1,13 @@
+# Private working notes
+CLAUDE.md
+
+# Original HTML template (reference only, not part of the theme)
+src-layout/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log

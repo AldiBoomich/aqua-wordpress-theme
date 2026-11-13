@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400" role="img" aria-label="1.5 L water bottle">
+  <defs>
+    <linearGradient id="b15-body" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#9BEFFF" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#E8FBFF" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#5FD9F5" stop-opacity=".6"/>
+    </linearGradient>
+    <linearGradient id="b15-water" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#00B8E6"/>
+      <stop offset=".5" stop-color="#3FE0FF"/>
+      <stop offset="1" stop-color="#0096CC"/>
+    </linearGradient>
+    <linearGradient id="b15-cap" x1="0" x2="1">
+      <stop offset="0" stop-color="#19409A"/>
+      <stop offset=".5" stop-color="#2F5BC7"/>
+      <stop offset="1" stop-color="#132F73"/>
+    </linearGradient>
+    <clipPath id="b15-clip">
+      <path d="M106 52h28v16c0 22 36 30 40 66v16c0 10-8 14-8 24s8 14 8 24v40c0 10-8 14-8 24s8 14 8 24v66c0 18-12 28-30 28H96c-18 0-30-10-30-28v-66c0-10 8-14 8-24s-8-14-8-24v-40c0-10 8-14 8-24s-8-14-8-24v-16c4-36 40-44 40-66z"/>
+    </clipPath>
+  </defs>
+  <ellipse cx="120" cy="392" rx="66" ry="6" fill="#001442" opacity=".12"/>
+  <g clip-path="url(#b15-clip)">
+    <rect x="60" y="40" width="120" height="360" fill="url(#b15-body)"/>
+    <rect x="60" y="112" width="120" height="288" fill="url(#b15-water)" opacity=".85"/>
+    <path d="M60 112c20 6 40 6 60 0s40-6 60 0v8c-20-6-40-6-60 0s-40 6-60 0z" fill="#fff" opacity=".45"/>
+    <circle cx="96" cy="356" r="3" fill="#fff" opacity=".7"/>
+    <circle cx="146" cy="338" r="2.5" fill="#fff" opacity=".7"/>
+    <circle cx="108" cy="150" r="2" fill="#fff" opacity=".6"/>
+    <rect x="78" y="96" width="10" height="286" rx="5" fill="#fff" opacity=".55"/>
+  </g>
+  <path d="M106 52h28v16c0 22 36 30 40 66v16c0 10-8 14-8 24s8 14 8 24v40c0 10-8 14-8 24s8 14 8 24v66c0 18-12 28-30 28H96c-18 0-30-10-30-28v-66c0-10 8-14 8-24s-8-14-8-24v-40c0-10 8-14 8-24s-8-14-8-24v-16c4-36 40-44 40-66z" fill="none" stroke="#0AA6D6" stroke-opacity=".5" stroke-width="2"/>
+  <rect x="67" y="214" width="106" height="78" rx="4" fill="#fff" opacity=".95"/>
+  <rect x="67" y="214" width="106" height="9" fill="#19409A"/>
+  <rect x="67" y="283" width="106" height="9" fill="#00D1F9"/>
+  <path d="M101 236c-6 9-10 14-10 19a10 10 0 0 0 20 0c0-5-4-10-10-19z" fill="#00D1F9"/>
+  <text x="142" y="262" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#19409A">1.5 L</text>
+  <rect x="98" y="44" width="44" height="8" rx="3" fill="url(#b15-cap)"/>
+  <rect x="102" y="18" width="36" height="28" rx="5" fill="url(#b15-cap)"/>
+  <path d="M109 22v20M116 22v20M123 22v20M130 22v20" stroke="#fff" stroke-opacity=".25" stroke-width="2"/>
+</svg>

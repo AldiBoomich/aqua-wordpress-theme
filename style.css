@@ -1,0 +1,51 @@
+/*!
+Theme Name: Aqua
+Theme URI: https://aqua.local/
+Author: Aqua Theme
+Description: Drinking water delivery theme. Fully editable with ACF PRO (homepage blocks, theme settings, forms), BEM-structured CSS, no jQuery.
+Version: 1.2.0
+Tested up to: 7.1
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: aqua
+
+Based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc. (GPL v2 or later).
+HTML template "Acuas" by HTML Codex https://htmlcodex.com (credit link kept in the footer).
+
+Theme styles live in assets/css/: base.css + one file per BEM block in assets/css/blocks/.
+This file only contains WordPress core styles.
+*/
+
+/* Accessibility: text for screen readers only. */
+.screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	word-wrap: normal !important;
+}
+
+/* Editor alignments and captions. */
+.alignleft {
+	float: left;
+	margin: 0 1.5rem 1rem 0;
+}
+
+.alignright {
+	float: right;
+	margin: 0 0 1rem 1.5rem;
+}
+
+.aligncenter {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.wp-caption-text,
+figcaption {
+	font-size: 0.875rem;
+	text-align: center;
+}

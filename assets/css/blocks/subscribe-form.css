@@ -1,0 +1,75 @@
+/**
+ * Block: subscribe-form
+ * Pill-shaped e-mail field with the button inside (footer). Works with Contact Form 7 output.
+ */
+
+.subscribe-form__row {
+	position: relative;
+}
+
+.subscribe-form__input {
+	display: block;
+	width: 100%;
+	height: 58px;
+	padding: 0 150px 0 1.5rem;
+	border: 2px solid transparent;
+	border-radius: 50rem;
+	background: var(--aqua-white);
+	color: var(--aqua-dark);
+	font-size: 1rem;
+	transition: border-color 0.3s;
+}
+
+.subscribe-form__input::placeholder {
+	color: var(--aqua-muted);
+}
+
+.subscribe-form__input:focus {
+	border-color: var(--aqua-primary);
+	outline: 0;
+}
+
+.subscribe-form__submit {
+	position: absolute;
+	top: 7px;
+	right: 7px;
+	height: 44px;
+}
+
+/* Contact Form 7 markup (inside .subscribe-form). */
+.subscribe-form .wpcf7-form-control-wrap {
+	display: block;
+}
+
+.subscribe-form .wpcf7-not-valid-tip {
+	display: block;
+	margin: 8px 0 0 1.5rem;
+	color: #ff8a8d;
+	font-size: 0.85rem;
+}
+
+.subscribe-form .wpcf7-spinner {
+	display: none;
+}
+
+.subscribe-form .wpcf7-form.init .wpcf7-response-output,
+.subscribe-form .wpcf7-form.resetting .wpcf7-response-output,
+.subscribe-form .wpcf7-form.submitting .wpcf7-response-output {
+	display: none;
+}
+
+.subscribe-form .wpcf7-response-output {
+	margin: 12px 0 0 !important;
+	padding: 0 0 0 1.5rem !important;
+	border: 0 !important;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 0.9rem;
+}
+
+.subscribe-form .screen-reader-response {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+}

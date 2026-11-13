@@ -1,0 +1,263 @@
+{
+    "key": "group_aqua_footer",
+    "title": "Footer",
+    "fields": [
+        {
+            "key": "field_aqua_footer_tab_about",
+            "label": "About",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_footer_about_text",
+            "label": "Text Under the Logo",
+            "name": "footer_about_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "Purified spring water delivered to homes and offices since 2010.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_footer_tab_columns",
+            "label": "Columns",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_footer_links_title",
+            "label": "Links Column Title",
+            "name": "footer_links_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "About Us",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_links_hint",
+            "label": "Links",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>The links themselves come from Appearance → Menus → Footer Menu.<\/span><a class=\"button button-primary\" href=\"nav-menus.php\">Open Menus<\/a><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_footer_hours_title",
+            "label": "Hours Column Title",
+            "name": "footer_hours_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Business Hours",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_hours",
+            "label": "Opening Hours",
+            "name": "footer_hours",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_footer_hours_day",
+                    "label": "Days",
+                    "name": "day",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 40,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Mon - Friday:",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_footer_hours"
+                },
+                {
+                    "key": "field_aqua_footer_hours_time",
+                    "label": "Hours",
+                    "name": "time",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 60,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "09.00 am to 07.00 pm",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_footer_hours"
+                }
+            ]
+        },
+        {
+            "key": "field_aqua_footer_contacts_title",
+            "label": "Contacts Column Title",
+            "name": "footer_contacts_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The contacts come from Theme Settings → Contacts.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Contact Info",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_tab_copyright",
+            "label": "Copyright",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_copyright_text",
+            "label": "Company Name",
+            "name": "copyright_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown as: © 2026 Company Name. All rights reserved.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Site title",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-footer-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794348649
+}
