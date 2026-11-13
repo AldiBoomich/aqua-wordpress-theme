@@ -46,7 +46,7 @@ $aqua_map     = aqua_map_embed_url();
 					<?php if ( $aqua_address ) : ?>
 						<div class="col-12">
 							<div class="contact-card">
-								<i class="contact-card__icon fas fa-map-marker-alt" aria-hidden="true"></i>
+								<span class="contact-card__icon"><?php echo aqua_icon( 'fas fa-map-marker-alt', 'contact-card__glyph' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								<div>
 									<h3 class="contact-card__title"><?php echo esc_html( aqua_field( 'contact_address_label', 'Address', $aqua_page_id ) ); ?></h3>
 									<p class="contact-card__text"><?php echo esc_html( $aqua_address ); ?></p>
@@ -57,7 +57,7 @@ $aqua_map     = aqua_map_embed_url();
 					<?php if ( $aqua_email ) : ?>
 						<div class="col-xl-6">
 							<div class="contact-card">
-								<i class="contact-card__icon fas fa-envelope" aria-hidden="true"></i>
+								<span class="contact-card__icon"><?php echo aqua_icon( 'fas fa-envelope', 'contact-card__glyph' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								<div>
 									<h3 class="contact-card__title"><?php echo esc_html( aqua_field( 'contact_email_label', 'Mail Us', $aqua_page_id ) ); ?></h3>
 									<p class="contact-card__text"><a class="contact-card__link" href="mailto:<?php echo esc_attr( antispambot( $aqua_email ) ); ?>"><?php echo esc_html( antispambot( $aqua_email ) ); ?></a></p>
@@ -68,7 +68,7 @@ $aqua_map     = aqua_map_embed_url();
 					<?php if ( $aqua_phone ) : ?>
 						<div class="col-xl-6">
 							<div class="contact-card">
-								<i class="contact-card__icon fas fa-phone-alt" aria-hidden="true"></i>
+								<span class="contact-card__icon"><?php echo aqua_icon( 'fas fa-phone-alt', 'contact-card__glyph' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								<div>
 									<h3 class="contact-card__title"><?php echo esc_html( aqua_field( 'contact_phone_label', 'Telephone', $aqua_page_id ) ); ?></h3>
 									<p class="contact-card__text"><a class="contact-card__link" href="tel:<?php echo esc_attr( aqua_tel( $aqua_phone ) ); ?>"><?php echo esc_html( $aqua_phone ); ?></a></p>

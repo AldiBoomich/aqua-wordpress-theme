@@ -1,0 +1,65 @@
+/**
+ * Block: swipe
+ * Mixed with a Bootstrap .row: on phones and tablets (<992px) the columns become a horizontal,
+ * snapping carousel (the next card peeks in from the edge). Dots are added by theme.js.
+ * Desktop: a normal grid row.
+ */
+
+.swipe__dots {
+	display: none;
+}
+
+@media (max-width: 991.98px) {
+	.swipe {
+		position: relative;
+		flex-wrap: nowrap;
+		justify-content: flex-start !important; /* overrides .justify-content-center: centred overflow cannot be scrolled to */
+		margin-bottom: -1.25rem;
+		padding-top: 0.5rem;
+		padding-bottom: 1.75rem; /* room for the card shadows */
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.swipe::-webkit-scrollbar {
+		display: none;
+	}
+
+	.swipe > * {
+		flex: 0 0 84%;
+		max-width: 84%;
+		scroll-snap-align: start;
+	}
+
+	.swipe__dots {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+		margin-top: 1rem;
+	}
+
+	.swipe__dot {
+		width: 8px;
+		height: 8px;
+		padding: 0;
+		border: 0;
+		border-radius: 8px;
+		background: rgba(0, 20, 66, 0.15);
+		transition: width 0.4s var(--aqua-ease), background-color 0.4s ease;
+	}
+
+	.swipe__dot--active {
+		width: 24px;
+		background: var(--aqua-primary);
+	}
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+	.swipe > * {
+		flex-basis: 46%;
+		max-width: 46%;
+	}
+}

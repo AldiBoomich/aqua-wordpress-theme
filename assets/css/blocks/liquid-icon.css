@@ -1,0 +1,137 @@
+/**
+ * Block: liquid-icon
+ * Inline SVG icons with water inside (markup: aqua_icon() in inc/icons.php).
+ * CSS keeps the waves rolling and the bubbles rising, assets/js/liquid.js adds the sloshing.
+ * Modifiers: --on-dark (dark backgrounds), --paused (off screen, set by liquid.js).
+ * Colours: --liquid-stroke (outline), --liquid-front / --liquid-back (water),
+ * --liquid-glass (empty part of the vessel), --liquid-solid (cut-outs on top of the water).
+ */
+
+.liquid-icon {
+	--liquid-stroke: var(--aqua-secondary);
+	--liquid-front: var(--aqua-primary);
+	--liquid-back: var(--aqua-secondary);
+	--liquid-back-opacity: 0.35;
+	--liquid-glass: rgba(0, 209, 249, 0.08);
+	--liquid-solid: var(--aqua-white);
+	display: block;
+	flex-shrink: 0;
+	width: 1em;
+	height: 1em;
+	overflow: visible;
+	color: var(--liquid-stroke);
+}
+
+.liquid-icon--on-dark {
+	--liquid-stroke: rgba(255, 255, 255, 0.92);
+	--liquid-back: var(--aqua-white);
+	--liquid-back-opacity: 0.22;
+	--liquid-glass: rgba(255, 255, 255, 0.06);
+	--liquid-solid: var(--aqua-dark);
+}
+
+.liquid-icon__vessel {
+	fill: var(--liquid-glass);
+	fill-opacity: 1;
+}
+
+.liquid-icon__wave {
+	animation: aqua-liquid-roll 2.6s linear infinite;
+}
+
+.liquid-icon__wave--front {
+	fill: var(--liquid-front);
+}
+
+/* The back wave is longer (20 units) and rolls the other way: the surface looks three-dimensional. */
+.liquid-icon__wave--back {
+	fill: var(--liquid-back);
+	fill-opacity: var(--liquid-back-opacity);
+	animation-name: aqua-liquid-roll-back;
+	animation-duration: 3.8s;
+	animation-direction: reverse;
+}
+
+.liquid-icon__solid {
+	fill: var(--liquid-solid);
+}
+
+.liquid-icon__bubble {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: aqua-liquid-bubble 3.2s ease-in infinite;
+}
+
+.liquid-icon__bubble:nth-of-type(2) {
+	animation-duration: 4.1s;
+	animation-delay: -1.6s;
+}
+
+.liquid-icon__bubble:nth-of-type(3) {
+	animation-duration: 2.7s;
+	animation-delay: -0.8s;
+}
+
+.liquid-icon__steam {
+	animation: aqua-liquid-steam 2.4s ease-in-out infinite;
+}
+
+.liquid-icon--paused *,
+.liquid-icon--paused {
+	animation-play-state: paused;
+}
+
+/* SVG user units: 1px = 1 unit of the 48×48 grid. */
+@keyframes aqua-liquid-roll {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(16px);
+	}
+}
+
+@keyframes aqua-liquid-roll-back {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(20px);
+	}
+}
+
+@keyframes aqua-liquid-bubble {
+	0% {
+		opacity: 0;
+		transform: translateY(0) scale(0.6);
+	}
+
+	15% {
+		opacity: 0.85;
+	}
+
+	75% {
+		opacity: 0.55;
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateY(calc(var(--liquid-rise, 10px) * -1)) scale(1);
+	}
+}
+
+@keyframes aqua-liquid-steam {
+	0%,
+	100% {
+		opacity: 0.35;
+		transform: translateY(1px);
+	}
+
+	50% {
+		opacity: 0.85;
+		transform: translateY(-1.5px);
+	}
+}

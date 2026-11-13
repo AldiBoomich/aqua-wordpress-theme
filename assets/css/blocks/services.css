@@ -29,6 +29,17 @@
 	animation: aqua-float 6s ease-in-out infinite;
 }
 
+/* Drawn bottle (inc/bottles.php): floats; liquid.js tilts it towards the mouse. */
+.services__bottle {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	height: 400px;
+	filter: drop-shadow(0 30px 30px rgba(0, 20, 66, 0.12));
+	animation: aqua-float 6s ease-in-out infinite;
+}
+
 .services__ring {
 	position: absolute;
 	top: 50%;
@@ -82,9 +93,10 @@
 .service-card {
 	position: relative;
 	display: flex;
-	gap: 1.5rem;
-	margin-bottom: 1.5rem;
-	padding: 1.5rem;
+	align-items: flex-start;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	padding: 1.1rem;
 	border-radius: var(--aqua-radius);
 	background: var(--aqua-white);
 	box-shadow: var(--aqua-shadow);
@@ -130,19 +142,17 @@
 
 .service-card__icon {
 	display: flex;
-	flex: 0 0 70px;
+	flex: 0 0 56px;
 	align-items: center;
 	justify-content: center;
-	width: 70px;
-	height: 70px;
+	width: 56px;
+	height: 56px;
 	border-radius: 50%;
-	background: var(--aqua-gradient);
-	color: var(--aqua-white);
-	font-size: 2em;
-	transition: color 0.45s ease;
+	background: linear-gradient(145deg, #effcff 0%, #dcf6fd 100%);
+	box-shadow: inset 0 0 0 1px rgba(0, 209, 249, 0.18);
 }
 
-/* White disc that fades in over the gradient (a gradient itself cannot be transitioned). */
+/* White disc that fades in over the tile when the card turns blue (a gradient cannot be transitioned). */
 .service-card__icon::before {
 	content: "";
 	position: absolute;
@@ -153,38 +163,59 @@
 	transition: opacity 0.45s ease;
 }
 
-.service-card__icon i {
+.service-card__glyph {
 	position: relative;
-	transition: transform 0.6s var(--aqua-ease);
-}
-
-.service-card:hover .service-card__icon {
-	color: var(--aqua-primary);
+	font-size: 36px;
 }
 
 .service-card:hover .service-card__icon::before {
 	opacity: 1;
 }
 
-.service-card:hover .service-card__icon i {
-	transform: rotate(360deg);
-}
-
 .service-card__title {
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.35rem;
 	color: var(--aqua-dark);
-	font-size: calc(1.275rem + 0.3vw);
+	font-size: 1.15rem;
 	transition: color 0.45s ease;
 }
 
 .service-card__text {
 	margin: 0;
+	font-size: 0.93rem;
+	line-height: 1.6;
 	transition: color 0.45s ease;
 }
 
 .service-card:hover .service-card__title,
 .service-card:hover .service-card__text {
 	color: var(--aqua-white);
+}
+
+@media (min-width: 992px) {
+	.service-card {
+		gap: 1.5rem;
+		margin-bottom: 1.5rem;
+		padding: 1.5rem;
+	}
+
+	.service-card__icon {
+		flex-basis: 70px;
+		width: 70px;
+		height: 70px;
+	}
+
+	.service-card__glyph {
+		font-size: 44px;
+	}
+
+	.service-card__title {
+		margin-bottom: 0.5rem;
+		font-size: calc(1.275rem + 0.3vw);
+	}
+
+	.service-card__text {
+		font-size: 1rem;
+	}
 }
 
 @media (min-width: 1200px) {

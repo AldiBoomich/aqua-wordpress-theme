@@ -1,0 +1,149 @@
+/**
+ * Block: bottle
+ * Drawn water bottle (markup: aqua_bottle() in inc/bottles.php).
+ * __body tilts by --bottle-tilt (set by liquid.js from the mouse position) and springs back;
+ * --wobble rocks it after a tap. liquid.js keeps the water level while the bottle moves.
+ * Modifiers: --small, --family, --jug, --cooler (shapes).
+ */
+
+.bottle {
+	position: relative;
+	display: inline-flex;
+	justify-content: center;
+	height: 100%;
+}
+
+.bottle__body {
+	--bottle-tilt: 0deg;
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	transform: rotate(var(--bottle-tilt));
+	transform-origin: 50% 93%; /* rocks on its base */
+	transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* springs back with a small overshoot */
+}
+
+.bottle__body--wobble {
+	animation: aqua-bottle-wobble 1.5s ease-out;
+}
+
+.bottle__svg {
+	display: block;
+	width: auto;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Soft contact shadow; shifts a little when the bottle tilts. */
+.bottle__shadow {
+	position: absolute;
+	bottom: calc(6.5% - 7px);
+	left: 50%;
+	width: 58%;
+	height: 14px;
+	border-radius: 50%;
+	background: radial-gradient(closest-side, rgba(0, 20, 66, 0.24), rgba(0, 20, 66, 0));
+	transform: translateX(-50%);
+}
+
+.bottle__wave {
+	animation: aqua-bottle-roll 3.2s linear infinite;
+}
+
+.bottle__wave--back {
+	animation-name: aqua-bottle-roll-back;
+	animation-duration: 4.6s;
+	animation-direction: reverse;
+}
+
+/* Light on the bottom drifts slowly. */
+.bottle__caustic {
+	animation: aqua-bottle-roll-caustic 6s linear infinite;
+}
+
+.bottle__caustic--slow {
+	animation-duration: 9s;
+	animation-direction: reverse;
+}
+
+.bottle__bubble {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: aqua-bottle-bubble 4s ease-in infinite;
+}
+
+.bottle__bubble:nth-of-type(2) { animation-duration: 5.2s; animation-delay: -1.8s; }
+.bottle__bubble:nth-of-type(3) { animation-duration: 6s; animation-delay: -3.2s; }
+.bottle__bubble:nth-of-type(4) { animation-duration: 4.6s; animation-delay: -0.9s; }
+.bottle__bubble:nth-of-type(5) { animation-duration: 3.4s; animation-delay: -2.4s; }
+.bottle__bubble:nth-of-type(6) { animation-duration: 5.6s; animation-delay: -4.1s; }
+
+.bottle__svg--paused *,
+.bottle__svg--paused {
+	animation-play-state: paused;
+}
+
+/* SVG user units: 1px = 1 unit of the 160×320 grid. */
+@keyframes aqua-bottle-roll {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(36px);
+	}
+}
+
+@keyframes aqua-bottle-roll-back {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(48px);
+	}
+}
+
+@keyframes aqua-bottle-roll-caustic {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(18px);
+	}
+}
+
+@keyframes aqua-bottle-bubble {
+	0% {
+		opacity: 0;
+		transform: translate(0, 0) scale(0.5);
+	}
+
+	12% {
+		opacity: 0.9;
+	}
+
+	50% {
+		transform: translate(2px, calc(var(--bubble-rise, -150px) * 0.5)) scale(0.85);
+	}
+
+	85% {
+		opacity: 0.7;
+	}
+
+	100% {
+		opacity: 0;
+		transform: translate(-1px, var(--bubble-rise, -150px)) scale(1);
+	}
+}
+
+@keyframes aqua-bottle-wobble {
+	0% { transform: rotate(0deg); }
+	15% { transform: rotate(8deg); }
+	35% { transform: rotate(-6deg); }
+	55% { transform: rotate(3.5deg); }
+	75% { transform: rotate(-1.5deg); }
+	100% { transform: rotate(0deg); }
+}

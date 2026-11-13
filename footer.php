@@ -10,28 +10,6 @@
 $aqua_logo_text   = aqua_field( 'logo_text', get_bloginfo( 'name' ) );
 $aqua_footer_text = aqua_field( 'footer_about_text', 'Purified spring water delivered to homes and offices since 2010. Fresh, lab-tested and always on time.' );
 $aqua_subscribe   = aqua_cf7_form( aqua_field( 'subscribe_form', 0 ) );
-$aqua_networks    = aqua_social_networks();
-$aqua_social      = aqua_rows(
-	'social_links',
-	array(
-		array(
-			'network' => 'facebook',
-			'url'     => '#',
-		),
-		array(
-			'network' => 'x',
-			'url'     => '#',
-		),
-		array(
-			'network' => 'instagram',
-			'url'     => '#',
-		),
-		array(
-			'network' => 'linkedin',
-			'url'     => '#',
-		),
-	)
-);
 $aqua_hours       = aqua_rows(
 	'footer_hours',
 	array(
@@ -69,33 +47,19 @@ $aqua_copyright   = aqua_field( 'copyright_text', get_bloginfo( 'name' ) );
 						<?php endif; ?>
 					</div>
 					<div class="col-lg-5">
-						<?php if ( $aqua_social ) : ?>
-							<ul class="site-footer__social">
-								<?php
-								foreach ( $aqua_social as $aqua_item ) :
-									$aqua_net  = $aqua_networks[ $aqua_item['network'] ?? '' ] ?? null;
-									$aqua_icon = $aqua_net ? $aqua_net['icon'] : ( $aqua_item['icon'] ?? 'fas fa-link' );
-									$aqua_name = $aqua_net ? $aqua_net['label'] : 'Social link';
-									$aqua_url  = $aqua_item['url'] ?? '#';
-									?>
-									<li>
-										<a class="site-footer__social-link" href="<?php echo esc_url( $aqua_url ); ?>" aria-label="<?php echo esc_attr( $aqua_name ); ?>"<?php echo '#' !== $aqua_url ? ' target="_blank" rel="noopener"' : ''; ?>><i class="<?php echo esc_attr( $aqua_icon ); ?>" aria-hidden="true"></i></a>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						<?php endif; ?>
+						<?php get_template_part( 'template-parts/social-links', null, array( 'block' => 'site-footer' ) ); ?>
 					</div>
 				</div>
 
 				<div class="row g-4 g-lg-5">
 					<div class="col-md-6 col-xl-3">
 						<a class="site-footer__brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-							<i class="site-footer__brand-icon fas fa-hand-holding-water" aria-hidden="true"></i><?php echo esc_html( $aqua_logo_text ); ?>
+							<?php echo aqua_icon( 'fas fa-tint', 'site-footer__brand-icon liquid-icon--on-dark' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( $aqua_logo_text ); ?>
 						</a>
 						<p class="site-footer__text"><?php echo esc_html( $aqua_footer_text ); ?></p>
 					</div>
 
-					<div class="col-md-6 col-xl-3">
+					<div class="col-6 col-md-6 col-xl-3">
 						<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_links_title', 'About Us' ) ); ?></h2>
 						<?php
 						// Appearance → Menus → "Footer Menu".
@@ -112,7 +76,7 @@ $aqua_copyright   = aqua_field( 'copyright_text', get_bloginfo( 'name' ) );
 						?>
 					</div>
 
-					<div class="col-md-6 col-xl-3">
+					<div class="col-6 col-md-6 col-xl-3">
 						<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_hours_title', 'Business Hours' ) ); ?></h2>
 						<?php foreach ( $aqua_hours as $aqua_item ) : ?>
 							<div class="site-footer__hours-item">

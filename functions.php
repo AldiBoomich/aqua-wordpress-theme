@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Bump on every asset change to bust the browser cache.
-	define( '_S_VERSION', '1.2.1' );
+	define( '_S_VERSION', '1.3.0' );
 }
 
 /**
@@ -67,6 +67,8 @@ add_action( 'after_setup_theme', 'aqua_content_width', 0 );
 function aqua_css_blocks() {
 	return array(
 		'button',
+		'liquid-icon',
+		'bottle',
 		'preloader',
 		'site-header',
 		'main-nav',
@@ -79,6 +81,7 @@ function aqua_css_blocks() {
 		'stats',
 		'pricing',
 		'blog',
+		'swipe',
 		'contact',
 		'subscribe-form',
 		'site-footer',
@@ -112,6 +115,7 @@ function aqua_scripts() {
 	wp_enqueue_script( 'aqua-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js', array(), '5.0.0', true );
 	wp_enqueue_script( 'aqua-wow', $uri . '/lib/wow/wow.min.js', array(), _S_VERSION, true );
 	wp_enqueue_script( 'aqua-theme', $uri . '/js/theme.js', array( 'aqua-bootstrap', 'aqua-wow' ), _S_VERSION, true );
+	wp_enqueue_script( 'aqua-liquid', $uri . '/js/liquid.js', array(), _S_VERSION, true );
 }
 add_action( 'wp_enqueue_scripts', 'aqua_scripts' );
 
@@ -127,6 +131,8 @@ add_action( 'wp_head', 'aqua_noscript_styles' );
  * Theme helpers.
  */
 require get_template_directory() . '/inc/acf-helpers.php';
+require get_template_directory() . '/inc/icons.php';
+require get_template_directory() . '/inc/bottles.php';
 require get_template_directory() . '/inc/acf-setup.php';
 require get_template_directory() . '/inc/class-aqua-nav-walker.php';
 require get_template_directory() . '/inc/template-tags.php';

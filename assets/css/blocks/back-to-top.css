@@ -5,14 +5,14 @@
 
 .back-to-top {
 	position: fixed;
-	right: 30px;
-	bottom: 30px;
+	right: 16px;
+	bottom: calc(16px + env(safe-area-inset-bottom));
 	z-index: 99;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 56px;
-	height: 56px;
+	width: 46px;
+	height: 46px;
 	border-radius: 50%;
 	background: var(--aqua-secondary);
 	color: var(--aqua-white);
@@ -29,6 +29,15 @@
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+	.back-to-top {
+		right: 30px;
+		bottom: 30px;
+		width: 56px;
+		height: 56px;
+	}
 }
 
 .back-to-top:hover {

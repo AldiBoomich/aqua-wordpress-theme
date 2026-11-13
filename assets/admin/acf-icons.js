@@ -1,6 +1,7 @@
 /**
  * Shows a live icon preview in ACF "Icon" and "Social network" select fields.
  * Fields are marked with the wrapper classes aqua-icon-select / aqua-social-select.
+ * Icon fields show the theme's liquid SVG icons (window.aquaIcons, see inc/admin.php).
  */
 ( function () {
 	'use strict';
@@ -20,12 +21,21 @@
 		whatsapp: 'fab fa-whatsapp'
 	};
 
-	function render( iconClass, text ) {
+	var svgIcons = window.aquaIcons || {};
+	var copies = 0;
+
+	function render( iconClass, text, svg ) {
 		var wrap = document.createElement( 'span' );
-		var icon = document.createElement( 'i' );
-		icon.className = iconClass + ' aqua-icon-option__icon';
 		wrap.className = 'aqua-icon-option';
-		wrap.appendChild( icon );
+		if ( svg ) {
+			// select2 renders an option several times: every copy needs its own clipPath id.
+			copies++;
+			wrap.innerHTML = svg.replace( /aqua-liquid-\d+/g, 'aqua-acf-liquid-' + copies );
+		} else {
+			var icon = document.createElement( 'i' );
+			icon.className = iconClass + ' aqua-icon-option__icon';
+			wrap.appendChild( icon );
+		}
 		wrap.appendChild( document.createTextNode( ' ' + text ) );
 		return window.jQuery( wrap );
 	}
@@ -49,7 +59,7 @@
 				return state.text;
 			}
 			var iconClass = isIcon ? state.id : socialIcons[ state.id ];
-			return iconClass ? render( iconClass, state.text ) : state.text;
+			return iconClass ? render( iconClass, state.text, isIcon ? svgIcons[ state.id ] : '' ) : state.text;
 		};
 
 		args.templateResult = template;

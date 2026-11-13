@@ -39,11 +39,11 @@ if ( empty( $aqua_features ) ) {
 ?>
 <section class="features" aria-label="Why choose us">
 	<div class="container">
-		<div class="row g-4">
+		<div class="features__list row g-4">
 			<?php foreach ( $aqua_features as $aqua_i => $aqua_item ) : ?>
-				<div class="col-sm-6 col-xl-3 wow fadeInUp" data-wow-delay="<?php echo esc_attr( sprintf( '%.2f', 0.1 + $aqua_i * 0.15 ) ); ?>s">
+				<div class="features__item col-sm-6 col-xl-3 wow fadeInUp" data-wow-delay="<?php echo esc_attr( sprintf( '%.2f', 0.1 + $aqua_i * 0.15 ) ); ?>s">
 					<article class="feature-card">
-						<span class="feature-card__icon" aria-hidden="true"><i class="<?php echo esc_attr( $aqua_item['icon'] ); ?>"></i></span>
+						<span class="feature-card__icon"><?php echo aqua_icon( $aqua_item['icon'], 'feature-card__glyph' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 						<div>
 							<h3 class="feature-card__title"><?php echo esc_html( $aqua_item['title'] ); ?></h3>
 							<p class="feature-card__text"><?php echo esc_html( $aqua_item['text'] ); ?></p>

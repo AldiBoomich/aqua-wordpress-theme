@@ -31,7 +31,7 @@ if ( $aqua_is_listing ) {
 			<p class="section-heading__subtitle"><?php echo esc_html( aqua_home_field( 'blog_subtitle', 'Our Blog' ) ); ?></p>
 			<h2 class="section-heading__title"><?php echo esc_html( aqua_home_field( 'blog_title', 'Tips & News About Healthy Hydration' ) ); ?></h2>
 		</div>
-		<div class="row g-4 justify-content-center">
+		<div class="<?php echo esc_attr( $aqua_is_listing ? 'row g-4 justify-content-center' : 'swipe row g-4 justify-content-center' ); ?>">
 			<?php
 			if ( $aqua_query->have_posts() ) :
 				$aqua_i = 0;

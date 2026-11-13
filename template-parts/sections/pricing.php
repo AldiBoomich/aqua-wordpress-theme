@@ -3,7 +3,7 @@
  * Block "pricing" — price list cards (homepage and Products page).
  *
  * Fields (Pages → Home → Pricing): product_subtitle, product_title, product_text,
- * product_button_text, product_note, product_items (repeater: image, volume, title, text,
+ * product_button_text, product_note, product_items (repeater: bottle — drawn shape or "image", image, volume, title, text,
  * features — one per line, price, unit, badge, link).
  *
  * @package aqua
@@ -73,7 +73,7 @@ $aqua_columns     = count( $aqua_products ) >= 4 ? 'col-md-6 col-xl-3' : 'col-md
 				<p class="section-heading__text"><?php echo esc_html( $aqua_intro ); ?></p>
 			<?php endif; ?>
 		</div>
-		<div class="row g-4 justify-content-center">
+		<div class="swipe row g-4 justify-content-center">
 			<?php
 			foreach ( $aqua_products as $aqua_i => $aqua_item ) :
 				$aqua_badge    = $aqua_item['badge'] ?? '';
@@ -87,7 +87,15 @@ $aqua_columns     = count( $aqua_products ) >= 4 ? 'col-md-6 col-xl-3' : 'col-md
 							<span class="price-card__badge"><?php echo esc_html( $aqua_badge ); ?></span>
 						<?php endif; ?>
 						<div class="price-card__media">
-							<?php echo aqua_image_tag( $aqua_item['image'] ?? '', 'bottles/bottle-19.svg', 'medium_large', array( 'class' => 'price-card__image', 'alt' => $aqua_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php
+							// Drawn bottle with live water, or the uploaded image when chosen in the Bottle field.
+							$aqua_shape = aqua_bottle_shape( $aqua_item['bottle'] ?? 'auto', $aqua_item['volume'] ?? '' );
+							if ( 'image' === $aqua_shape && ! empty( $aqua_item['image'] ) ) {
+								echo aqua_image_tag( $aqua_item['image'], '', 'medium_large', array( 'class' => 'price-card__image', 'alt' => $aqua_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							} else {
+								echo aqua_bottle( 'image' === $aqua_shape ? aqua_bottle_shape( 'auto', $aqua_item['volume'] ?? '' ) : $aqua_shape, $aqua_item['volume'] ?? '', 'price-card__bottle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+							?>
 						</div>
 						<div class="price-card__body">
 							<?php if ( ! empty( $aqua_item['volume'] ) ) : ?>

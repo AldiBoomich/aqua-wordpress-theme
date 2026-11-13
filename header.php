@@ -41,21 +41,28 @@ $aqua_cta         = aqua_link(
 		<span class="preloader__spinner"></span>
 	</div>
 
-	<header class="site-header navbar navbar-expand-lg" id="site-header">
+	<?php // .navbar: Bootstrap dropdowns inside the header open without Popper (static sub menu on mobile). ?>
+	<header class="site-header navbar" id="site-header">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">
 			<?php if ( $aqua_logo ) : ?>
 				<?php echo aqua_image_tag( $aqua_logo, '', 'medium', array( 'class' => 'site-header__logo-image', 'alt' => $aqua_logo_text, 'loading' => 'eager' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php else : ?>
-				<i class="site-header__logo-icon fas fa-hand-holding-water" aria-hidden="true"></i>
+				<?php echo aqua_icon( 'fas fa-tint', 'site-header__logo-icon' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<span class="site-header__logo-text"><?php echo esc_html( $aqua_logo_text ); ?></span>
 			<?php endif; ?>
 		</a>
 
-		<button class="site-header__toggler navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-menu" aria-controls="site-menu" aria-expanded="false" aria-label="Toggle navigation">
-			<i class="fas fa-bars" aria-hidden="true"></i>
+		<?php // Mobile menu button (theme.js): three lines that turn into a cross. ?>
+		<button class="site-header__toggler" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+			<span class="site-header__toggler-line" aria-hidden="true"></span>
+			<span class="site-header__toggler-line" aria-hidden="true"></span>
+			<span class="site-header__toggler-line" aria-hidden="true"></span>
 		</button>
 
-		<div class="site-header__menu collapse navbar-collapse" id="site-menu">
+		<div class="site-header__backdrop" aria-hidden="true"></div>
+
+		<?php // Mobile: slide-in panel. Desktop (≥992px): its children join the header grid. ?>
+		<div class="site-header__menu" id="site-menu">
 			<nav class="site-header__nav" aria-label="Main">
 				<?php
 				// Appearance → Menus → "Header Menu".
@@ -84,6 +91,8 @@ $aqua_cta         = aqua_link(
 				<?php endif; ?>
 
 				<?php echo aqua_link_tag( $aqua_cta, 'site-header__cta button button--primary' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+				<?php get_template_part( 'template-parts/social-links', null, array( 'block' => 'site-header' ) ); ?>
 			</div>
 		</div>
 	</header>

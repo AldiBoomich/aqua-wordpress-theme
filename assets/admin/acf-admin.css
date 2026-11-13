@@ -9,9 +9,16 @@
 }
 
 .aqua-icon-option__icon {
+	flex-shrink: 0;
 	width: 22px;
 	color: #19409a;
 	text-align: center;
+}
+
+/* Liquid icons (inline SVG) are shown a little larger than the font icons. */
+svg.aqua-icon-option__icon {
+	width: 28px;
+	height: 28px;
 }
 
 /* Hint messages (where a block is edited, where contacts live…). */

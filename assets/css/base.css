@@ -19,13 +19,67 @@
 	--aqua-shadow: 0 15px 40px rgba(0, 20, 66, 0.07);
 	--aqua-shadow-hover: 0 25px 60px rgba(0, 20, 66, 0.14);
 	--aqua-ease: cubic-bezier(0.22, 1, 0.36, 1);
-	--aqua-section-space: 6rem;
+	--aqua-section-space: 3.75rem;
 	--aqua-font-heading: "Playfair Display", serif;
 	--aqua-font-body: "Open Sans", sans-serif;
 }
 
+@media (min-width: 768px) {
+	:root {
+		--aqua-section-space: 4.75rem;
+	}
+}
+
+@media (min-width: 992px) {
+	:root {
+		--aqua-section-space: 6rem;
+	}
+}
+
 html {
 	scroll-behavior: smooth;
+}
+
+/* Page scroll is locked while the mobile menu panel is open (theme.js). */
+html.has-menu-open {
+	overflow: hidden;
+}
+
+/* Phones: 16px side gutters (Bootstrap default is 12px). */
+@media (max-width: 575.98px) {
+	.container {
+		--bs-gutter-x: 1rem; /* this Bootstrap build uses the full value as the side padding */
+	}
+}
+
+/* Touch screens have no real hover: cards must not stay lifted after a tap.
+   A short press feedback is shown instead. */
+@media (hover: none) {
+	.feature-card:hover,
+	.service-card:hover,
+	.price-card:hover,
+	.post-card:hover,
+	.stat-card:hover,
+	.contact-card:hover,
+	.about-feature:hover,
+	.button:hover {
+		transform: none;
+	}
+
+	.feature-card,
+	.service-card,
+	.contact-card,
+	.about-feature {
+		transition: transform 0.25s var(--aqua-ease), box-shadow 0.45s ease, background-color 0.4s ease;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.feature-card:active,
+	.service-card:active,
+	.contact-card:active,
+	.about-feature:active {
+		transform: scale(0.98);
+	}
 }
 
 body {

@@ -12,7 +12,9 @@
 }
 
 .site-footer__top {
-	margin-bottom: 3rem;
+	margin-bottom: 2.5rem;
+	padding-bottom: 2.5rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .site-footer__social {
@@ -60,7 +62,7 @@
 }
 
 .site-footer__brand-icon {
-	color: var(--aqua-primary);
+	font-size: 36px;
 }
 
 .site-footer__text {
@@ -70,10 +72,10 @@
 
 .site-footer__title {
 	position: relative;
-	margin-bottom: 1.5rem;
-	padding-bottom: 14px;
+	margin-bottom: 1rem;
+	padding-bottom: 12px;
 	color: var(--aqua-white);
-	font-size: calc(1.275rem + 0.3vw);
+	font-size: 1.15rem;
 }
 
 .site-footer__title::after {
@@ -94,9 +96,12 @@
 	list-style: none;
 }
 
+/* Icon + text: a wrapped line stays aligned with the text, not under the icon. */
 .site-footer__link {
-	display: inline-block;
-	padding: 6px 0;
+	display: inline-flex;
+	align-items: baseline;
+	padding: 5px 0;
+	font-size: 0.93rem;
 	color: rgba(255, 255, 255, 0.68);
 	line-height: 1.6;
 	text-decoration: none;
@@ -109,27 +114,30 @@
 }
 
 .site-footer__link-icon {
+	flex-shrink: 0;
 	width: 1.25em;
 	margin-right: 0.5rem;
 }
 
 .site-footer__hours-item {
-	margin-bottom: 1rem;
+	margin-bottom: 0.85rem;
 }
 
 .site-footer__day {
 	margin-bottom: 0;
 	color: rgba(255, 255, 255, 0.5);
-	font-size: 1rem;
+	font-size: 0.85rem;
 }
 
 .site-footer__time {
 	margin: 0;
 	color: var(--aqua-white);
+	font-size: 0.93rem;
 }
 
 .site-footer__bottom {
-	padding: 1.5rem 0;
+	padding: 1.25rem 0 calc(1.25rem + env(safe-area-inset-bottom));
+	font-size: 0.9rem;
 	border-top: 1px solid rgba(255, 255, 255, 0.08);
 	text-align: center;
 }
@@ -140,7 +148,7 @@
 }
 
 .site-footer__credits {
-	margin-top: 1rem;
+	margin-top: 0.5rem;
 }
 
 .site-footer__bottom-link {
@@ -157,7 +165,24 @@
 }
 
 @media (min-width: 768px) {
+	.site-footer__title {
+		margin-bottom: 1.5rem;
+		padding-bottom: 14px;
+		font-size: calc(1.275rem + 0.3vw);
+	}
+
+	.site-footer__link {
+		padding: 6px 0;
+		font-size: 1rem;
+	}
+
+	.site-footer__day,
+	.site-footer__time {
+		font-size: 1rem;
+	}
+
 	.site-footer__bottom {
+		font-size: 1rem;
 		text-align: start;
 	}
 

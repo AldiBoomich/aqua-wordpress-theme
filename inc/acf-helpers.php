@@ -275,46 +275,6 @@ function aqua_lines( $text ) {
 }
 
 /**
- * Icons offered in the "Icon" select fields (Font Awesome 5 class => label).
- * The admin shows a live preview next to each option (assets/admin/acf-icons.js).
- *
- * @return array
- */
-function aqua_icon_choices() {
-	return array(
-		'fas fa-tint'                 => 'Water drop',
-		'fas fa-hand-holding-water'   => 'Hand with water',
-		'fas fa-truck'                => 'Truck — delivery',
-		'fas fa-shipping-fast'        => 'Fast delivery',
-		'fas fa-home'                 => 'Home',
-		'fas fa-building'             => 'Office building',
-		'fas fa-snowflake'            => 'Snowflake — cooling',
-		'fas fa-fire'                 => 'Flame — hot water',
-		'fas fa-filter'               => 'Filter',
-		'fas fa-flask'                => 'Flask — lab testing',
-		'fas fa-vial'                 => 'Test tube',
-		'fas fa-award'                => 'Award',
-		'fas fa-certificate'          => 'Certificate',
-		'fas fa-shield-alt'           => 'Shield — safety',
-		'fas fa-leaf'                 => 'Leaf — eco',
-		'fas fa-recycle'              => 'Recycle',
-		'fas fa-calendar-check'       => 'Calendar — subscription',
-		'fas fa-clock'                => 'Clock',
-		'fas fa-headset'              => 'Headset — support',
-		'fas fa-phone-alt'            => 'Phone',
-		'fas fa-smile'                => 'Smile — happy customers',
-		'fas fa-users'                => 'People',
-		'fas fa-heart'                => 'Heart',
-		'fas fa-star'                 => 'Star',
-		'fas fa-thumbs-up'            => 'Thumbs up',
-		'fas fa-map-marker-alt'       => 'Map marker',
-		'fas fa-wallet'               => 'Wallet — prices',
-		'fas fa-percent'              => 'Percent — discount',
-		'fas fa-check-circle'         => 'Check mark',
-	);
-}
-
-/**
  * Social networks offered in Theme Settings → Social (slug => label + icon).
  *
  * @return array

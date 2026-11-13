@@ -87,11 +87,18 @@ function aqua_dashboard_widget_render() {
 
 /**
  * Font Awesome + icon preview script on screens with ACF fields.
+ * The liquid icons are passed to the script as SVG markup (value => svg).
  */
 function aqua_acf_admin_assets() {
 	$uri = get_template_directory_uri() . '/assets';
 	wp_enqueue_style( 'aqua-fontawesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css', array(), '5.15.4' );
 	wp_enqueue_style( 'aqua-acf-admin', $uri . '/admin/acf-admin.css', array(), _S_VERSION );
 	wp_enqueue_script( 'aqua-acf-icons', $uri . '/admin/acf-icons.js', array( 'acf-input' ), _S_VERSION, true );
+
+	$icons = array();
+	foreach ( array_keys( aqua_icon_choices() ) as $key ) {
+		$icons[ $key ] = aqua_icon( $key, 'aqua-icon-option__icon' );
+	}
+	wp_add_inline_script( 'aqua-acf-icons', 'window.aquaIcons = ' . wp_json_encode( $icons ) . ';', 'before' );
 }
 add_action( 'acf/input/admin_enqueue_scripts', 'aqua_acf_admin_assets' );

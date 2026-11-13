@@ -1,12 +1,66 @@
 /**
  * Block: features (strip of cards overlapping the bottom of the hero)
  * Block: feature-card
+ * Phones (<576px): the cards join into one panel (.features__list) with thin dividers.
  */
 
 .features {
 	position: relative;
 	z-index: 5;
-	padding-top: 48px;
+	margin-top: -24px; /* the panel overlaps the bottom of the hero */
+}
+
+@media (max-width: 575.98px) {
+	.features__list {
+		--bs-gutter-x: 0;
+		--bs-gutter-y: 0;
+		overflow: hidden;
+		border-radius: var(--aqua-radius-lg);
+		background: var(--aqua-white);
+		box-shadow: var(--aqua-shadow-hover);
+	}
+
+	.features__item + .features__item .feature-card {
+		border-top: 1px solid var(--aqua-border);
+	}
+
+	.features__list .feature-card {
+		gap: 14px;
+		padding: 18px 18px 18px 16px;
+		border-radius: 0;
+		box-shadow: none;
+	}
+
+	.features__list .feature-card::after {
+		display: none;
+	}
+
+	.features__list .feature-card__icon {
+		flex-basis: 52px;
+		width: 52px;
+		height: 52px;
+	}
+
+	.features__list .feature-card__glyph {
+		font-size: 36px;
+	}
+
+	.features__list .feature-card__title {
+		margin-bottom: 2px;
+		font-size: 1.08rem;
+	}
+
+	.features__list .feature-card__text {
+		font-size: 0.88rem;
+		line-height: 1.5;
+	}
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+	.features {
+		margin-top: 0;
+		padding-top: 2.5rem;
+	}
 }
 
 @media (min-width: 992px) {
@@ -69,17 +123,19 @@
 	justify-content: center;
 	width: 60px;
 	height: 60px;
-	border-radius: 14px;
-	background: var(--aqua-gradient);
-	color: var(--aqua-white);
-	font-size: 24px;
-	box-shadow: 0 12px 24px rgba(0, 209, 249, 0.3);
-	transition: transform 0.6s var(--aqua-ease);
+	border-radius: 16px;
+	background: linear-gradient(145deg, #effcff 0%, #dcf6fd 100%);
+	box-shadow: inset 0 0 0 1px rgba(0, 209, 249, 0.18);
+	transition: box-shadow 0.45s ease;
 }
 
-/* Full turn, so the icon does not end up mirrored. */
+.feature-card__glyph {
+	font-size: 40px;
+}
+
+/* The water sloshes on hover (liquid.js); the tile just gets a soft glow. */
 .feature-card:hover .feature-card__icon {
-	transform: rotateY(360deg);
+	box-shadow: inset 0 0 0 1px rgba(0, 209, 249, 0.35), 0 10px 22px rgba(0, 209, 249, 0.25);
 }
 
 .feature-card__title {

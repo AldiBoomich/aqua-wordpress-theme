@@ -3,7 +3,7 @@
  * Block "services" — two columns of service cards around a floating bottle illustration
  * (homepage and Service page).
  *
- * Fields (Pages → Home → Services): service_subtitle, service_title, service_image,
+ * Fields (Pages → Home → Services): service_subtitle, service_title, service_bottle, service_bottle_label, service_image,
  * service_items (repeater: icon, title, text). The first half goes to the left column.
  *
  * @package aqua
@@ -45,6 +45,10 @@ $aqua_services = aqua_home_rows(
 	)
 );
 
+// Centre illustration: drawn bottle with live water, or the uploaded image when chosen.
+$aqua_bottle = aqua_bottle_shape( aqua_home_field( 'service_bottle', 'cooler' ) );
+$aqua_image  = aqua_home_field( 'service_image' );
+
 $aqua_half    = (int) ceil( count( $aqua_services ) / 2 );
 $aqua_columns = array(
 	'left'  => array_slice( $aqua_services, 0, $aqua_half ),
@@ -60,7 +64,7 @@ $aqua_columns = array(
 $aqua_service_card = static function ( $item, $reverse ) {
 	?>
 	<article class="service-card<?php echo $reverse ? ' service-card--reverse' : ''; ?>">
-		<span class="service-card__icon" aria-hidden="true"><i class="<?php echo esc_attr( $item['icon'] ); ?>"></i></span>
+		<span class="service-card__icon"><?php echo aqua_icon( $item['icon'], 'service-card__glyph' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		<div class="service-card__body">
 			<h3 class="service-card__title"><?php echo esc_html( $item['title'] ); ?></h3>
 			<p class="service-card__text"><?php echo esc_html( $item['text'] ); ?></p>
@@ -75,8 +79,8 @@ $aqua_service_card = static function ( $item, $reverse ) {
 			<p class="section-heading__subtitle"><?php echo esc_html( aqua_home_field( 'service_subtitle', 'Our Services' ) ); ?></p>
 			<h2 class="section-heading__title"><?php echo esc_html( aqua_home_field( 'service_title', 'Everything You Need for Pure Hydration' ) ); ?></h2>
 		</div>
-		<div class="row g-4 align-items-center">
-			<div class="services__column col-lg-6 col-xl-4 wow fadeInLeft" data-wow-delay="0.2s">
+		<div class="row g-3 g-lg-4 align-items-center">
+			<div class="services__column col-md-6 col-xl-4 wow fadeInLeft" data-wow-delay="0.2s">
 				<?php
 				foreach ( $aqua_columns['left'] as $aqua_item ) {
 					$aqua_service_card( $aqua_item, true );
@@ -89,10 +93,16 @@ $aqua_service_card = static function ( $item, $reverse ) {
 					<span class="services__bubble services__bubble--large"></span>
 					<span class="services__bubble services__bubble--medium"></span>
 					<span class="services__bubble services__bubble--small"></span>
-					<?php echo aqua_image_tag( aqua_home_field( 'service_image' ), 'bottles/bottle-19.svg', 'large', array( 'class' => 'services__image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php if ( 'image' === $aqua_bottle && $aqua_image ) : ?>
+						<?php echo aqua_image_tag( $aqua_image, '', 'large', array( 'class' => 'services__image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php else : ?>
+						<div class="services__bottle">
+							<?php echo aqua_bottle( 'image' === $aqua_bottle ? 'cooler' : $aqua_bottle, aqua_home_field( 'service_bottle_label', '19 L' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
-			<div class="services__column col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay="0.2s">
+			<div class="services__column col-md-6 col-xl-4 wow fadeInRight" data-wow-delay="0.2s">
 				<?php
 				foreach ( $aqua_columns['right'] as $aqua_item ) {
 					$aqua_service_card( $aqua_item, false );

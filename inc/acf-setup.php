@@ -70,8 +70,8 @@ function aqua_acf_json_load_point( $paths ) {
 add_filter( 'acf/settings/load_json', 'aqua_acf_json_load_point' );
 
 /**
- * Fills "Icon" and "Social network" select fields from a single source of truth
- * (aqua_icon_choices(), aqua_social_networks()). Fields are marked by a wrapper class.
+ * Fills "Icon", "Social network" and "Bottle" select fields from a single source of truth
+ * (aqua_icon_choices(), aqua_social_networks(), aqua_bottle_choices()). Fields are marked by a wrapper class.
  *
  * @param array $field Field settings.
  * @return array
@@ -83,6 +83,8 @@ function aqua_acf_dynamic_choices( $field ) {
 		$field['choices'] = aqua_icon_choices();
 	} elseif ( false !== strpos( $class, 'aqua-social-select' ) ) {
 		$field['choices'] = wp_list_pluck( aqua_social_networks(), 'label' );
+	} elseif ( false !== strpos( $class, 'aqua-bottle-select' ) ) {
+		$field['choices'] = aqua_bottle_choices();
 	}
 
 	return $field;

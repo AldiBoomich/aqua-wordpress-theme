@@ -54,7 +54,7 @@ $aqua_text   = aqua_home_field( 'about_text', "For over 15 years we have been de
 				<div class="about__text"><?php echo wp_kses_post( wpautop( $aqua_text ) ); ?></div>
 				<?php foreach ( $aqua_items as $aqua_item ) : ?>
 					<div class="about-feature">
-						<span class="about-feature__icon" aria-hidden="true"><i class="<?php echo esc_attr( $aqua_item['icon'] ); ?>"></i></span>
+						<span class="about-feature__icon"><?php echo aqua_icon( $aqua_item['icon'], 'about-feature__glyph' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 						<div>
 							<h3 class="about-feature__title"><?php echo esc_html( $aqua_item['title'] ); ?></h3>
 							<p class="about-feature__text"><?php echo esc_html( $aqua_item['text'] ); ?></p>

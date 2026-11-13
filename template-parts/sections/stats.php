@@ -56,7 +56,7 @@ if ( empty( $aqua_stats ) ) {
 				?>
 				<div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="<?php echo esc_attr( sprintf( '%.2f', 0.2 + $aqua_i * 0.15 ) ); ?>s">
 					<div class="stat-card">
-						<div class="stat-card__icon" aria-hidden="true"><i class="<?php echo esc_attr( $aqua_item['icon'] ); ?>"></i></div>
+						<div class="stat-card__icon"><?php echo aqua_icon( $aqua_item['icon'], 'stat-card__glyph liquid-icon--on-dark' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 						<div class="stat-card__value">
 							<span class="stat-card__number" data-count-to="<?php echo esc_attr( $aqua_number ); ?>"><?php echo esc_html( number_format_i18n( $aqua_number ) ); ?></span><span class="stat-card__suffix"><?php echo esc_html( $aqua_item['suffix'] ); ?></span>
 						</div>
