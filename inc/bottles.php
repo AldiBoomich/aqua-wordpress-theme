@@ -1,9 +1,9 @@
 <?php
 /**
- * Drawn water bottles (inline SVG, 160×320 grid) with live water inside.
+ * Drawn water bottles (SVG on a 160×320 grid) with live water inside.
  *
  * Used by the price list (one per product) and the services section (the big centre bottle).
- * The water is two rolling waves + bubbles (assets/css/blocks/bottle.css); assets/js/liquid.js
+ * The water is HTML layers masked to the bottle (GPU-animated waves + bubbles, bottle.css); assets/js/liquid.js
  * tilts the bottle towards the mouse, wobbles it on tap and keeps the water level with the ground.
  *
  * @package aqua
@@ -159,8 +159,10 @@ function aqua_bottle_shape( $choice, $volume = '' ) {
 /**
  * Drawn bottle markup.
  *
- * Layers (back to front): handle, plastic, water (far surface, body, surface glint, caustics, bubbles),
- * cylinder shading, moulded rings, outline + glare, wrapped sticker, cap.
+ * Layers: __back (handle + empty plastic, SVG) → __water (HTML masked to the body: far surface,
+ * wave, surface glint, light on the bottom, bubbles — moved only with transform / opacity, so the
+ * GPU animates them) → __front (depth, cylinder shading, rings, outline, glare, sticker, cap — SVG).
+ * liquid.js rotates __body (tilt / wobble) and counter-rotates __tilt so the water stays level.
  *
  * @param string $shape Shape key (see aqua_bottle_shapes()).
  * @param string $label Text on the sticker, e.g. "19 L".
@@ -183,115 +185,101 @@ function aqua_bottle( $shape, $label = '', $class = '' ) {
 	);
 	$id = 'aqua-bottle-' . ( ++$uid );
 
-	static $waves = null;
-	if ( null === $waves ) {
-		$waves = array(
-			'back'     => aqua_liquid_wave( 4, 48, 150, 260 ),
-			'front'    => aqua_liquid_wave( 3.2, 36, 150, 260 ),
-			'surface'  => aqua_liquid_wave( 3.2, 36, 150, 0 ),
-			'caustics' => aqua_liquid_wave( 1.6, 18, 150, 0 ),
-		);
-	}
-
 	$cx     = (float) $b['cx'];
 	$level  = (float) $b['level'];
 	$bottom = (float) $b['bottom'];
-	$rise   = round( ( $bottom - $level ) * 0.8 );
 
 	list( $left, $right )      = $b['x'];
 	list( $lx, $ly, $lw, $lh ) = $b['label_box'];
 	$bend                      = round( $lw * 0.07, 1 ); // How much the sticker edges curve around the bottle.
 
-	$svg  = '<svg class="bottle__svg" viewBox="0 0 160 320" aria-hidden="true" focusable="false" data-cx="' . esc_attr( $cx ) . '" data-level="' . esc_attr( $level ) . '" data-scale="3" style="--bubble-rise:-' . esc_attr( $rise ) . 'px">';
+	$style = '--liquid-mask:' . aqua_svg_mask_url( '0 0 160 320', $b['body'] ) . ';--liquid-cx:' . aqua_grid_pct( $cx, 160 ) . ';--liquid-level:' . aqua_grid_pct( $level, 320 ) . ';--liquid-floor:' . aqua_grid_pct( $bottom, 320 );
 
-	// ---------- Gradients ----------
-	$svg .= '<defs>';
-	$svg .= '<clipPath id="' . $id . '-clip"><path d="' . esc_attr( $b['body'] ) . '"/></clipPath>';
-	$svg .= '<linearGradient id="' . $id . '-plastic" gradientUnits="userSpaceOnUse" x1="' . $left . '" x2="' . $right . '" y1="0" y2="0"><stop offset="0" stop-color="#8eeaff" stop-opacity=".75"/><stop offset=".3" stop-color="#eefdff" stop-opacity=".5"/><stop offset=".7" stop-color="#d9f7ff" stop-opacity=".45"/><stop offset="1" stop-color="#5fd5f2" stop-opacity=".8"/></linearGradient>';
-	// Water body: moves with the water, so its gradient is in the water's own coordinates.
-	$svg .= '<linearGradient id="' . $id . '-water" gradientUnits="userSpaceOnUse" x1="-70" x2="70" y1="0" y2="0"><stop offset="0" stop-color="#0090cc"/><stop offset=".35" stop-color="#22cdf6"/><stop offset=".55" stop-color="#5fe6ff"/><stop offset="1" stop-color="#0088c4"/></linearGradient>';
-	$svg .= '<linearGradient id="' . $id . '-depth" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#002f80" stop-opacity="0"/><stop offset="1" stop-color="#002f80" stop-opacity=".32"/></linearGradient>';
-	// Cylinder: darker edges, a soft light band left of centre.
-	$svg .= '<linearGradient id="' . $id . '-shade" gradientUnits="userSpaceOnUse" x1="' . $left . '" x2="' . $right . '" y1="0" y2="0"><stop offset="0" stop-color="#002a6e" stop-opacity=".26"/><stop offset=".16" stop-color="#002a6e" stop-opacity="0"/><stop offset=".3" stop-color="#fff" stop-opacity=".22"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".82" stop-color="#002a6e" stop-opacity="0"/><stop offset="1" stop-color="#002a6e" stop-opacity=".3"/></linearGradient>';
-	$svg .= '<linearGradient id="' . $id . '-glare" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="' . ( $level - 40 ) . '" y2="' . ( $bottom - 6 ) . '"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".15" stop-color="#fff" stop-opacity=".85"/><stop offset=".8" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>';
-	$svg .= '<linearGradient id="' . $id . '-cap" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1d43a6"/><stop offset=".3" stop-color="#4b7cf0"/><stop offset=".55" stop-color="#2f5fd0"/><stop offset="1" stop-color="#132f7a"/></linearGradient>';
-	$svg .= '<linearGradient id="' . $id . '-sticker" gradientUnits="userSpaceOnUse" x1="' . $lx . '" x2="' . ( $lx + $lw ) . '" y1="0" y2="0"><stop offset="0" stop-color="#cfe8f2"/><stop offset=".22" stop-color="#fff"/><stop offset=".7" stop-color="#fff"/><stop offset="1" stop-color="#c4e2ee"/></linearGradient>';
-	$svg .= '</defs>';
+	$html = '<div class="' . esc_attr( trim( 'bottle bottle--' . $shape . ' ' . $class ) ) . '"><span class="bottle__shadow" aria-hidden="true"></span>';
+	$html .= '<div class="bottle__body" style="' . esc_attr( $style ) . '" data-cx="' . esc_attr( $cx ) . '" data-level="' . esc_attr( $level ) . '" data-size="320" data-scale="3" aria-hidden="true">';
 
-	// ---------- Handle (behind the body) ----------
+	// ---------- Back: handle + empty plastic ----------
+	$html .= '<svg class="bottle__back" viewBox="0 0 160 320" focusable="false">';
+	$html .= '<defs><linearGradient id="' . $id . '-plastic" gradientUnits="userSpaceOnUse" x1="' . $left . '" x2="' . $right . '" y1="0" y2="0"><stop offset="0" stop-color="#8eeaff" stop-opacity=".75"/><stop offset=".3" stop-color="#eefdff" stop-opacity=".5"/><stop offset=".7" stop-color="#d9f7ff" stop-opacity=".45"/><stop offset="1" stop-color="#5fd5f2" stop-opacity=".8"/></linearGradient></defs>';
 	if ( $b['handle'] ) {
-		$svg .= '<path d="' . esc_attr( $b['handle'] ) . '" fill="none" stroke="#7fdcf4" stroke-width="11" stroke-linecap="round"/>';
-		$svg .= '<path d="' . esc_attr( $b['handle'] ) . '" fill="none" stroke="#d8f8ff" stroke-width="8" stroke-linecap="round"/>';
-		$svg .= '<path d="' . esc_attr( $b['handle'] ) . '" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2" stroke-linecap="round" transform="translate(-1.5 -1.5)"/>';
+		$html .= '<path d="' . esc_attr( $b['handle'] ) . '" fill="none" stroke="#7fdcf4" stroke-width="11" stroke-linecap="round"/>';
+		$html .= '<path d="' . esc_attr( $b['handle'] ) . '" fill="none" stroke="#d8f8ff" stroke-width="8" stroke-linecap="round"/>';
+		$html .= '<path d="' . esc_attr( $b['handle'] ) . '" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2" stroke-linecap="round" transform="translate(-1.5 -1.5)"/>';
 	}
+	$html .= '<path d="' . esc_attr( $b['body'] ) . '" fill="url(#' . $id . '-plastic)"/>';
+	$html .= '</svg>';
 
-	// ---------- Empty plastic ----------
-	$svg .= '<path class="bottle__plastic" d="' . esc_attr( $b['body'] ) . '" fill="url(#' . $id . '-plastic)"/>';
-
-	// ---------- Water (clipped to the bottle) ----------
-	$svg .= '<g clip-path="url(#' . $id . '-clip)">';
-	$svg .= '<g class="bottle__liquid" transform="translate(' . esc_attr( $cx ) . ' ' . esc_attr( $level ) . ')">';
-	// Far side of the surface, seen from slightly above: a lighter band behind the front wave.
-	// (Offsets sit on wrapper groups: the CSS animation owns the transform of the paths.)
-	$svg .= '<g transform="translate(0 -5)"><path class="bottle__wave bottle__wave--back" d="' . esc_attr( $waves['back'] ) . '" fill="#a6f1ff"/></g>';
-	$svg .= '<path class="bottle__wave bottle__wave--front" d="' . esc_attr( $waves['front'] ) . '" fill="url(#' . $id . '-water)"/>';
-	$svg .= '<path class="bottle__wave bottle__wave--surface" d="' . esc_attr( $waves['surface'] ) . '" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.8"/>';
-	$svg .= '</g>';
-	$svg .= '<rect x="0" y="' . esc_attr( $level ) . '" width="160" height="' . esc_attr( 320 - $level ) . '" fill="url(#' . $id . '-depth)"/>';
-	// Light patterns on the bottom (caustics).
-	$svg .= '<g class="bottle__caustics" transform="translate(' . esc_attr( $cx ) . ' ' . esc_attr( $bottom - 16 ) . ')" stroke="#fff" fill="none" stroke-linecap="round">';
-	$svg .= '<path class="bottle__caustic" d="' . esc_attr( $waves['caustics'] ) . '" stroke-opacity=".35" stroke-width="1.2"/>';
-	$svg .= '<g transform="translate(9 -9)"><path class="bottle__caustic bottle__caustic--slow" d="' . esc_attr( $waves['caustics'] ) . '" stroke-opacity=".22" stroke-width="1"/></g>';
-	$svg .= '</g>';
-	$bubbles = array( array( -0.36, 2.6 ), array( 0.22, 1.8 ), array( -0.1, 3.4 ), array( 0.36, 2.2 ), array( 0.06, 1.4 ), array( -0.26, 1.6 ) );
-	foreach ( $bubbles as $bubble ) {
-		$svg .= '<circle class="bottle__bubble" cx="' . esc_attr( round( $cx + $bubble[0] * ( $right - $left ), 1 ) ) . '" cy="' . esc_attr( $bottom - 8 ) . '" r="' . esc_attr( $bubble[1] ) . '" fill="#fff" fill-opacity=".85"/>';
+	// ---------- Water (HTML, masked to the body) ----------
+	$html .= '<div class="bottle__water"><div class="bottle__tilt">';
+	$html .= '<span class="bottle__wave bottle__wave--back"></span><span class="bottle__wave bottle__wave--front"></span><span class="bottle__wave bottle__wave--surface"></span>';
+	$html .= '</div>';
+	$html .= '<span class="bottle__caustic"></span><span class="bottle__caustic bottle__caustic--slow"></span>';
+	$span     = $right - $left;
+	$bubbles  = array();
+	$offsets  = array( array( -0.3, 2.6 ), array( 0.22, 1.8 ), array( -0.06, 3.4 ), array( 0.34, 2 ) );
+	foreach ( $offsets as $offset ) {
+		$bubbles[] = array( $cx + $offset[0] * $span, $bottom - 8, $offset[1] );
 	}
-	// Cylinder shading over plastic and water.
-	$svg .= '<rect x="0" y="0" width="160" height="320" fill="url(#' . $id . '-shade)"/>';
-	$svg .= '</g>';
+	$html .= aqua_liquid_bubbles( 'bottle__bubble', $bubbles, ( $bottom - $level ) * 0.8, 160, 320 );
+	$html .= '</div>';
 
-	// ---------- Moulded rings (curved: the bottle is seen slightly from above) ----------
+	// ---------- Front: shading, rings, outline, glare, sticker, cap ----------
+	$html .= '<svg class="bottle__front" viewBox="0 0 160 320" focusable="false">';
+	$html .= '<defs>';
+	$html .= '<clipPath id="' . $id . '-clip"><path d="' . esc_attr( $b['body'] ) . '"/></clipPath>';
+	$html .= '<linearGradient id="' . $id . '-depth" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="' . $level . '" y2="' . $bottom . '"><stop offset="0" stop-color="#002f80" stop-opacity="0"/><stop offset="1" stop-color="#002f80" stop-opacity=".3"/></linearGradient>';
+	$html .= '<linearGradient id="' . $id . '-shade" gradientUnits="userSpaceOnUse" x1="' . $left . '" x2="' . $right . '" y1="0" y2="0"><stop offset="0" stop-color="#002a6e" stop-opacity=".3"/><stop offset=".16" stop-color="#002a6e" stop-opacity="0"/><stop offset=".3" stop-color="#fff" stop-opacity=".22"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".82" stop-color="#002a6e" stop-opacity="0"/><stop offset="1" stop-color="#002a6e" stop-opacity=".32"/></linearGradient>';
+	$html .= '<linearGradient id="' . $id . '-glare" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="' . ( $level - 40 ) . '" y2="' . ( $bottom - 6 ) . '"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".15" stop-color="#fff" stop-opacity=".85"/><stop offset=".8" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>';
+	$html .= '<linearGradient id="' . $id . '-cap" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1d43a6"/><stop offset=".3" stop-color="#4b7cf0"/><stop offset=".55" stop-color="#2f5fd0"/><stop offset="1" stop-color="#132f7a"/></linearGradient>';
+	$html .= '<linearGradient id="' . $id . '-sticker" gradientUnits="userSpaceOnUse" x1="' . $lx . '" x2="' . ( $lx + $lw ) . '" y1="0" y2="0"><stop offset="0" stop-color="#cfe8f2"/><stop offset=".22" stop-color="#fff"/><stop offset=".7" stop-color="#fff"/><stop offset="1" stop-color="#c4e2ee"/></linearGradient>';
+	$html .= '</defs>';
+
+	// Depth of the water and the round shape of the bottle.
+	$html .= '<g clip-path="url(#' . $id . '-clip)">';
+	$html .= '<rect x="0" y="' . $level . '" width="160" height="' . ( 320 - $level ) . '" fill="url(#' . $id . '-depth)"/>';
+	$html .= '<rect x="0" y="0" width="160" height="320" fill="url(#' . $id . '-shade)"/>';
+	$html .= '</g>';
+
+	// Moulded rings (curved: the bottle is seen slightly from above).
 	foreach ( $b['ribs'] as $rib ) {
 		list( $y, $x1, $x2 ) = $rib;
-		$curve = round( ( $x2 - $x1 ) * 0.06, 1 );
-		$ring  = 'M' . $x1 . ' ' . $y . 'Q' . $cx . ' ' . ( $y + 2 * $curve ) . ' ' . $x2 . ' ' . $y;
-		$svg  .= '<path d="' . $ring . '" fill="none" stroke="#0a5f96" stroke-opacity=".22" stroke-width="2.6"/>';
-		$svg  .= '<path d="' . $ring . '" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.2" transform="translate(0 -1.8)"/>';
+		$ring  = 'M' . $x1 . ' ' . $y . 'Q' . $cx . ' ' . ( $y + 2 * round( ( $x2 - $x1 ) * 0.06, 1 ) ) . ' ' . $x2 . ' ' . $y;
+		$html .= '<path d="' . $ring . '" fill="none" stroke="#0a5f96" stroke-opacity=".22" stroke-width="2.6"/>';
+		$html .= '<path d="' . $ring . '" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.2" transform="translate(0 -1.8)"/>';
 	}
 
 	// Base: the thick bottom of the bottle.
 	$base_y = $bottom - 9;
-	$svg   .= '<path d="M' . ( $left + 9 ) . ' ' . $base_y . 'Q' . $cx . ' ' . ( $base_y + 10 ) . ' ' . ( $right - 9 ) . ' ' . $base_y . '" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4"/>';
+	$html  .= '<path d="M' . ( $left + 9 ) . ' ' . $base_y . 'Q' . $cx . ' ' . ( $base_y + 10 ) . ' ' . ( $right - 9 ) . ' ' . $base_y . '" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4"/>';
 
-	// ---------- Outline + glare ----------
-	$svg .= '<path class="bottle__outline" d="' . esc_attr( $b['body'] ) . '" fill="none" stroke="#6fd6f2" stroke-width="1.6"/>';
-	$svg .= '<path d="' . esc_attr( $b['highlights'] ) . '" stroke="url(#' . $id . '-glare)" stroke-width="5" stroke-linecap="round"/>';
-	$svg .= '<path d="' . esc_attr( $b['shine'] ) . '" stroke="#fff" stroke-opacity=".55" stroke-width="2.5" stroke-linecap="round"/>';
+	// Outline + glare.
+	$html .= '<path d="' . esc_attr( $b['body'] ) . '" fill="none" stroke="#6fd6f2" stroke-width="1.6"/>';
+	$html .= '<path d="' . esc_attr( $b['highlights'] ) . '" stroke="url(#' . $id . '-glare)" stroke-width="5" stroke-linecap="round"/>';
+	$html .= '<path d="' . esc_attr( $b['shine'] ) . '" stroke="#fff" stroke-opacity=".55" stroke-width="2.5" stroke-linecap="round"/>';
 
-	// ---------- Sticker wrapped around the bottle ----------
+	// Sticker wrapped around the bottle.
 	$top    = 'M' . $lx . ' ' . $ly . 'Q' . $cx . ' ' . ( $ly + 2 * $bend ) . ' ' . ( $lx + $lw ) . ' ' . $ly;
-	$svg   .= '<path d="' . $top . 'V' . ( $ly + $lh ) . 'Q' . $cx . ' ' . ( $ly + $lh + 2 * $bend ) . ' ' . $lx . ' ' . ( $ly + $lh ) . 'z" fill="url(#' . $id . '-sticker)"/>';
-	$svg   .= '<path d="' . $top . 'v9Q' . $cx . ' ' . ( $ly + 9 + 2 * $bend ) . ' ' . $lx . ' ' . ( $ly + 9 ) . 'z" fill="#19409a"/>';
-	$svg   .= '<path d="M' . $lx . ' ' . ( $ly + $lh - 3 ) . 'Q' . $cx . ' ' . ( $ly + $lh - 3 + 2 * $bend ) . ' ' . ( $lx + $lw ) . ' ' . ( $ly + $lh - 3 ) . '" fill="none" stroke="#00d1f9" stroke-width="3.5"/>';
+	$html  .= '<path d="' . $top . 'V' . ( $ly + $lh ) . 'Q' . $cx . ' ' . ( $ly + $lh + 2 * $bend ) . ' ' . $lx . ' ' . ( $ly + $lh ) . 'z" fill="url(#' . $id . '-sticker)"/>';
+	$html  .= '<path d="' . $top . 'v9Q' . $cx . ' ' . ( $ly + 9 + 2 * $bend ) . ' ' . $lx . ' ' . ( $ly + 9 ) . 'z" fill="#19409a"/>';
+	$html  .= '<path d="M' . $lx . ' ' . ( $ly + $lh - 3 ) . 'Q' . $cx . ' ' . ( $ly + $lh - 3 + 2 * $bend ) . ' ' . ( $lx + $lw ) . ' ' . ( $ly + $lh - 3 ) . '" fill="none" stroke="#00d1f9" stroke-width="3.5"/>';
 	$size   = min( 17, round( $lw * 0.25 ) );
 	$drop_y = $ly + 12 + $bend + $size * 0.55;
 	$drop_r = $size * 0.42;
-	$svg   .= '<path d="M' . $cx . ' ' . ( $drop_y - $drop_r * 1.7 ) . 'c0 0-' . $drop_r . ' ' . ( $drop_r * 1.1 ) . '-' . $drop_r . ' ' . ( $drop_r * 1.75 ) . 'a' . $drop_r . ' ' . $drop_r . ' 0 0 0 ' . ( 2 * $drop_r ) . ' 0c0-' . ( $drop_r * 0.65 ) . '-' . $drop_r . '-' . ( $drop_r * 1.75 ) . '-' . $drop_r . '-' . ( $drop_r * 1.75 ) . 'z" fill="#00c4ef"/>';
+	$html  .= '<path d="M' . $cx . ' ' . ( $drop_y - $drop_r * 1.7 ) . 'c0 0-' . $drop_r . ' ' . ( $drop_r * 1.1 ) . '-' . $drop_r . ' ' . ( $drop_r * 1.75 ) . 'a' . $drop_r . ' ' . $drop_r . ' 0 0 0 ' . ( 2 * $drop_r ) . ' 0c0-' . ( $drop_r * 0.65 ) . '-' . $drop_r . '-' . ( $drop_r * 1.75 ) . '-' . $drop_r . '-' . ( $drop_r * 1.75 ) . 'z" fill="#00c4ef"/>';
 	if ( $label ) {
-		$svg .= '<text x="' . $cx . '" y="' . round( $drop_y + $drop_r + $size + 1, 1 ) . '" text-anchor="middle" font-family="Open Sans, Arial, sans-serif" font-size="' . $size . '" font-weight="800" letter-spacing=".3" fill="#19409a">' . esc_html( $label ) . '</text>';
+		$html .= '<text x="' . $cx . '" y="' . round( $drop_y + $drop_r + $size + 1, 1 ) . '" text-anchor="middle" font-family="Open Sans, Arial, sans-serif" font-size="' . $size . '" font-weight="800" letter-spacing=".3" fill="#19409a">' . esc_html( $label ) . '</text>';
 	}
 
-	// ---------- Cap ----------
-	$cap  = $b['cap'];
-	$svg .= '<path d="' . esc_attr( $cap['collar'] ) . '" fill="#1a40a0"/>';
-	$svg .= '<path d="' . esc_attr( $cap['cap'] ) . '" fill="url(#' . $id . '-cap)"/>';
-	$svg .= '<path d="' . esc_attr( $cap['ridges'] ) . '" stroke="#fff" stroke-opacity=".28" stroke-width="1.4" stroke-linecap="round"/>';
-	$svg .= '<path d="' . esc_attr( $cap['rim'] ) . '" stroke="#fff" stroke-opacity=".45" stroke-width="1.6" stroke-linecap="round"/>';
+	// Cap.
+	$cap   = $b['cap'];
+	$html .= '<path d="' . esc_attr( $cap['collar'] ) . '" fill="#1a40a0"/>';
+	$html .= '<path d="' . esc_attr( $cap['cap'] ) . '" fill="url(#' . $id . '-cap)"/>';
+	$html .= '<path d="' . esc_attr( $cap['ridges'] ) . '" stroke="#fff" stroke-opacity=".28" stroke-width="1.4" stroke-linecap="round"/>';
+	$html .= '<path d="' . esc_attr( $cap['rim'] ) . '" stroke="#fff" stroke-opacity=".45" stroke-width="1.6" stroke-linecap="round"/>';
 	if ( $cap['top'] ) {
-		$svg .= '<path d="' . esc_attr( $cap['top'] ) . '" stroke="#15378a" stroke-width="4" stroke-linecap="round"/>';
+		$html .= '<path d="' . esc_attr( $cap['top'] ) . '" stroke="#15378a" stroke-width="4" stroke-linecap="round"/>';
 	}
-	$svg .= '</svg>';
+	$html .= '</svg>';
 
-	return '<div class="' . esc_attr( trim( 'bottle bottle--' . $shape . ' ' . $class ) ) . '"><span class="bottle__shadow" aria-hidden="true"></span><div class="bottle__body">' . $svg . '</div></div>';
+	return $html . '</div></div>';
 }

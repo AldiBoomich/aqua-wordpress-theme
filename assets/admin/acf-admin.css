@@ -8,17 +8,23 @@
 	gap: 8px;
 }
 
-.aqua-icon-option__icon {
+i.aqua-icon-option__icon {
 	flex-shrink: 0;
 	width: 22px;
 	color: #19409a;
 	text-align: center;
 }
 
-/* Liquid icons (inline SVG) are shown a little larger than the font icons. */
-svg.aqua-icon-option__icon {
-	width: 28px;
-	height: 28px;
+/* Liquid icons (liquid-icon.css): theme colours + a little larger than the font icons. */
+.aqua-icon-option {
+	--aqua-primary: #00d1f9;
+	--aqua-secondary: #19409a;
+	--aqua-dark: #001442;
+	--aqua-white: #fff;
+}
+
+.aqua-icon-option .liquid-icon {
+	font-size: 28px;
 }
 
 /* Hint messages (where a block is edited, where contacts live…). */

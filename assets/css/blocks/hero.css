@@ -3,6 +3,7 @@
  * Full-screen slider on the homepage. Mixed with Bootstrap .carousel classes
  * (carousel, carousel-inner, carousel-item, carousel-indicators) for the slide logic.
  * Overlay modifiers: --start (text on the left), --end (text on the right).
+ * Block modifier --paused: off screen (theme.js) — the slow zoom stops, the slide show pauses.
  */
 
 .hero {
@@ -30,7 +31,6 @@
 	height: 78vh;
 	height: clamp(500px, 78svh, 640px); /* phones: fills the screen under the bar, never too tall */
 	object-fit: cover;
-	will-change: transform;
 }
 
 /* Slow zoom: starts together with the cross-fade (incoming slide) and runs at a steady
@@ -39,6 +39,10 @@
 .hero__slide.carousel-item-next .hero__image,
 .hero__slide.carousel-item-prev .hero__image {
 	animation: aqua-ken-burns calc(var(--aqua-hero-interval, 7000ms) + 2500ms) linear both;
+}
+
+.hero--paused .hero__slide .hero__image {
+	animation-play-state: paused;
 }
 
 @keyframes aqua-ken-burns {

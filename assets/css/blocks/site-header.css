@@ -16,25 +16,15 @@
 	justify-content: space-between;
 	min-height: var(--aqua-header-height);
 	padding: 8px 16px;
-	background: transparent;
-}
-
-/* Frosted bar. A pseudo element keeps backdrop-filter off the header itself,
-   otherwise the fixed menu panel inside it would be positioned relative to the header. */
-.site-header::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: -1;
-	background: rgba(255, 255, 255, 0.92);
+	/* Solid bar: a backdrop blur behind a sticky bar is re-rendered on every scroll frame.
+	   (No filter / transform here: the fixed menu panel inside must stay relative to the screen.) */
+	background: var(--aqua-white);
 	box-shadow: 0 1px 0 rgba(0, 20, 66, 0.06);
-	-webkit-backdrop-filter: saturate(180%) blur(14px);
-	backdrop-filter: saturate(180%) blur(14px);
 	transition: box-shadow 0.35s ease;
 }
 
-.site-header--sticky::before,
-.site-header--menu-open::before {
+.site-header--sticky,
+.site-header--menu-open {
 	box-shadow: 0 8px 28px rgba(0, 20, 66, 0.08);
 }
 
@@ -209,7 +199,24 @@
 	border-radius: 50%;
 	background: rgba(0, 209, 249, 0.15);
 	color: var(--aqua-primary);
-	animation: aqua-pulse 2.4s infinite;
+}
+
+.site-header__phone-icon {
+	position: relative;
+}
+
+.site-header__phone-icon::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border: 2px solid rgba(0, 209, 249, 0.5);
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+/* The ring pulses only while the phone is on screen: in the open mobile panel or on wide desktops. */
+.site-header--menu-open .site-header__phone-icon::after {
+	animation: aqua-ring 2.4s ease-out infinite;
 }
 
 .site-header__phone-text {
@@ -319,10 +326,8 @@
 		min-height: 0;
 		padding: 0 3rem;
 		border-bottom: 1px dotted rgba(255, 255, 255, 0.35);
-	}
-
-	.site-header::before {
-		display: none;
+		background: transparent;
+		box-shadow: none;
 	}
 
 	.site-header__logo {
@@ -393,10 +398,8 @@
 	.site-header--sticky {
 		position: fixed;
 		border-bottom: 0;
-		background: rgba(255, 255, 255, 0.96);
+		background: rgba(255, 255, 255, 0.98);
 		box-shadow: 0 10px 30px rgba(0, 20, 66, 0.08);
-		-webkit-backdrop-filter: blur(8px);
-		backdrop-filter: blur(8px);
 	}
 
 	.site-header--sticky .site-header__logo-image {
@@ -416,5 +419,9 @@
 @media (min-width: 1280px) {
 	.site-header__phone {
 		display: flex;
+	}
+
+	.site-header__phone-icon::after {
+		animation: aqua-ring 2.4s ease-out infinite;
 	}
 }

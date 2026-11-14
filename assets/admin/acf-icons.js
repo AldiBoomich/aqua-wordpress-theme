@@ -1,7 +1,7 @@
 /**
  * Shows a live icon preview in ACF "Icon" and "Social network" select fields.
  * Fields are marked with the wrapper classes aqua-icon-select / aqua-social-select.
- * Icon fields show the theme's liquid SVG icons (window.aquaIcons, see inc/admin.php).
+ * Icon fields show the theme's liquid icons (window.aquaIcons, see inc/admin.php; styles: liquid-icon.css).
  */
 ( function () {
 	'use strict';
@@ -22,15 +22,12 @@
 	};
 
 	var svgIcons = window.aquaIcons || {};
-	var copies = 0;
 
 	function render( iconClass, text, svg ) {
 		var wrap = document.createElement( 'span' );
 		wrap.className = 'aqua-icon-option';
 		if ( svg ) {
-			// select2 renders an option several times: every copy needs its own clipPath id.
-			copies++;
-			wrap.innerHTML = svg.replace( /aqua-liquid-\d+/g, 'aqua-acf-liquid-' + copies );
+			wrap.innerHTML = svg; // Trusted markup from the theme (aqua_icon()).
 		} else {
 			var icon = document.createElement( 'i' );
 			icon.className = iconClass + ' aqua-icon-option__icon';

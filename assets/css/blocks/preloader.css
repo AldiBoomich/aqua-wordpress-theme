@@ -31,6 +31,11 @@
 	animation: aqua-preloader-spin 0.75s linear infinite;
 }
 
+/* Hidden preloader: stop spinning (an endless animation costs work on every frame). */
+.preloader--hidden .preloader__spinner {
+	animation-play-state: paused;
+}
+
 @keyframes aqua-preloader-spin {
 	to {
 		transform: rotate(360deg);

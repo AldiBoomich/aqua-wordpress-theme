@@ -36,7 +36,6 @@
 	display: flex;
 	justify-content: center;
 	height: 400px;
-	filter: drop-shadow(0 30px 30px rgba(0, 20, 66, 0.12));
 	animation: aqua-float 6s ease-in-out infinite;
 }
 

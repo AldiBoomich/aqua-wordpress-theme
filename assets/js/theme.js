@@ -5,6 +5,7 @@
  * - Sticky header: .site-header--sticky after scrolling 45px (shadow on mobile, fixed bar on desktop).
  * - Mobile menu panel: open / close, Esc, backdrop, focus trap, page scroll lock.
  * - Swipe carousels (.swipe): dots synced with the horizontal scroll.
+ * - Hero slider pauses while off screen (.hero--paused).
  * - Back to top: .back-to-top--visible after 300px, smooth scroll on click.
  * - Stats counters: count up from 0 when they enter the viewport.
  */
@@ -156,6 +157,25 @@
 		} else if ( desktop.addListener ) {
 			desktop.addListener( onBreakpoint );
 		}
+	}
+
+	// Hero slider: while it is off screen the slide show and the slow zoom pause
+	// (a slide change decodes a large photo — no reason to do it while the visitor reads further down).
+	var hero = document.querySelector( '.hero' );
+	var heroCarousel = document.getElementById( 'hero-carousel' );
+	if ( hero && heroCarousel && 'IntersectionObserver' in window ) {
+		new IntersectionObserver( function ( entries ) {
+			var visible = entries[ 0 ].isIntersecting;
+			var slider = window.bootstrap && window.bootstrap.Carousel ? window.bootstrap.Carousel.getInstance( heroCarousel ) : null;
+			hero.classList.toggle( 'hero--paused', ! visible );
+			if ( slider ) {
+				if ( visible ) {
+					slider.cycle();
+				} else {
+					slider.pause();
+				}
+			}
+		} ).observe( hero );
 	}
 
 	// Swipe carousels (mobile): dots under the row, synced with the scroll position.

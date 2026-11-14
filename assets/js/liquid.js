@@ -3,12 +3,13 @@
  *
  * The water in every icon is simulated as two damped springs:
  * - tilt of the surface (degrees), pulled back to "level with the ground";
- * - bob of the water level (SVG units), pulled back to rest.
+ * - bob of the water level (drawing-grid units), pulled back to rest.
  * Energy comes from scroll acceleration (start / stop of a scroll), the mouse entering
  * and moving over a card, taps, and on phones the tilt of the device (gravity sensor).
  *
  * Only icons on screen are simulated, and the animation loop sleeps once the water
  * has settled. The rolling waves and bubbles are plain CSS (liquid-icon.css, bottle.css).
+ * The water is an HTML layer: only its CSS transform changes (GPU), never the layout.
  *
  * Bottles also tilt towards the mouse (--bottle-tilt) and wobble after a tap; their water
  * is counter-rotated so it stays level with the ground while the bottle moves.
@@ -16,7 +17,7 @@
 ( function () {
 	'use strict';
 
-	var icons = document.querySelectorAll( '.liquid-icon, .bottle__svg' );
+	var icons = document.querySelectorAll( '.liquid-icon[data-level], .bottle__body' );
 	if ( ! icons.length || ! ( 'IntersectionObserver' in window ) || ! window.requestAnimationFrame ) {
 		return;
 	}
@@ -58,10 +59,12 @@
 
 	var render = function ( item ) {
 		var stretch = 1 + Math.min( Math.abs( item.va ) / 160, 0.9 ); // Choppier waves while sloshing.
-		item.liquid.setAttribute(
-			'transform',
-			'translate(' + item.cx + ' ' + ( item.level + item.y ).toFixed( 2 ) + ') rotate(' + item.a.toFixed( 2 ) + ') scale(1 ' + stretch.toFixed( 3 ) + ')'
-		);
+		// The tilt layer pivots around the surface (transform-origin in CSS); bob in % of the drawing height.
+		var value = 'translateY(' + ( item.y / item.size * 100 ).toFixed( 2 ) + '%) rotate(' + item.a.toFixed( 2 ) + 'deg) scaleY(' + stretch.toFixed( 3 ) + ')';
+		if ( value !== item.drawn ) {
+			item.liquid.style.transform = value;
+			item.drawn = value;
+		}
 	};
 
 	var step = function ( item, dt ) {
@@ -92,7 +95,8 @@
 				return;
 			}
 			var tracking = item.body && now < item.trackUntil;
-			if ( item.body ) {
+			// Reading the computed rotation forces a style update: only while the bottle is moving.
+			if ( tracking ) {
 				item.own = readRotation( item.body );
 			}
 			// Two half steps keep the semi-implicit Euler integration stable on slow frames.
@@ -140,7 +144,7 @@
 
 	// Set up the icons.
 	Array.prototype.forEach.call( icons, function ( svg, index ) {
-		var liquid = svg.querySelector( '.liquid-icon__liquid, .bottle__liquid' );
+		var liquid = svg.querySelector( '.liquid-icon__tilt, .bottle__tilt' );
 		if ( ! liquid ) {
 			return;
 		}
@@ -150,11 +154,12 @@
 			liquid: liquid,
 			cx: parseFloat( svg.getAttribute( 'data-cx' ) ) || 24,
 			level: parseFloat( svg.getAttribute( 'data-level' ) ) || 24,
+			size: parseFloat( svg.getAttribute( 'data-size' ) ) || 48, // Height of the drawing grid.
 			scale: parseFloat( svg.getAttribute( 'data-scale' ) ) || 1, // Bottles are drawn on a bigger grid.
-			body: svg.closest( '.bottle__body' ),
+			body: svg.classList.contains( 'bottle__body' ) ? svg : null,
 			own: 0,
 			trackUntil: 0,
-			pausedClass: svg.classList.contains( 'bottle__svg' ) ? 'bottle__svg--paused' : 'liquid-icon--paused',
+			pausedClass: svg.classList.contains( 'bottle__body' ) ? 'bottle__body--paused' : 'liquid-icon--paused',
 			a: 0,
 			va: 0,
 			y: 0,
@@ -268,7 +273,7 @@
 		lastY = y;
 		lastT = now;
 		lastV = v;
-		if ( Math.abs( dv ) > 0.02 ) {
+		if ( Math.abs( dv ) > 0.05 ) { // Ignore tiny jitter of a steady scroll.
 			onVelocityChange( dv );
 		}
 

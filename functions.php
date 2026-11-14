@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Bump on every asset change to bust the browser cache.
-	define( '_S_VERSION', '1.3.0' );
+	define( '_S_VERSION', '1.3.1' );
 }
 
 /**

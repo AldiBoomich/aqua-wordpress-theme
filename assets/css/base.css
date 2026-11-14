@@ -113,17 +113,17 @@ img {
 	}
 }
 
-@keyframes aqua-pulse {
+/* Expanding ring (transform + opacity only: runs on the GPU, no repaint). */
+@keyframes aqua-ring {
 	0% {
-		box-shadow: 0 0 0 0 rgba(0, 209, 249, 0.45);
+		opacity: 0.9;
+		transform: scale(1);
 	}
 
-	70% {
-		box-shadow: 0 0 0 12px rgba(0, 209, 249, 0);
-	}
-
+	75%,
 	100% {
-		box-shadow: 0 0 0 0 rgba(0, 209, 249, 0);
+		opacity: 0;
+		transform: scale(1.55);
 	}
 }
 

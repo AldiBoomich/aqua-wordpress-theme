@@ -3,7 +3,7 @@
  * "Liquid" icon set: hand-drawn SVG icons (48×48 grid, 2px rounded strokes) with live water inside.
  *
  * Every icon has a vessel (the area that holds the water), an outline and optional details.
- * The water is two waves (CSS keeps them rolling, see assets/css/blocks/liquid-icon.css);
+ * The water is two rolling waves + bubbles (assets/css/blocks/liquid-icon.css);
  * assets/js/liquid.js makes it slosh on scroll, hover, touch and device tilt.
  *
  * ACF "Icon" fields store the historical Font Awesome class names (e.g. "fas fa-tint"),
@@ -285,37 +285,61 @@ function aqua_icon_choices() {
 }
 
 /**
- * Closed wave path (surface at y = 0, body below), wide enough to roll one period
- * and to stay inside the vessel when the water is tilted.
+ * CSS url() with an inline SVG (used as a mask: the water is cut to the shape of the vessel).
  *
- * @param float $amp    Wave height.
- * @param float $period Wave length.
- * @param float $reach  Half width covered on each side of the pivot.
- * @param float $depth  Depth of the body; 0 = surface line only (open path).
+ * @param string $viewbox SVG viewBox, e.g. "0 0 48 48".
+ * @param string $path    Path data.
  * @return string
  */
-function aqua_liquid_wave( $amp, $period, $reach = 60, $depth = 64 ) {
-	$half  = $period / 2;
-	$start = -$reach - $period;
-	$count = (int) ceil( ( 2 * $reach + $period ) / $half );
-
-	$d = 'M' . $start . ' 0q' . ( $period / 4 ) . ' ' . ( -$amp ) . ' ' . $half . ' 0';
-	for ( $i = 1; $i < $count; $i++ ) {
-		$d .= 't' . $half . ' 0';
-	}
-	return $depth ? $d . 'V' . $depth . 'H' . $start . 'z' : $d;
+function aqua_svg_mask_url( $viewbox, $path ) {
+	$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' . $viewbox . '"><path d="' . $path . '"/></svg>';
+	return "url('data:image/svg+xml," . rawurlencode( $svg ) . "')";
 }
 
 /**
- * Liquid icon markup (inline SVG). Unknown values fall back to a Font Awesome <i>.
+ * Percentage of a length on the drawing grid, for inline styles.
+ *
+ * @param float $value Length in grid units.
+ * @param float $size  Grid size.
+ * @return string
+ */
+function aqua_grid_pct( $value, $size ) {
+	return round( $value / $size * 100, 3 ) . '%';
+}
+
+/**
+ * Rising bubbles (shared by icons and bottles). Each bubble is a tall transparent "track"
+ * with the bubble at its top; the track slides up by its own height (a composited animation).
+ *
+ * @param string $class   BEM element class.
+ * @param array  $bubbles List of array( x, y, radius ) in grid units (y = start of the bubble).
+ * @param float  $rise    Rise distance in grid units.
+ * @param float  $width   Grid width.
+ * @param float  $height  Grid height.
+ * @return string
+ */
+function aqua_liquid_bubbles( $class, $bubbles, $rise, $width, $height ) {
+	$html = '';
+	foreach ( $bubbles as $bubble ) {
+		list( $x, $y, $r ) = $bubble;
+		$style = 'left:' . aqua_grid_pct( $x - $r, $width ) . ';top:' . aqua_grid_pct( $y - $r, $height ) . ';width:' . aqua_grid_pct( 2 * $r, $width ) . ';height:' . aqua_grid_pct( $rise, $height );
+		$html .= '<span class="' . esc_attr( $class ) . '" style="' . esc_attr( $style ) . '"></span>';
+	}
+	return $html;
+}
+
+/**
+ * Liquid icon markup. Unknown values fall back to a Font Awesome <i>.
+ *
+ * Layers: empty vessel (SVG) → water (HTML, masked to the vessel: rolling waves + bubbles,
+ * moved only with transform / opacity so the browser animates them on the GPU) → outline and
+ * details (SVG). liquid.js tilts .liquid-icon__tilt.
  *
  * @param string $value ACF value / library key, e.g. "fas fa-tint".
- * @param string $class Extra class(es) for the <svg>.
+ * @param string $class Extra class(es) for the wrapper.
  * @return string
  */
 function aqua_icon( $value, $class = '' ) {
-	static $uid = 0;
-
 	$library = aqua_icon_library();
 	$value   = trim( (string) $value );
 
@@ -336,52 +360,50 @@ function aqua_icon( $value, $class = '' ) {
 			'bottom'  => 42,
 		)
 	);
-	$id     = 'aqua-liquid-' . ( ++$uid );
 	$cx     = (float) $icon['cx'];
 	$level  = (float) $icon['level'];
 	$bottom = (float) $icon['bottom'];
-	$rise   = max( 4, ( $bottom - $level ) * 0.75 );
-
-	static $waves = null;
-	if ( null === $waves ) {
-		$waves = array(
-			'back'  => aqua_liquid_wave( 2.2, 20 ),
-			'front' => aqua_liquid_wave( 1.6, 16 ),
-		);
-	}
-
 	$stroke = ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
 
-	$svg  = '<svg class="' . esc_attr( trim( 'liquid-icon ' . $class ) ) . '" viewBox="0 0 48 48" fill="none" aria-hidden="true" focusable="false"';
-	$svg .= ' data-cx="' . esc_attr( $cx ) . '" data-level="' . esc_attr( $level ) . '" style="--liquid-rise:' . esc_attr( round( $rise, 1 ) ) . 'px">';
-	$svg .= '<defs><clipPath id="' . esc_attr( $id ) . '"><path d="' . esc_attr( $icon['vessel'] ) . '"/></clipPath></defs>';
-	$svg .= '<path class="liquid-icon__vessel" d="' . esc_attr( $icon['vessel'] ) . '" fill="#00d1f9" fill-opacity=".08"/>';
-	$svg .= '<g clip-path="url(#' . esc_attr( $id ) . ')">';
-	$svg .= '<g class="liquid-icon__liquid" transform="translate(' . esc_attr( $cx ) . ' ' . esc_attr( $level ) . ')">';
-	$svg .= '<path class="liquid-icon__wave liquid-icon__wave--back" d="' . esc_attr( $waves['back'] ) . '" fill="#19409a" fill-opacity=".35"/>';
-	$svg .= '<path class="liquid-icon__wave liquid-icon__wave--front" d="' . esc_attr( $waves['front'] ) . '" fill="#00d1f9"/>';
-	$svg .= '</g>';
-	foreach ( array( array( -5, 1.3 ), array( 4, 1 ), array( -0.5, 0.75 ) ) as $bubble ) {
-		$svg .= '<circle class="liquid-icon__bubble" cx="' . esc_attr( $cx + $bubble[0] ) . '" cy="' . esc_attr( $bottom - 3 ) . '" r="' . esc_attr( $bubble[1] ) . '" fill="#fff"/>';
-	}
-	$svg .= '</g>';
-	$svg .= '<path class="liquid-icon__outline" d="' . esc_attr( $icon['vessel'] ) . '" stroke="currentColor"' . $stroke . '/>';
+	$style = '--liquid-mask:' . aqua_svg_mask_url( '0 0 48 48', $icon['vessel'] ) . ';--liquid-cx:' . aqua_grid_pct( $cx, 48 ) . ';--liquid-level:' . aqua_grid_pct( $level, 48 );
+
+	$html  = '<span class="' . esc_attr( trim( 'liquid-icon ' . $class ) ) . '" style="' . esc_attr( $style ) . '" data-cx="' . esc_attr( $cx ) . '" data-level="' . esc_attr( $level ) . '" data-size="48" aria-hidden="true">';
+	$html .= '<svg class="liquid-icon__glass" viewBox="0 0 48 48" focusable="false"><path class="liquid-icon__vessel" d="' . esc_attr( $icon['vessel'] ) . '" fill="#00d1f9" fill-opacity=".08"/></svg>';
+
+	// Water.
+	$html .= '<span class="liquid-icon__water"><span class="liquid-icon__tilt">';
+	$html .= '<span class="liquid-icon__wave liquid-icon__wave--back"></span><span class="liquid-icon__wave liquid-icon__wave--front"></span>';
+	$html .= '</span>';
+	$html .= aqua_liquid_bubbles(
+		'liquid-icon__bubble',
+		array( array( $cx - 3, $bottom - 3, 1.3 ) ), // One bubble: every animated element costs a style update per frame.
+		max( 4, ( $bottom - $level ) * 0.75 ),
+		48,
+		48
+	);
+	$html .= '</span>';
+
+	// Outline and details.
+	$html .= '<svg class="liquid-icon__lines" viewBox="0 0 48 48" fill="none" focusable="false">';
+	$html .= '<path d="' . esc_attr( $icon['vessel'] ) . '" stroke="currentColor"' . $stroke . '/>';
 	if ( $icon['solid'] ) {
-		$svg .= '<path class="liquid-icon__solid" d="' . esc_attr( $icon['solid'] ) . '" fill="#fff" stroke="currentColor"' . $stroke . '/>';
+		$html .= '<path class="liquid-icon__solid" d="' . esc_attr( $icon['solid'] ) . '" fill="#fff" stroke="currentColor"' . $stroke . '/>';
 	}
 	if ( $icon['light'] ) {
-		$svg .= '<path class="liquid-icon__light" d="' . esc_attr( $icon['light'] ) . '" stroke="#fff" stroke-opacity=".85"' . $stroke . '/>';
+		$html .= '<path d="' . esc_attr( $icon['light'] ) . '" stroke="#fff" stroke-opacity=".85"' . $stroke . '/>';
 	}
 	if ( $icon['details'] ) {
-		$svg .= '<path class="liquid-icon__detail" d="' . esc_attr( $icon['details'] ) . '" stroke="currentColor"' . $stroke . '/>';
+		$html .= '<path d="' . esc_attr( $icon['details'] ) . '" stroke="currentColor"' . $stroke . '/>';
 	}
 	if ( $icon['fill'] ) {
-		$svg .= '<path class="liquid-icon__dots" d="' . esc_attr( $icon['fill'] ) . '" fill="currentColor"/>';
+		$html .= '<path d="' . esc_attr( $icon['fill'] ) . '" fill="currentColor"/>';
 	}
-	if ( $icon['steam'] ) {
-		$svg .= '<path class="liquid-icon__steam" d="' . esc_attr( $icon['steam'] ) . '" stroke="currentColor" stroke-opacity=".55"' . $stroke . '/>';
-	}
-	$svg .= '</svg>';
+	$html .= '</svg>';
 
-	return $svg;
+	// Steam: its own SVG box, so the animation stays on the GPU.
+	if ( $icon['steam'] ) {
+		$html .= '<svg class="liquid-icon__steam" viewBox="0 0 48 48" fill="none" focusable="false"><path d="' . esc_attr( $icon['steam'] ) . '" stroke="currentColor" stroke-opacity=".55"' . $stroke . '/></svg>';
+	}
+
+	return $html . '</span>';
 }

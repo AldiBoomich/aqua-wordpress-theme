@@ -1,9 +1,13 @@
 /**
  * Block: bottle
  * Drawn water bottle (markup: aqua_bottle() in inc/bottles.php).
+ *
+ * Layers inside __body: __back (SVG) → __water (HTML, masked to the bottle with --liquid-mask)
+ * → __front (SVG). Waves, light and bubbles move only with transform / opacity (GPU, no repaint).
  * __body tilts by --bottle-tilt (set by liquid.js from the mouse position) and springs back;
- * --wobble rocks it after a tap. liquid.js keeps the water level while the bottle moves.
- * Modifiers: --small, --family, --jug, --cooler (shapes).
+ * --wobble rocks it after a tap; --paused stops the water off screen. liquid.js counter-rotates
+ * __tilt, so the water stays level while the bottle moves.
+ * Modifiers: --small, --family, --jug, --cooler (shapes). Grid: 160 × 320 units.
  */
 
 .bottle {
@@ -18,6 +22,7 @@
 	position: relative;
 	z-index: 1;
 	height: 100%;
+	aspect-ratio: 1 / 2;
 	transform: rotate(var(--bottle-tilt));
 	transform-origin: 50% 93%; /* rocks on its base */
 	transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* springs back with a small overshoot */
@@ -27,14 +32,18 @@
 	animation: aqua-bottle-wobble 1.5s ease-out;
 }
 
-.bottle__svg {
-	display: block;
-	width: auto;
+.bottle__back,
+.bottle__front,
+.bottle__water,
+.bottle__tilt {
+	position: absolute;
+	inset: 0;
+	width: 100%;
 	height: 100%;
 	overflow: visible;
 }
 
-/* Soft contact shadow; shifts a little when the bottle tilts. */
+/* Soft contact shadow under the base. */
 .bottle__shadow {
 	position: absolute;
 	bottom: calc(6.5% - 7px);
@@ -46,79 +55,125 @@
 	transform: translateX(-50%);
 }
 
+/* ---------- Water ---------- */
+
+/* overflow: the mask hides the wide wave strips, but only a real clip keeps them from widening the page. */
+.bottle__water {
+	overflow: hidden;
+	-webkit-mask: var(--liquid-mask) center / 100% 100% no-repeat;
+	mask: var(--liquid-mask) center / 100% 100% no-repeat;
+}
+
+.bottle__tilt {
+	transform-origin: var(--liquid-cx, 50%) var(--liquid-level, 50%);
+}
+
+/* Waves: wide coloured strips (480 units) masked by a repeating wave tile, sliding by one period. */
 .bottle__wave {
+	position: absolute;
+	left: -100%;
+	width: 300%;
+	height: 200%;
 	animation: aqua-bottle-roll 3.2s linear infinite;
 }
 
+/* Far side of the surface, seen from slightly above: a lighter band behind the front wave. */
 .bottle__wave--back {
+	top: calc(var(--liquid-level) - 2.813%); /* 5 units higher + amplitude 4 */
+	background-color: #a6f1ff;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 640' preserveAspectRatio='none'%3E%3Cpath d='M0 4q12-4 24 0t24 0V640H0z'/%3E%3C/svg%3E") 0 0 / 10% 100% repeat-x;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 640' preserveAspectRatio='none'%3E%3Cpath d='M0 4q12-4 24 0t24 0V640H0z'/%3E%3C/svg%3E") 0 0 / 10% 100% repeat-x;
 	animation-name: aqua-bottle-roll-back;
 	animation-duration: 4.6s;
 	animation-direction: reverse;
 }
 
-/* Light on the bottom drifts slowly. */
+.bottle__wave--front {
+	top: calc(var(--liquid-level) - 1%); /* amplitude 3.2 / 320 */
+	background-color: #2bcff6;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 640' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2q9-3.2 18 0t18 0V640H0z'/%3E%3C/svg%3E") 0 0 / 7.5% 100% repeat-x;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 640' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2q9-3.2 18 0t18 0V640H0z'/%3E%3C/svg%3E") 0 0 / 7.5% 100% repeat-x;
+}
+
+/* White glint along the crest (same period and speed as the front wave). */
+.bottle__wave--surface {
+	top: calc(var(--liquid-level) - 1.281%);
+	height: 2%;
+	background-color: #fff;
+	opacity: 0.85;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 6.4' preserveAspectRatio='none'%3E%3Cpath d='M0 4.1q9-3.2 18 0t18 0' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3C/svg%3E") 0 0 / 7.5% 100% repeat-x;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 6.4' preserveAspectRatio='none'%3E%3Cpath d='M0 4.1q9-3.2 18 0t18 0' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3C/svg%3E") 0 0 / 7.5% 100% repeat-x;
+}
+
+/* Light patterns drifting on the bottom (caustics). */
 .bottle__caustic {
+	position: absolute;
+	top: calc(var(--liquid-floor) - 6.25%);
+	left: -100%;
+	width: 300%;
+	height: 2.5%;
+	background-color: #fff;
+	opacity: 0.35;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 8' preserveAspectRatio='none'%3E%3Cpath d='M0 2.6q4.5-1.6 9 0t9 0' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") 0 0 / 3.75% 100% repeat-x;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 8' preserveAspectRatio='none'%3E%3Cpath d='M0 2.6q4.5-1.6 9 0t9 0' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") 0 0 / 3.75% 100% repeat-x;
 	animation: aqua-bottle-roll-caustic 6s linear infinite;
 }
 
 .bottle__caustic--slow {
+	top: calc(var(--liquid-floor) - 9.063%);
+	left: -98.125%;
+	opacity: 0.22;
 	animation-duration: 9s;
 	animation-direction: reverse;
 }
 
+/* Bubble = a transparent track (height = rise) with the bubble at its top; the track slides up. */
 .bottle__bubble {
+	position: absolute;
 	opacity: 0;
-	transform-box: fill-box;
-	transform-origin: center;
 	animation: aqua-bottle-bubble 4s ease-in infinite;
 }
 
-.bottle__bubble:nth-of-type(2) { animation-duration: 5.2s; animation-delay: -1.8s; }
-.bottle__bubble:nth-of-type(3) { animation-duration: 6s; animation-delay: -3.2s; }
-.bottle__bubble:nth-of-type(4) { animation-duration: 4.6s; animation-delay: -0.9s; }
-.bottle__bubble:nth-of-type(5) { animation-duration: 3.4s; animation-delay: -2.4s; }
-.bottle__bubble:nth-of-type(6) { animation-duration: 5.6s; animation-delay: -4.1s; }
+.bottle__bubble::before {
+	content: "";
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.85);
+}
 
-.bottle__svg--paused *,
-.bottle__svg--paused {
+/* Children of __water: 1 tilt, 2–3 caustics, 4–7 bubbles. */
+.bottle__bubble:nth-child(5) { animation-duration: 5.2s; animation-delay: -1.8s; }
+.bottle__bubble:nth-child(6) { animation-duration: 6s; animation-delay: -3.2s; }
+.bottle__bubble:nth-child(7) { animation-duration: 3.6s; animation-delay: -2.4s; }
+
+.bottle__body--paused .bottle__water * {
 	animation-play-state: paused;
 }
 
-/* SVG user units: 1px = 1 unit of the 160×320 grid. */
 @keyframes aqua-bottle-roll {
-	from {
-		transform: translateX(0);
-	}
-
 	to {
-		transform: translateX(36px);
+		transform: translateX(7.5%);
 	}
 }
 
 @keyframes aqua-bottle-roll-back {
-	from {
-		transform: translateX(0);
-	}
-
 	to {
-		transform: translateX(48px);
+		transform: translateX(10%);
 	}
 }
 
 @keyframes aqua-bottle-roll-caustic {
-	from {
-		transform: translateX(0);
-	}
-
 	to {
-		transform: translateX(18px);
+		transform: translateX(3.75%);
 	}
 }
 
 @keyframes aqua-bottle-bubble {
 	0% {
 		opacity: 0;
-		transform: translate(0, 0) scale(0.5);
+		transform: translate(0, 0);
 	}
 
 	12% {
@@ -126,7 +181,7 @@
 	}
 
 	50% {
-		transform: translate(2px, calc(var(--bubble-rise, -150px) * 0.5)) scale(0.85);
+		transform: translate(30%, -50%);
 	}
 
 	85% {
@@ -135,7 +190,7 @@
 
 	100% {
 		opacity: 0;
-		transform: translate(-1px, var(--bubble-rise, -150px)) scale(1);
+		transform: translate(-15%, -100%);
 	}
 }
 
