@@ -15,10 +15,3 @@ desktop.ini
 # Front-end build tooling (the built assets/dist/ IS committed)
 node_modules/
 
-# Webfonts: the ITF Free Font License forbids publishing the files in a public repository.
-# Download Switzer from https://www.fontshare.com/fonts/switzer → assets/fonts/switzer/ (see assets/fonts/README.md).
-assets/fonts/**/*.woff2
-assets/fonts/**/*.woff
-assets/fonts/**/*.ttf
-assets/fonts/**/*.otf
-assets/fonts/**/FFL.txt

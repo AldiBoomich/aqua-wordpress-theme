@@ -34,6 +34,13 @@ export function initMenuOverlay() {
 		if ( open === isOpen() ) {
 			return;
 		}
+		if ( open ) {
+			// The list starts under the header, wherever the admin bar or scrolling put it.
+			const header = document.querySelector( '[data-header]' );
+			if ( header ) {
+				overlay.style.setProperty( '--overlay-top', `${ Math.max( 0, header.getBoundingClientRect().bottom ) }px` );
+			}
+		}
 		overlay.classList.toggle( 'is-open', open );
 		root.classList.toggle( 'has-menu-open', open );
 		setInert( overlay, ! open );

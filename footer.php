@@ -35,6 +35,9 @@ $aqua_address   = aqua_field( 'contact_address', '123 River Street, New York, NY
 $aqua_email     = aqua_field( 'contact_email', 'hello@example.com' );
 $aqua_phone     = aqua_field( 'contact_phone', '+1 (800) 555-0199' );
 $aqua_copyright = aqua_field( 'copyright_text', get_bloginfo( 'name' ) );
+$aqua_credit    = aqua_field( 'footer_credit_text', 'Design & development by' );
+$aqua_author    = aqua_field( 'footer_credit_name', 'Aldi1988' );
+$aqua_author_to = aqua_field( 'footer_credit_url', '' );
 $aqua_legal     = aqua_link(
 	aqua_field( 'footer_legal_link' ),
 	array(
@@ -134,12 +137,24 @@ $aqua_legal     = aqua_link(
 
 		<div class="site-footer__bottom wrap">
 			<p>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php echo esc_html( $aqua_copyright ); ?>. <?php echo esc_html( aqua_label( 'rights', 'All rights reserved.' ) ); ?></p>
+			<?php if ( $aqua_author ) : ?>
+				<p class="site-footer__credit">
+					<?php echo esc_html( $aqua_credit ); ?>
+					<?php if ( $aqua_author_to && '#' !== $aqua_author_to ) : ?>
+						<a class="site-footer__link site-footer__credit-name" href="<?php echo esc_url( $aqua_author_to ); ?>"><?php echo esc_html( $aqua_author ); ?></a>
+					<?php else : ?>
+						<span class="site-footer__credit-name"><?php echo esc_html( $aqua_author ); ?></span>
+					<?php endif; ?>
+				</p>
+			<?php endif; ?>
 			<p class="site-footer__bottom-links">
 				<?php echo aqua_link_tag( $aqua_legal, 'site-footer__link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in aqua_link_tag(). ?>
 				<a class="site-footer__link" href="#main"><?php echo esc_html( aqua_label( 'back_to_top', 'Back to top' ) ); ?></a>
 			</p>
 		</div>
 	</footer>
+
+	<?php aqua_concept_bar(); ?>
 
 <?php wp_footer(); ?>
 

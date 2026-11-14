@@ -6,8 +6,10 @@ import { initHeader } from './modules/header.js';
 import { initNav } from './modules/nav.js';
 import { initMenuOverlay } from './modules/menu-overlay.js';
 import { initFooter } from './modules/footer.js';
+import { initConceptBar } from './modules/concept-bar.js';
 
 initHeader();
 initNav();
 initMenuOverlay();
 initFooter();
+initConceptBar();

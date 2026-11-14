@@ -3,7 +3,7 @@
  * Front-end assets.
  *
  * - Theme CSS/JS are built by Vite (src/ → assets/dist/) and enqueued from the build manifest.
- * - Switzer is self-hosted (assets/fonts/, not in Git: the font license forbids public redistribution).
+ * - Switzer is self-hosted (assets/fonts/switzer/).
  * - Legacy assets keep the sections that are not rebuilt yet working; they are removed with them.
  *
  * @package aqua

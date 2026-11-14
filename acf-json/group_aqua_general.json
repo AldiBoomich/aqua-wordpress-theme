@@ -410,6 +410,279 @@
             "new_lines": ""
         },
         {
+            "key": "field_aqua_general_tab_portfolio",
+            "label": "Portfolio",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_demo_banner_show",
+            "label": "Concept Notice",
+            "name": "demo_banner_show",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "Show the small \"concept project\" notice at the bottom of every page",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_demo_noindex",
+            "label": "Hide From Search Engines",
+            "name": "demo_noindex",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "Ask search engines not to index the site (noindex)",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_demo_banner_text",
+            "label": "Notice Text",
+            "name": "demo_banner_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_aqua_demo_banner_show",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": 60,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Concept project — not a real business.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_demo_banner_close",
+            "label": "Close Button Label",
+            "name": "demo_banner_close",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Read by screen readers.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_aqua_demo_banner_show",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": 40,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Hide this notice",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_demo_forms",
+            "label": "Demo Forms",
+            "name": "demo_forms",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Forms validate as usual but send nothing; visitors see the message below",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_demo_form_message",
+            "label": "Demo Message: Orders & Contact",
+            "name": "demo_form_message",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_aqua_demo_forms",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "This is a portfolio demo — no order was placed and nothing was sent.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_demo_subscribe_message",
+            "label": "Demo Message: Newsletter",
+            "name": "demo_subscribe_message",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_aqua_demo_forms",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "This is a portfolio demo — your email was not saved.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_general_tab_sharing",
+            "label": "Sharing",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_og_title",
+            "label": "Share Title",
+            "name": "og_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Title of the homepage in link previews (Facebook, LinkedIn, X, messengers). Other pages use their own titles.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Aqua — Pure Drinking Water Delivery",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_og_description",
+            "label": "Share Description",
+            "name": "og_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Also used as the meta description when a page has no excerpt.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Spring water purified through 7-stage filtration and delivered within 24 hours. A concept website.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_og_image",
+            "label": "Share Image",
+            "name": "og_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "1200 × 630 px. Used when a page has no featured image.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp",
+            "preview_size": "medium"
+        },
+        {
             "key": "field_aqua_general_tab_labels",
             "label": "Labels",
             "name": "",
@@ -684,6 +957,26 @@
             "placeholder": "On this page",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_label_concept",
+            "label": "Concept Notice Name",
+            "name": "label_concept",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Screen readers: name of the concept notice area.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Site notice",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -704,5 +997,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794681026
+    "modified": 1794683778
 }

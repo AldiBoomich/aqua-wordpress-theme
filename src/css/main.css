@@ -15,5 +15,6 @@
 @import "./blocks/legal.css";
 @import "./blocks/subscribe-form.css";
 @import "./blocks/site-footer.css";
+@import "./blocks/concept-bar.css";
 
 @import "./legacy-bridge.css";

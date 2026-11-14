@@ -389,6 +389,63 @@
                 "id": ""
             },
             "return_format": "array"
+        },
+        {
+            "key": "field_aqua_footer_credit_text",
+            "label": "Credit Text",
+            "name": "footer_credit_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown in the bottom line, before the name.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 40,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Design & development by",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_credit_name",
+            "label": "Credit Name",
+            "name": "footer_credit_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 30,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Aldi1988",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_credit_url",
+            "label": "Credit Link",
+            "name": "footer_credit_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Empty = the name is plain text.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 30,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
@@ -409,5 +466,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794681026
+    "modified": 1794683777
 }

@@ -236,6 +236,10 @@
 	font-size: var(--fs-sm);
 }
 
+.site-footer__credit-name {
+	color: var(--c-on-deep);
+}
+
 .site-footer__bottom-links {
 	display: flex;
 	flex-wrap: wrap;

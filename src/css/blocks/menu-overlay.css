@@ -10,7 +10,8 @@
 	z-index: var(--z-overlay);
 	display: flex;
 	flex-direction: column;
-	padding-top: var(--header-h);
+	/* Starts right under the header wherever it is (admin bar, scrolled): set by menu-overlay.js on open. */
+	padding-top: var(--overlay-top, var(--header-h));
 	overflow-y: auto;
 	overscroll-behavior: contain;
 	background: var(--c-ground);
@@ -25,16 +26,6 @@
 	visibility: visible;
 	clip-path: inset(0 0 0 0);
 	transition-delay: 0s;
-}
-
-.admin-bar .menu-overlay {
-	top: 46px;
-}
-
-@media (min-width: 783px) {
-	.admin-bar .menu-overlay {
-		top: 32px;
-	}
 }
 
 .menu-overlay__inner {
