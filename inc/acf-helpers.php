@@ -39,6 +39,18 @@ function aqua_field( $name, $default = '', $post_id = 'option' ) {
 }
 
 /**
+ * Interface label from Theme Settings → Labels (field "label_{key}"), e.g. "Skip to content".
+ * Every visible or screen-reader text of the interface is editable there.
+ *
+ * @param string $key     Label key (without the "label_" prefix).
+ * @param string $default English default.
+ * @return string
+ */
+function aqua_label( $key, $default ) {
+	return (string) aqua_field( 'label_' . $key, $default );
+}
+
+/**
  * Returns a True / False field. Unlike aqua_field(), "false" is a real value here;
  * the default is used only when the field has never been saved.
  *

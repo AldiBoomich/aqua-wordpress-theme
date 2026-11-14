@@ -1,0 +1,178 @@
+/**
+ * Block: menu-overlay — full-screen menu on phones and tablets (< 62em).
+ * Opens with a clip from the top edge (like water filling a glass, reversed), links rise in one by one
+ * (--i is set by JS). Closed state is inert and hidden from assistive tech.
+ * Without JS the menu is shown in the page flow, so the links are always reachable.
+ */
+.menu-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-overlay);
+	display: flex;
+	flex-direction: column;
+	padding-top: var(--header-h);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	background: var(--c-ground);
+	visibility: hidden;
+	clip-path: inset(0 0 100% 0);
+	transition:
+		clip-path var(--dur-3) var(--ease-in-out),
+		visibility 0s linear var(--dur-3);
+}
+
+.menu-overlay.is-open {
+	visibility: visible;
+	clip-path: inset(0 0 0 0);
+	transition-delay: 0s;
+}
+
+.admin-bar .menu-overlay {
+	top: 46px;
+}
+
+@media (min-width: 783px) {
+	.admin-bar .menu-overlay {
+		top: 32px;
+	}
+}
+
+.menu-overlay__inner {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--space-7);
+	padding-block: var(--space-6) var(--space-7);
+}
+
+.overlay-nav__item,
+.menu-overlay__footer > * {
+	opacity: 0;
+	transform: translateY(1.25rem);
+	transition:
+		opacity var(--dur-3) var(--ease-out),
+		transform var(--dur-3) var(--ease-out);
+}
+
+.menu-overlay.is-open .overlay-nav__item,
+.menu-overlay.is-open .menu-overlay__footer > * {
+	opacity: 1;
+	transform: none;
+	transition-delay: calc(140ms + var(--i, 0) * 45ms);
+}
+
+.overlay-nav__item + .overlay-nav__item {
+	border-top: 1px solid var(--c-line);
+}
+
+.overlay-nav__link {
+	display: block;
+	padding: 0.875rem 0;
+	color: var(--c-ink);
+	font-size: clamp(2rem, 1.4rem + 3vw, 3rem);
+	font-weight: var(--fw-light);
+	line-height: 1.1;
+	letter-spacing: var(--ls-heading);
+	text-decoration: none;
+}
+
+.overlay-nav__link:hover,
+.overlay-nav__link[aria-current="page"] {
+	color: var(--c-action);
+}
+
+/* A parent without its own page ("Pages") is a quiet label above its children. */
+.overlay-nav__label {
+	display: block;
+	padding: var(--space-4) 0 var(--space-1);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+	letter-spacing: var(--ls-label);
+}
+
+.overlay-nav__sublist {
+	padding-bottom: var(--space-4);
+}
+
+.overlay-nav__sublink {
+	display: block;
+	padding: var(--space-2) 0;
+	color: var(--c-ink);
+	font-size: var(--fs-h4);
+	font-weight: var(--fw-light);
+	letter-spacing: -0.02em;
+	text-decoration: none;
+}
+
+.overlay-nav__sublink:hover,
+.overlay-nav__sublink[aria-current="page"] {
+	color: var(--c-action);
+}
+
+.menu-overlay__footer {
+	display: grid;
+	gap: var(--space-5);
+}
+
+.menu-overlay__contacts {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+	gap: var(--space-4);
+}
+
+.menu-overlay__label {
+	display: block;
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.menu-overlay__value {
+	color: var(--c-ink);
+	font-size: var(--fs-body);
+	font-weight: var(--fw-medium);
+	text-decoration: none;
+}
+
+.menu-overlay__social {
+	display: flex;
+	gap: var(--space-2);
+}
+
+.menu-overlay__social-link {
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border: 1px solid var(--c-line);
+	border-radius: var(--radius-pill);
+	color: var(--c-ink);
+}
+
+.menu-overlay__social-link .ui-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+@media (min-width: 62em) {
+	.menu-overlay {
+		display: none;
+	}
+}
+
+/* No JavaScript: the menu becomes a normal block under the header. */
+.no-js .menu-overlay {
+	position: static;
+	visibility: visible;
+	clip-path: none;
+}
+
+.no-js .overlay-nav__item,
+.no-js .menu-overlay__footer > * {
+	opacity: 1;
+	transform: none;
+}
+
+.no-js .site-header__toggle {
+	display: none;
+}

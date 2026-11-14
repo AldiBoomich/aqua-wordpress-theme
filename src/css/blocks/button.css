@@ -1,0 +1,117 @@
+/**
+ * Block: button.
+ * Hover: deeper water rises from the bottom edge (a pseudo layer, transform only).
+ * Modifiers: --primary (main action), --secondary / --outline (quiet), --light (on deep backgrounds),
+ *            --large, --small, --block.
+ */
+.button {
+	--button-bg: transparent;
+	--button-fg: var(--c-ink);
+	--button-border: var(--c-line-strong);
+	--button-fill: var(--c-ink);
+	--button-fg-hover: var(--c-on-deep);
+
+	position: relative;
+	isolation: isolate;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-height: 3rem;
+	padding: 0 var(--space-5);
+	overflow: hidden;
+	border: 1px solid var(--button-border);
+	border-radius: var(--radius-pill);
+	background: var(--button-bg);
+	color: var(--button-fg);
+	font-family: var(--font-sans);
+	font-size: var(--fs-ui);
+	font-weight: var(--fw-medium);
+	line-height: 1;
+	letter-spacing: var(--ls-ui);
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	transition:
+		color var(--dur-2) var(--ease-out),
+		border-color var(--dur-2) var(--ease-out),
+		transform var(--dur-1) var(--ease-ui);
+}
+
+/* The rising fill: a wide ellipse so its top edge reads as a water surface. */
+.button::before {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	left: -15%;
+	right: -15%;
+	top: 0;
+	height: 200%;
+	border-radius: 50% 50% 0 0 / 22% 22% 0 0;
+	background: var(--button-fill);
+	transform: translateY(102%);
+	transition: transform var(--dur-3) var(--ease-out);
+}
+
+.button:hover,
+.button:focus-visible {
+	color: var(--button-fg-hover);
+	border-color: var(--button-fill);
+}
+
+.button:hover::before,
+.button:focus-visible::before {
+	transform: translateY(-25%);
+}
+
+.button:active {
+	transform: scale(0.98);
+}
+
+.button:focus-visible {
+	outline-offset: 4px;
+	border-radius: var(--radius-pill);
+}
+
+.button--primary {
+	--button-bg: var(--c-action);
+	--button-fg: var(--c-on-action);
+	--button-border: var(--c-action);
+	--button-fill: var(--c-ink);
+	--button-fg-hover: var(--c-on-action);
+}
+
+.button--secondary,
+.button--outline {
+	--button-bg: transparent;
+	--button-fg: var(--c-ink);
+	--button-border: var(--c-line-strong);
+}
+
+.button--light {
+	--button-bg: var(--c-on-deep);
+	--button-fg: var(--c-ink);
+	--button-border: var(--c-on-deep);
+	--button-fill: var(--c-water);
+	--button-fg-hover: var(--c-ink);
+}
+
+.button--large {
+	min-height: 3.5rem;
+	padding: 0 var(--space-6);
+	font-size: var(--fs-body);
+}
+
+.button--small {
+	min-height: 2.75rem;
+	padding: 0 var(--space-5);
+}
+
+.button--block {
+	width: 100%;
+}
+
+.button .ui-icon {
+	width: 1.125em;
+	height: 1.125em;
+}

@@ -1,0 +1,19 @@
+/**
+ * Aqua theme stylesheet (bundled by Vite into assets/dist/).
+ * Order: tokens → base → layout → BEM blocks. One file per block in src/css/blocks/.
+ */
+@import "./tokens.css";
+@import "./base.css";
+@import "./layout.css";
+
+@import "./blocks/button.css";
+@import "./blocks/brand.css";
+@import "./blocks/site-header.css";
+@import "./blocks/main-nav.css";
+@import "./blocks/menu-overlay.css";
+@import "./blocks/page-head.css";
+@import "./blocks/legal.css";
+@import "./blocks/subscribe-form.css";
+@import "./blocks/site-footer.css";
+
+@import "./legacy-bridge.css";

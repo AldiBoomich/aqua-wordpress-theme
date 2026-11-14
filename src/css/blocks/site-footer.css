@@ -1,0 +1,274 @@
+/**
+ * Block: site-footer — "below the surface".
+ * The page ends at a moving water line (__wave); the footer is deep water.
+ * __wordmark: the logo set huge; brand aqua fills the letters as the footer scrolls into view
+ * (--fill 0 → 1 from src/js/modules/footer.js; a wave-shaped mask keeps the surface alive).
+ */
+.site-footer {
+	position: relative;
+	margin-top: clamp(2.5rem, 1rem + 5vw, 6rem);
+	background: var(--c-deep);
+	color: var(--c-on-deep-muted);
+}
+
+.site-footer a {
+	color: var(--c-on-deep);
+}
+
+.site-footer :focus-visible {
+	outline-color: var(--c-focus-on-deep);
+}
+
+/* Water line at the top edge: two layers drifting at different speeds. */
+.site-footer__wave {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: calc(100% - 1px);
+	height: clamp(1.75rem, 1rem + 3vw, 4rem);
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.site-footer__wave-layer {
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 200%;
+	height: 100%;
+	fill: var(--c-deep);
+	animation: aqua-footer-drift 18s linear infinite;
+	animation-play-state: paused;
+}
+
+/* The lighter surface line behind the deep water. */
+.site-footer__wave-layer--back {
+	fill: var(--c-water);
+	opacity: 0.22;
+	animation-duration: 27s;
+	animation-direction: reverse;
+}
+
+.site-footer.is-active .site-footer__wave-layer {
+	animation-play-state: running;
+}
+
+@keyframes aqua-footer-drift {
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+.site-footer__body {
+	padding-block: var(--section-y-tight) var(--space-8);
+}
+
+.site-footer__top,
+.site-footer__columns {
+	display: grid;
+	gap: var(--space-7) var(--grid-gap);
+}
+
+.site-footer__columns {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin-top: var(--space-8);
+	padding-top: var(--space-7);
+	border-top: 1px solid var(--c-on-deep-line);
+}
+
+.site-footer__about {
+	max-width: 30rem;
+	margin-top: var(--space-5);
+	color: var(--c-on-deep-muted);
+	font-size: var(--fs-lead);
+	line-height: var(--lh-snug);
+	letter-spacing: -0.01em;
+}
+
+.site-footer__title {
+	margin-bottom: var(--space-4);
+	color: var(--c-on-deep);
+	font-size: var(--fs-ui);
+	font-weight: var(--fw-medium);
+	letter-spacing: var(--ls-ui);
+}
+
+.site-footer__newsletter-title {
+	color: var(--c-on-deep);
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-light);
+	line-height: var(--lh-heading);
+}
+
+.site-footer__newsletter-text {
+	margin-top: var(--space-3);
+	font-size: var(--fs-body);
+}
+
+.site-footer__subscribe {
+	margin-top: var(--space-5);
+}
+
+.site-footer__links,
+.site-footer__contacts {
+	display: grid;
+	gap: var(--space-3);
+}
+
+.site-footer__link {
+	position: relative;
+	display: inline-flex;
+	align-items: flex-start;
+	gap: var(--space-2);
+	color: var(--c-on-deep);
+	font-size: var(--fs-ui);
+	text-decoration: none;
+	background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+	transition: background-size var(--dur-3) var(--ease-out);
+}
+
+.site-footer__link:hover {
+	color: var(--c-on-deep);
+	background-size: 100% 1px;
+}
+
+.site-footer__link .ui-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+	margin-top: 0.15em;
+	color: var(--c-water);
+}
+
+.site-footer__hours {
+	display: grid;
+	gap: var(--space-3);
+	margin: 0;
+	font-size: var(--fs-ui);
+}
+
+.site-footer__hours dt {
+	color: var(--c-on-deep);
+}
+
+.site-footer__hours dd {
+	margin: 0;
+	font-variant-numeric: tabular-nums;
+}
+
+.site-footer__social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.site-footer__social-link {
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border: 1px solid var(--c-on-deep-line);
+	border-radius: var(--radius-pill);
+	transition:
+		border-color var(--dur-2) var(--ease-ui),
+		background-color var(--dur-2) var(--ease-ui),
+		color var(--dur-2) var(--ease-ui);
+}
+
+.site-footer__social-link:hover {
+	border-color: var(--c-water);
+	background: var(--c-water);
+	color: var(--c-ink);
+}
+
+.site-footer__social-link .ui-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+/* Wordmark. */
+.site-footer__wordmark {
+	position: relative;
+	margin: 0;
+	padding: 0 var(--wrap-pad) 0.08em; /* room for descenders above the bottom line */
+	overflow: hidden;
+	font-size: var(--fs-display);
+	font-weight: var(--fw-light);
+	line-height: 0.8;
+	letter-spacing: var(--ls-display);
+	white-space: nowrap;
+	text-align: center;
+	user-select: none;
+}
+
+.site-footer__wordmark-outline,
+.site-footer__wordmark-water {
+	padding-bottom: 0.06em;
+}
+
+/* Inline-block: its width is the text width, which footer.js scales to the content width. */
+.site-footer__wordmark-outline {
+	display: inline-block;
+	color: transparent;
+	-webkit-text-stroke: 1px rgb(247 249 250 / 0.22);
+}
+
+/* Same text on top, filled with aqua, masked by a wave whose level follows --fill
+   (mask image: transparent top half, solid bottom half with a wavy edge; 200% tall, so
+   position y = fill × 100% puts the surface at (1 − fill) of the height). Repaints only while scrolling.
+   slop-ok: C6 — not decorative gradient text: the letters fill with water (the site's one motif). */
+.site-footer__wordmark-water {
+	--wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' preserveAspectRatio='none'%3E%3Cpath d='M0 200Q50 186 100 200T200 200T300 200T400 200V400H0Z'/%3E%3C/svg%3E");
+
+	position: absolute;
+	inset: 0 var(--wrap-pad);
+	color: var(--c-water);
+	-webkit-mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 100%) / 50% 200% repeat-x;
+	mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 100%) / 50% 200% repeat-x;
+}
+
+.site-footer__bottom {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3) var(--space-6);
+	padding-block: var(--space-6);
+	border-top: 1px solid var(--c-on-deep-line);
+	font-size: var(--fs-sm);
+}
+
+.site-footer__bottom-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-6);
+}
+
+@media (min-width: 48em) {
+	.site-footer__columns {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 62em) {
+	.site-footer__top {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		align-items: end;
+	}
+
+	.site-footer__intro {
+		grid-column: 1 / span 5;
+	}
+
+	.site-footer__newsletter {
+		grid-column: 7 / -1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-footer__wave-layer {
+		animation: none;
+	}
+
+	.site-footer__wordmark-water {
+		--fill: 0.62 !important;
+	}
+}

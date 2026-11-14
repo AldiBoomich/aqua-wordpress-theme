@@ -1,0 +1,22 @@
+/**
+ * Layout objects.
+ * .wrap — centered content box with fluid side gutters (named so it never collides with Bootstrap's .container
+ *         while the old sections are being replaced).
+ * .grid — 12-column grid; blocks place their elements with grid-column.
+ */
+.wrap {
+	width: 100%;
+	max-width: var(--wrap-max);
+	margin-inline: auto;
+	padding-inline: var(--wrap-pad);
+}
+
+.wrap--narrow {
+	max-width: calc(48rem + 2 * var(--wrap-pad));
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	column-gap: var(--grid-gap);
+}

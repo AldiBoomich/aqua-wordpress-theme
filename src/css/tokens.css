@@ -1,0 +1,117 @@
+/**
+ * Design tokens. Every other stylesheet uses these custom properties only
+ * (no raw colors, sizes or easings). Mirror of DESIGN.md; JS motion values live in src/js/tokens.js.
+ */
+:root {
+	/* Color: roles, not hues. Contrast is measured against --c-ground (see DESIGN.md). */
+	--c-ground: #f7f9fa;          /* page background, 60% */
+	--c-surface: #eaf1f4;         /* glacier mist: alternate sections, fields */
+	--c-surface-raised: #ffffff;  /* panels that float: menus, cards */
+	--c-ink: #0e2a3b;             /* deep water: text instead of black (14:1) */
+	--c-ink-muted: #4a6070;       /* secondary text (6.2:1) */
+	--c-line: rgb(14 42 59 / 0.12);
+	--c-line-strong: rgb(14 42 59 / 0.28);
+	--c-action: #00708c;          /* buttons and text links (5.4:1 on ground, 5.7:1 with white text) */
+	--c-action-hover: #005a71;
+	--c-on-action: #ffffff;
+	--c-water: #00d1f9;           /* brand aqua: water, lines, glints only (never body text on light) */
+	--c-water-soft: rgb(0 209 249 / 0.16);
+	--c-deep: #0e2a3b;            /* footer / deep sections */
+	--c-deep-raised: #143548;
+	--c-on-deep: #f7f9fa;
+	--c-on-deep-muted: rgb(247 249 250 / 0.72);
+	--c-on-deep-line: rgb(247 249 250 / 0.14);
+	--c-focus: #00708c;
+	--c-focus-on-deep: #00d1f9;
+	--c-error: #b3261e;
+	--c-success: #00704a;
+
+	/* Type: one family (Switzer, variable 100–900) with a fluid scale. */
+	--font-sans: "Switzer", "Switzer Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-display: var(--font-sans);
+	--fw-light: 300;
+	--fw-regular: 400;
+	--fw-medium: 500;
+	--fw-semibold: 600;
+
+	--fs-xs: 0.8125rem;                                   /* 13 */
+	--fs-sm: 0.875rem;                                    /* 14 */
+	--fs-ui: 0.9375rem;                                   /* 15: nav, buttons */
+	--fs-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);   /* 16 → 18 */
+	--fs-lead: clamp(1.125rem, 1.02rem + 0.45vw, 1.375rem); /* 18 → 22 */
+	--fs-h4: clamp(1.25rem, 1.12rem + 0.55vw, 1.625rem);  /* 20 → 26 */
+	--fs-h3: clamp(1.5rem, 1.22rem + 1.2vw, 2.375rem);    /* 24 → 38 */
+	--fs-h2: clamp(2.25rem, 1.45rem + 3.4vw, 4.75rem);    /* 36 → 76 */
+	--fs-h1: clamp(2.875rem, 1.3rem + 6.6vw, 8.75rem);    /* 46 → 140 */
+	--fs-display: clamp(5rem, 1rem + 22vw, 26rem);         /* footer wordmark */
+
+	--lh-display: 0.92;
+	--lh-heading: 1.04;
+	--lh-snug: 1.3;
+	--lh-body: 1.6;
+
+	--ls-display: -0.045em;
+	--ls-heading: -0.03em;
+	--ls-ui: -0.005em;
+	--ls-label: 0.01em;
+
+	--measure: 65ch;
+
+	/* Space: 4/8 scale. Sections breathe more on large screens. */
+	--space-1: 0.25rem;  /* 4 */
+	--space-2: 0.5rem;   /* 8 */
+	--space-3: 0.75rem;  /* 12 */
+	--space-4: 1rem;     /* 16 */
+	--space-5: 1.5rem;   /* 24 */
+	--space-6: 2rem;     /* 32 */
+	--space-7: 3rem;     /* 48 */
+	--space-8: 4rem;     /* 64 */
+	--space-9: 6rem;     /* 96 */
+	--space-10: 8rem;    /* 128 */
+	--space-11: 10rem;   /* 160 */
+	--space-12: 12.5rem; /* 200 */
+	--section-y: clamp(4.5rem, 2.4rem + 8.6vw, 12.5rem);       /* 72 → 200 */
+	--section-y-tight: clamp(3.5rem, 2rem + 5.5vw, 8rem);      /* 56 → 128 */
+
+	/* Layout. */
+	--wrap-max: 90rem;                                  /* 1440 */
+	--wrap-pad: clamp(1rem, 0.4rem + 2.6vw, 3rem);      /* 16 → 48 side gutter */
+	--grid-gap: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+	--header-h: 4rem;                                   /* 64, 88 on desktop (below) */
+
+	/* Shape: two radii + pill. */
+	--radius-s: 0.75rem;   /* 12: buttons' inner parts, fields, menus */
+	--radius-l: 1.75rem;   /* 28: media, large panels */
+	--radius-pill: 999px;
+
+	/* Elevation: layered, ink-tinted, for things that float. */
+	--shadow-1: 0 1px 2px rgb(14 42 59 / 0.04), 0 4px 12px rgb(14 42 59 / 0.05);
+	--shadow-2: 0 2px 4px rgb(14 42 59 / 0.04), 0 12px 32px rgb(14 42 59 / 0.08), 0 32px 64px rgb(14 42 59 / 0.06);
+
+	/* Motion: shared curves and durations (GSAP equivalents: expo.out, power3.inOut). */
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+	--ease-ui: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--dur-1: 160ms;   /* press, hover */
+	--dur-2: 280ms;   /* menus, small UI */
+	--dur-3: 600ms;   /* reveals */
+	--dur-4: 1000ms;  /* scene moments */
+
+	/* Layers. */
+	--z-overlay: 90;
+	--z-header: 100;
+	--z-skip: 1000;
+
+	/* Legacy bridge: sections not yet rebuilt read these old names. Removed with the old CSS. */
+	--aqua-font-heading: var(--font-display);
+	--aqua-font-body: var(--font-sans);
+	--aqua-primary: var(--c-action);
+	--aqua-dark: var(--c-ink);
+	--aqua-text: var(--c-ink-muted);
+}
+
+@media (min-width: 62em) {
+	:root {
+		--header-h: 5.5rem;
+	}
+}

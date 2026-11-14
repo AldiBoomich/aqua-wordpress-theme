@@ -408,6 +408,282 @@
             "rows": 2,
             "placeholder": "We’re sorry, the page you have looked for does not exist on our website.",
             "new_lines": ""
+        },
+        {
+            "key": "field_aqua_general_tab_labels",
+            "label": "Labels",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_labels_hint",
+            "label": "Interface Labels",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>Small interface texts. Most are read aloud by screen readers; keep them short and clear. Empty = the default shown in grey.<\/span><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_label_skip",
+            "label": "Skip Link",
+            "name": "label_skip",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "First link for keyboard users.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Skip to content",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_nav_main",
+            "label": "Main Menu Name",
+            "name": "label_nav_main",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Name of the main navigation for screen readers.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Main",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_menu",
+            "label": "Mobile Menu Name",
+            "name": "label_menu",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Menu",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_menu_open",
+            "label": "Open Menu Button",
+            "name": "label_menu_open",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Open menu",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_menu_close",
+            "label": "Close Menu Button",
+            "name": "label_menu_close",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Close menu",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_submenu",
+            "label": "Submenu Button",
+            "name": "label_submenu",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Show submenu",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_email",
+            "label": "Email Label",
+            "name": "label_email",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Above the email in the mobile menu.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Email",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_new_tab",
+            "label": "New Tab Notice",
+            "name": "label_new_tab",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Added to links that open a new tab.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "opens in a new tab",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_back_to_top",
+            "label": "Back to Top Link",
+            "name": "label_back_to_top",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Back to top",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_rights",
+            "label": "Rights Text",
+            "name": "label_rights",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "All rights reserved.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_updated",
+            "label": "Last Updated",
+            "name": "label_updated",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Legal pages.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Last updated",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_toc",
+            "label": "Table of Contents Title",
+            "name": "label_toc",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Legal pages.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "On this page",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -428,5 +704,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794348650
+    "modified": 1794681026
 }

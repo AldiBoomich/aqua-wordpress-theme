@@ -1,12 +1,9 @@
 /**
- * Aqua theme script (vanilla JS, no jQuery).
- * - Preloader: hidden once the page is ready.
+ * LEGACY script for the sections that are not rebuilt yet (removed with them).
+ * The header, menus and footer now live in src/js/ (Vite build).
  * - WOW.js: scroll reveal animations.
- * - Sticky header: .site-header--sticky after scrolling 45px (shadow on mobile, fixed bar on desktop).
- * - Mobile menu panel: open / close, Esc, backdrop, focus trap, page scroll lock.
  * - Swipe carousels (.swipe): dots synced with the horizontal scroll.
  * - Hero slider pauses while off screen (.hero--paused).
- * - Back to top: .back-to-top--visible after 300px, smooth scroll on click.
  * - Stats counters: count up from 0 when they enter the viewport.
  */
 ( function () {
@@ -14,149 +11,9 @@
 
 	var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
 
-	// Preloader.
-	var preloader = document.getElementById( 'preloader' );
-	if ( preloader ) {
-		var hidePreloader = function () {
-			preloader.classList.add( 'preloader--hidden' );
-		};
-		if ( 'loading' === document.readyState ) {
-			document.addEventListener( 'DOMContentLoaded', hidePreloader );
-		} else {
-			hidePreloader();
-		}
-	}
-
 	// Scroll reveal animations.
 	if ( typeof window.WOW === 'function' ) {
 		new window.WOW( { live: false } ).init();
-	}
-
-	// Sticky header + back to top button.
-	var header = document.getElementById( 'site-header' );
-	var backToTop = document.querySelector( '.back-to-top' );
-	var ticking = false;
-
-	var onScroll = function () {
-		var y = window.scrollY || window.pageYOffset;
-		if ( header ) {
-			header.classList.toggle( 'site-header--sticky', y > 45 );
-		}
-		if ( backToTop ) {
-			backToTop.classList.toggle( 'back-to-top--visible', y > 300 );
-		}
-		ticking = false;
-	};
-
-	window.addEventListener( 'scroll', function () {
-		if ( ! ticking ) {
-			window.requestAnimationFrame( onScroll );
-			ticking = true;
-		}
-	}, { passive: true } );
-	onScroll();
-
-	if ( backToTop ) {
-		backToTop.addEventListener( 'click', function ( event ) {
-			event.preventDefault();
-			window.scrollTo( { top: 0, behavior: reduceMotion ? 'auto' : 'smooth' } );
-		} );
-	}
-
-	// Mobile menu panel.
-	var toggler = header ? header.querySelector( '.site-header__toggler' ) : null;
-	var panel = document.getElementById( 'site-menu' );
-	var backdrop = header ? header.querySelector( '.site-header__backdrop' ) : null;
-	var desktop = window.matchMedia( '(min-width: 992px)' );
-
-	if ( toggler && panel ) {
-		var isOpen = function () {
-			return header.classList.contains( 'site-header--menu-open' );
-		};
-
-		var focusables = function () {
-			return Array.prototype.filter.call(
-				panel.querySelectorAll( 'a[href], button:not([disabled]), input, select, textarea' ),
-				function ( el ) {
-					return el.offsetParent !== null;
-				}
-			).concat( [ toggler ] );
-		};
-
-		var setMenu = function ( open, restoreFocus ) {
-			if ( open === isOpen() ) {
-				return;
-			}
-			if ( open ) {
-				// The panel starts right under the bar (the admin bar may push the header down).
-				header.style.setProperty( '--aqua-menu-top', Math.max( 0, header.getBoundingClientRect().bottom ) + 'px' );
-			}
-			header.classList.toggle( 'site-header--menu-open', open );
-			document.documentElement.classList.toggle( 'has-menu-open', open );
-			toggler.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
-			toggler.setAttribute( 'aria-label', toggler.getAttribute( open ? 'data-label-close' : 'data-label-open' ) );
-			if ( open ) {
-				var first = panel.querySelector( 'a[href]' );
-				if ( first ) {
-					window.setTimeout( function () {
-						first.focus( { preventScroll: true } );
-					}, 250 );
-				}
-			} else if ( restoreFocus ) {
-				toggler.focus();
-			}
-		};
-
-		toggler.addEventListener( 'click', function () {
-			setMenu( ! isOpen(), true );
-		} );
-
-		if ( backdrop ) {
-			backdrop.addEventListener( 'click', function () {
-				setMenu( false, true );
-			} );
-		}
-
-		// Following a link closes the panel (dropdown toggles only open their sub menu).
-		panel.addEventListener( 'click', function ( event ) {
-			var link = event.target.closest( 'a[href]' );
-			if ( link && ! link.hasAttribute( 'data-bs-toggle' ) ) {
-				setMenu( false, false );
-			}
-		} );
-
-		document.addEventListener( 'keydown', function ( event ) {
-			if ( ! isOpen() ) {
-				return;
-			}
-			if ( 'Escape' === event.key ) {
-				setMenu( false, true );
-				return;
-			}
-			// Keep keyboard focus inside the panel + menu button.
-			if ( 'Tab' === event.key ) {
-				var list = focusables();
-				var index = list.indexOf( document.activeElement );
-				if ( event.shiftKey && index <= 0 ) {
-					event.preventDefault();
-					list[ list.length - 1 ].focus();
-				} else if ( ! event.shiftKey && index === list.length - 1 ) {
-					event.preventDefault();
-					list[ 0 ].focus();
-				}
-			}
-		} );
-
-		var onBreakpoint = function () {
-			if ( desktop.matches ) {
-				setMenu( false, false );
-			}
-		};
-		if ( desktop.addEventListener ) {
-			desktop.addEventListener( 'change', onBreakpoint );
-		} else if ( desktop.addListener ) {
-			desktop.addListener( onBreakpoint );
-		}
 	}
 
 	// Hero slider: while it is off screen the slide show and the slow zoom pause

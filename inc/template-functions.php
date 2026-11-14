@@ -15,9 +15,68 @@ function aqua_body_classes( $classes ) {
 	if ( ! is_singular() ) {
 		$classes[] = 'hfeed';
 	}
+	if ( aqua_has_page_head() ) {
+		$classes[] = 'has-page-head';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'aqua_body_classes' );
+
+/**
+ * Whether the screen starts with the new light page head (instead of the old dark photo banner).
+ * Grows as pages are rebuilt.
+ *
+ * @return bool
+ */
+function aqua_has_page_head() {
+	return is_page_template( 'page-legal.php' );
+}
+
+/**
+ * Gives every H2 of a legal text an id (kept if the editor already set one) and collects
+ * them for the table of contents.
+ *
+ * @param string $html Filtered post content.
+ * @return array{html:string,toc:array<string,string>}
+ */
+function aqua_legal_sections( $html ) {
+	$toc  = array();
+	$html = preg_replace_callback(
+		'#<h2([^>]*)>(.*?)</h2>#is',
+		function ( $m ) use ( &$toc ) {
+			$title = trim( wp_strip_all_tags( $m[2] ) );
+			if ( preg_match( '#\sid=["\']([^"\']+)["\']#i', $m[1], $id ) ) {
+				$anchor = $id[1];
+				$attrs  = $m[1];
+			} else {
+				$anchor = sanitize_title( $title );
+				$suffix = 2;
+				while ( isset( $toc[ $anchor ] ) ) {
+					$anchor = sanitize_title( $title ) . '-' . $suffix++;
+				}
+				$attrs = $m[1] . ' id="' . esc_attr( $anchor ) . '"';
+			}
+			$toc[ $anchor ] = $title;
+			return '<h2' . $attrs . '>' . $m[2] . '</h2>';
+		},
+		(string) $html
+	);
+
+	return array(
+		'html' => (string) $html,
+		'toc'  => $toc,
+	);
+}
+
+/**
+ * Header text tone at the very top of the screen: light text over the dark top sections
+ * that are not rebuilt yet, dark text on the new light pages.
+ *
+ * @return string 'light-text' or 'dark-text'.
+ */
+function aqua_header_tone() {
+	return aqua_has_page_head() ? 'dark-text' : 'light-text';
+}
 
 /**
  * Pingback discovery header for singular screens.

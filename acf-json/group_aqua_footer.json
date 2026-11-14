@@ -41,6 +41,82 @@
             "new_lines": ""
         },
         {
+            "key": "field_aqua_footer_tab_newsletter",
+            "label": "Newsletter",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_footer_newsletter_title",
+            "label": "Newsletter Title",
+            "name": "footer_newsletter_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Monthly notes from the source",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_newsletter_text",
+            "label": "Newsletter Text",
+            "name": "footer_newsletter_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Seasonal offers, delivery news and simple tips on drinking better water. One email a month.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_footer_newsletter_hint",
+            "label": "Form",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>The sign-up form is chosen in Theme Settings → Forms.<\/span><a class=\"button\" href=\"http:\/\/aqua.local\/wp-admin\/admin.php?page=theme-general-settings\">Open Theme Settings<\/a><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
             "key": "field_aqua_footer_tab_columns",
             "label": "Columns",
             "name": "",
@@ -203,6 +279,64 @@
             "append": ""
         },
         {
+            "key": "field_aqua_footer_social_title",
+            "label": "Social Column Title",
+            "name": "footer_social_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The links come from Theme Settings → Social.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Follow us",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_tab_wordmark",
+            "label": "Wordmark",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_footer_wordmark",
+            "label": "Large Word",
+            "name": "footer_wordmark",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The big word at the very bottom that fills with water as visitors scroll. One short word works best. Empty = the logo text.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Aqua",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_aqua_footer_tab_copyright",
             "label": "Copyright",
             "name": "",
@@ -239,6 +373,22 @@
             "placeholder": "Site title",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_footer_legal_link",
+            "label": "Legal Link",
+            "name": "footer_legal_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Shown next to the copyright, e.g. Terms & Conditions.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
         }
     ],
     "location": [
@@ -259,5 +409,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794348649
+    "modified": 1794681026
 }

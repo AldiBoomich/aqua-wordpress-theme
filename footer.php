@@ -1,128 +1,145 @@
 <?php
 /**
- * Site footer: newsletter, social links, brand, menu, opening hours, contacts, copyright.
+ * Site footer — "below the surface": intro + newsletter, menu, hours, contacts, social links,
+ * the wordmark that fills with water, and the bottom line.
  *
- * Fields: Theme Settings (contacts, social, newsletter form) and Theme Settings → Footer.
+ * Fields: Theme Settings (contacts, social, newsletter form, labels) and Theme Settings → Footer.
  *
  * @package aqua
  */
 
-$aqua_logo_text   = aqua_field( 'logo_text', get_bloginfo( 'name' ) );
-$aqua_footer_text = aqua_field( 'footer_about_text', 'Purified spring water delivered to homes and offices since 2010. Fresh, lab-tested and always on time.' );
-$aqua_subscribe   = aqua_cf7_form( aqua_field( 'subscribe_form', 0 ) );
-$aqua_hours       = aqua_rows(
+$aqua_logo_text = aqua_field( 'logo_text', get_bloginfo( 'name' ) );
+$aqua_about     = aqua_field( 'footer_about_text', 'Purified spring water delivered to homes and offices since 2010. Fresh, lab-tested and always on time.' );
+$aqua_nl_title  = aqua_field( 'footer_newsletter_title', 'Monthly notes from the source' );
+$aqua_nl_text   = aqua_field( 'footer_newsletter_text', 'Seasonal offers, delivery news and simple tips on drinking better water. One email a month.' );
+$aqua_subscribe = aqua_cf7_form( aqua_field( 'subscribe_form', 0 ) );
+$aqua_wordmark  = aqua_field( 'footer_wordmark', $aqua_logo_text );
+$aqua_hours     = aqua_rows(
 	'footer_hours',
 	array(
 		array(
-			'day'  => 'Mon - Friday:',
+			'day'  => 'Mon - Friday',
 			'time' => '09.00 am to 07.00 pm',
 		),
 		array(
-			'day'  => 'Saturday:',
+			'day'  => 'Saturday',
 			'time' => '10.00 am to 05.00 pm',
 		),
 		array(
-			'day'  => 'Vacation:',
+			'day'  => 'Vacation',
 			'time' => 'All Sunday is our vacation',
 		),
 	)
 );
-$aqua_address     = aqua_field( 'contact_address', '123 River Street, New York, NY 10001' );
-$aqua_email       = aqua_field( 'contact_email', 'hello@example.com' );
-$aqua_phone       = aqua_field( 'contact_phone', '+1 (800) 555-0199' );
-$aqua_fax         = aqua_field( 'contact_fax', '+1 (800) 555-0198' );
-$aqua_copyright   = aqua_field( 'copyright_text', get_bloginfo( 'name' ) );
+$aqua_address   = aqua_field( 'contact_address', '123 River Street, New York, NY 10001' );
+$aqua_email     = aqua_field( 'contact_email', 'hello@example.com' );
+$aqua_phone     = aqua_field( 'contact_phone', '+1 (800) 555-0199' );
+$aqua_copyright = aqua_field( 'copyright_text', get_bloginfo( 'name' ) );
+$aqua_legal     = aqua_link(
+	aqua_field( 'footer_legal_link' ),
+	array(
+		'title' => 'Terms & Conditions',
+		'url'   => aqua_page_url( 'terms-and-conditions' ),
+	)
+);
 ?>
 	</main>
 
-	<footer class="site-footer wow fadeIn" data-wow-delay="0.2s">
-		<div class="site-footer__main">
-			<div class="container">
-				<div class="site-footer__top row g-4 align-items-center">
-					<div class="col-lg-7">
-						<?php if ( $aqua_subscribe ) : ?>
-							<div class="subscribe-form site-footer__subscribe">
-								<?php echo $aqua_subscribe; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Contact Form 7 output. ?>
-							</div>
-						<?php endif; ?>
-					</div>
-					<div class="col-lg-5">
-						<?php get_template_part( 'template-parts/social-links', null, array( 'block' => 'site-footer' ) ); ?>
-					</div>
+	<footer class="site-footer" data-footer>
+		<div class="site-footer__wave" aria-hidden="true">
+			<svg class="site-footer__wave-layer site-footer__wave-layer--back" viewBox="0 0 1600 64" preserveAspectRatio="none"><path d="M0 40C100 22 200 22 300 32S500 52 600 40 700 18 800 30 1000 54 1100 40 1300 18 1400 30 1550 46 1600 40V64H0Z"/></svg>
+			<svg class="site-footer__wave-layer" viewBox="0 0 1600 64" preserveAspectRatio="none"><path d="M0 34C133 54 267 54 400 34S667 14 800 34 1067 54 1200 34 1467 14 1600 34V64H0Z"/></svg>
+		</div>
+
+		<div class="site-footer__body wrap">
+			<div class="site-footer__top">
+				<div class="site-footer__intro">
+					<?php get_template_part( 'template-parts/brand', null, array( 'tone' => 'on-deep' ) ); ?>
+					<?php if ( $aqua_about ) : ?>
+						<p class="site-footer__about"><?php echo esc_html( $aqua_about ); ?></p>
+					<?php endif; ?>
 				</div>
 
-				<div class="row g-4 g-lg-5">
-					<div class="col-md-6 col-xl-3">
-						<a class="site-footer__brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-							<?php echo aqua_icon( 'fas fa-tint', 'site-footer__brand-icon liquid-icon--on-dark' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( $aqua_logo_text ); ?>
-						</a>
-						<p class="site-footer__text"><?php echo esc_html( $aqua_footer_text ); ?></p>
+				<?php if ( $aqua_subscribe ) : ?>
+					<div class="site-footer__newsletter">
+						<h2 class="site-footer__newsletter-title"><?php echo esc_html( $aqua_nl_title ); ?></h2>
+						<?php if ( $aqua_nl_text ) : ?>
+							<p class="site-footer__newsletter-text"><?php echo esc_html( $aqua_nl_text ); ?></p>
+						<?php endif; ?>
+						<div class="subscribe-form site-footer__subscribe">
+							<?php echo $aqua_subscribe; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Contact Form 7 output. ?>
+						</div>
 					</div>
+				<?php endif; ?>
+			</div>
 
-					<div class="col-6 col-md-6 col-xl-3">
-						<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_links_title', 'About Us' ) ); ?></h2>
-						<?php
-						// Appearance → Menus → "Footer Menu".
-						wp_nav_menu(
-							array(
-								'theme_location' => 'footer',
-								'container'      => false,
-								'items_wrap'     => '<ul class="site-footer__links">%3$s</ul>',
-								'depth'          => 1,
-								'walker'         => new Aqua_Footer_Nav_Walker(),
-								'fallback_cb'    => 'aqua_footer_menu_fallback',
-							)
-						);
-						?>
-					</div>
+			<div class="site-footer__columns">
+				<nav aria-labelledby="footer-links-title">
+					<h2 class="site-footer__title" id="footer-links-title"><?php echo esc_html( aqua_field( 'footer_links_title', 'About Us' ) ); ?></h2>
+					<?php
+					// Appearance → Menus → "Footer Menu".
+					wp_nav_menu(
+						array(
+							'theme_location' => 'footer',
+							'container'      => false,
+							'items_wrap'     => '<ul class="site-footer__links">%3$s</ul>',
+							'depth'          => 1,
+							'walker'         => new Aqua_Footer_Nav_Walker(),
+							'fallback_cb'    => 'aqua_footer_menu_fallback',
+						)
+					);
+					?>
+				</nav>
 
-					<div class="col-6 col-md-6 col-xl-3">
-						<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_hours_title', 'Business Hours' ) ); ?></h2>
+				<div>
+					<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_hours_title', 'Business Hours' ) ); ?></h2>
+					<dl class="site-footer__hours">
 						<?php foreach ( $aqua_hours as $aqua_item ) : ?>
-							<div class="site-footer__hours-item">
-								<p class="site-footer__day"><?php echo esc_html( $aqua_item['day'] ); ?></p>
-								<p class="site-footer__time"><?php echo esc_html( $aqua_item['time'] ); ?></p>
+							<div>
+								<dt><?php echo esc_html( rtrim( (string) ( $aqua_item['day'] ?? '' ), ': ' ) ); ?></dt>
+								<dd><?php echo esc_html( $aqua_item['time'] ?? '' ); ?></dd>
 							</div>
 						<?php endforeach; ?>
-					</div>
+					</dl>
+				</div>
 
-					<div class="col-md-6 col-xl-3">
-						<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_contacts_title', 'Contact Info' ) ); ?></h2>
-						<ul class="site-footer__contacts">
-							<?php if ( $aqua_address ) : ?>
-								<li><a class="site-footer__link" href="<?php echo esc_url( aqua_page_url( 'contact' ) ); ?>"><i class="site-footer__link-icon fas fa-map-marker-alt" aria-hidden="true"></i><?php echo esc_html( $aqua_address ); ?></a></li>
-							<?php endif; ?>
-							<?php if ( $aqua_email ) : ?>
-								<li><a class="site-footer__link" href="mailto:<?php echo esc_attr( antispambot( $aqua_email ) ); ?>"><i class="site-footer__link-icon fas fa-envelope" aria-hidden="true"></i><?php echo esc_html( antispambot( $aqua_email ) ); ?></a></li>
-							<?php endif; ?>
-							<?php if ( $aqua_phone ) : ?>
-								<li><a class="site-footer__link" href="tel:<?php echo esc_attr( aqua_tel( $aqua_phone ) ); ?>"><i class="site-footer__link-icon fas fa-phone-alt" aria-hidden="true"></i><?php echo esc_html( $aqua_phone ); ?></a></li>
-							<?php endif; ?>
-							<?php if ( $aqua_fax ) : ?>
-								<li><a class="site-footer__link" href="tel:<?php echo esc_attr( aqua_tel( $aqua_fax ) ); ?>"><i class="site-footer__link-icon fas fa-print" aria-hidden="true"></i><?php echo esc_html( $aqua_fax ); ?></a></li>
-							<?php endif; ?>
-						</ul>
-					</div>
+				<div>
+					<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_contacts_title', 'Contact Info' ) ); ?></h2>
+					<ul class="site-footer__contacts">
+						<?php if ( $aqua_address ) : ?>
+							<li><a class="site-footer__link" href="<?php echo esc_url( aqua_page_url( 'contact' ) ); ?>"><?php echo aqua_ui_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php echo esc_html( $aqua_address ); ?></span></a></li>
+						<?php endif; ?>
+						<?php if ( $aqua_email ) : ?>
+							<li><a class="site-footer__link" href="mailto:<?php echo esc_attr( antispambot( $aqua_email ) ); ?>"><?php echo aqua_ui_icon( 'mail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php echo esc_html( antispambot( $aqua_email ) ); ?></span></a></li>
+						<?php endif; ?>
+						<?php if ( $aqua_phone ) : ?>
+							<li><a class="site-footer__link" href="tel:<?php echo esc_attr( aqua_tel( $aqua_phone ) ); ?>"><?php echo aqua_ui_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php echo esc_html( $aqua_phone ); ?></span></a></li>
+						<?php endif; ?>
+					</ul>
+				</div>
+
+				<div>
+					<h2 class="site-footer__title"><?php echo esc_html( aqua_field( 'footer_social_title', 'Follow us' ) ); ?></h2>
+					<?php get_template_part( 'template-parts/social-links', null, array( 'block' => 'site-footer' ) ); ?>
 				</div>
 			</div>
 		</div>
 
-		<div class="site-footer__bottom">
-			<div class="container">
-				<div class="row align-items-center">
-					<div class="col-md-6">
-						<p class="site-footer__copyright">&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <a class="site-footer__bottom-link" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( $aqua_copyright ); ?></a>. All rights reserved.</p>
-					</div>
-					<div class="col-md-6">
-						<?php /* The template author's credit link must stay (HTML Codex license). */ ?>
-						<p class="site-footer__credits">Designed By <a class="site-footer__bottom-link site-footer__bottom-link--underline" href="https://htmlcodex.com" target="_blank" rel="noopener">HTML Codex</a></p>
-					</div>
-				</div>
-			</div>
+		<?php if ( $aqua_wordmark ) : ?>
+			<p class="site-footer__wordmark" aria-hidden="true">
+				<span class="site-footer__wordmark-outline"><?php echo esc_html( $aqua_wordmark ); ?></span>
+				<span class="site-footer__wordmark-water"><?php echo esc_html( $aqua_wordmark ); ?></span>
+			</p>
+		<?php endif; ?>
+
+		<div class="site-footer__bottom wrap">
+			<p>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php echo esc_html( $aqua_copyright ); ?>. <?php echo esc_html( aqua_label( 'rights', 'All rights reserved.' ) ); ?></p>
+			<p class="site-footer__bottom-links">
+				<?php echo aqua_link_tag( $aqua_legal, 'site-footer__link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in aqua_link_tag(). ?>
+				<a class="site-footer__link" href="#main"><?php echo esc_html( aqua_label( 'back_to_top', 'Back to top' ) ); ?></a>
+			</p>
 		</div>
 	</footer>
-
-	<a href="#main" class="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></a>
 
 <?php wp_footer(); ?>
 

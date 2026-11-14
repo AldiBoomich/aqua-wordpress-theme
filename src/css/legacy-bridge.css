@@ -1,0 +1,19 @@
+/**
+ * TEMPORARY: keeps the not-yet-rebuilt sections (old hero slider, old page banner, Bootstrap rows)
+ * usable under the new fixed header. Deleted together with the old CSS when every page is rebuilt.
+ */
+@media (max-width: 61.99em) {
+	/* The new header is fixed on phones too; old top sections expected an in-flow bar. */
+	body:not(.has-page-head) .hero,
+	body:not(.has-page-head) .page-banner {
+		margin-top: var(--header-h);
+	}
+}
+
+/* Old blocks used Playfair/Open Sans variables; the bridge tokens point them to Switzer. */
+.section-heading__title,
+.hero__title,
+.page-banner__title {
+	font-weight: var(--fw-light);
+	letter-spacing: var(--ls-heading);
+}

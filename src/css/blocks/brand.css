@@ -1,0 +1,49 @@
+/**
+ * Block: brand — the logo (line drop with a water line + "Aqua" set in Switzer).
+ * Used in the header, the full-screen menu and the footer. --on-deep for dark backgrounds.
+ */
+.brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.625rem;
+	color: var(--c-ink);
+	text-decoration: none;
+}
+
+.brand:hover {
+	color: var(--c-ink);
+}
+
+.brand__mark {
+	display: grid;
+	place-items: center;
+	width: 2rem;
+	height: 2rem;
+}
+
+.brand__mark .ui-icon {
+	width: 100%;
+	height: 100%;
+}
+
+/* The water line inside the drop is the brand aqua. */
+.brand__mark .ui-icon__water {
+	stroke: var(--c-water);
+}
+
+.brand__name {
+	font-size: 1.4375rem;
+	font-weight: var(--fw-medium);
+	line-height: 1;
+	letter-spacing: -0.035em;
+}
+
+.brand__image {
+	width: auto;
+	max-height: 2.5rem;
+}
+
+.brand--on-deep,
+.brand--on-deep:hover {
+	color: var(--c-on-deep);
+}

@@ -1,0 +1,29 @@
+/**
+ * Block: page-head — light title area of inner pages (replaces the old dark photo banner).
+ * --compact: text-only pages (legal, search). Extended with media in the inner-pages stage.
+ */
+.page-head {
+	padding-top: calc(var(--header-h) + var(--section-y-tight));
+	padding-bottom: var(--space-8);
+}
+
+.page-head__title {
+	max-width: 16ch;
+	font-size: var(--fs-h1);
+	font-weight: var(--fw-light);
+	line-height: var(--lh-display);
+	letter-spacing: var(--ls-display);
+}
+
+.page-head--compact .page-head__title {
+	max-width: 20ch;
+	font-size: var(--fs-h2);
+	line-height: var(--lh-heading);
+	letter-spacing: var(--ls-heading);
+}
+
+.page-head__meta {
+	margin-top: var(--space-5);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}

@@ -1,0 +1,91 @@
+/**
+ * Block: subscribe-form — the Newsletter form (Contact Form 7, markup set in the form editor:
+ * .subscribe-form__row > label.screen-reader-text + input.subscribe-form__input + submit.subscribe-form__submit).
+ * One underlined field with the button inside the line; on deep backgrounds by default (footer).
+ */
+.subscribe-form .wpcf7-form {
+	position: relative;
+}
+
+.subscribe-form__row {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	padding-bottom: var(--space-2);
+	border-bottom: 1px solid var(--c-on-deep-muted);
+	transition: border-color var(--dur-2) var(--ease-ui);
+}
+
+/* Keyboard/pointer focus: the line turns aqua and doubles in weight (replaces the field's own ring). */
+.subscribe-form__row:focus-within {
+	border-color: var(--c-water);
+	box-shadow: 0 1px 0 var(--c-water);
+}
+
+.subscribe-form .wpcf7-form-control-wrap {
+	flex: 1;
+	min-width: 0;
+}
+
+.subscribe-form__input {
+	width: 100%;
+	min-height: 3rem;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--c-on-deep);
+	font-size: var(--fs-lead);
+	letter-spacing: -0.01em;
+}
+
+.subscribe-form__input::placeholder {
+	color: var(--c-on-deep-muted);
+	opacity: 1;
+}
+
+/* The row shows focus with its underline; the field itself needs no ring. */
+.subscribe-form__input:focus-visible {
+	outline: none;
+}
+
+.subscribe-form__submit.button {
+	--button-bg: var(--c-on-deep);
+	--button-fg: var(--c-ink);
+	--button-border: var(--c-on-deep);
+	--button-fill: var(--c-water);
+	--button-fg-hover: var(--c-ink);
+
+	flex: none;
+}
+
+/* Contact Form 7 states (its own CSS is disabled). */
+.subscribe-form .wpcf7-spinner {
+	display: none;
+}
+
+.subscribe-form .wpcf7-not-valid-tip {
+	display: block;
+	margin-top: var(--space-2);
+	color: #ffb4ab;
+	font-size: var(--fs-sm);
+}
+
+.subscribe-form .wpcf7-response-output {
+	margin: var(--space-3) 0 0;
+	font-size: var(--fs-sm);
+}
+
+.subscribe-form .wpcf7-form.init .wpcf7-response-output,
+.subscribe-form .wpcf7-form.resetting .wpcf7-response-output,
+.subscribe-form .wpcf7-form.submitting .wpcf7-response-output {
+	display: none;
+}
+
+.subscribe-form .wpcf7-form.sent .wpcf7-response-output {
+	color: var(--c-water);
+}
+
+.subscribe-form .wpcf7-form.submitting .subscribe-form__submit {
+	opacity: 0.6;
+	pointer-events: none;
+}

@@ -1,0 +1,140 @@
+/**
+ * Block: legal — long legal text (Terms, Privacy…): a sticky table of contents built from the
+ * H2 headings + a calm reading column with numbered sections.
+ */
+.legal__body {
+	display: grid;
+	gap: var(--space-7);
+	padding-bottom: var(--section-y);
+}
+
+.legal__toc {
+	align-self: start;
+	padding-top: var(--space-6);
+	border-top: 1px solid var(--c-line);
+}
+
+.legal__toc-title {
+	margin-bottom: var(--space-4);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+	font-weight: var(--fw-regular);
+	letter-spacing: var(--ls-label);
+}
+
+.legal__toc-list {
+	display: grid;
+	counter-reset: legal-toc;
+}
+
+.legal__toc-link {
+	display: flex;
+	gap: var(--space-3);
+	padding-block: 0.3125rem; /* ≥ 30px tall targets */
+	color: var(--c-ink);
+	font-size: var(--fs-ui);
+	line-height: var(--lh-snug);
+	text-decoration: none;
+}
+
+.legal__toc-link::before {
+	counter-increment: legal-toc;
+	content: counter(legal-toc);
+	min-width: 1.25rem;
+	color: var(--c-ink-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.legal__toc-link:hover {
+	color: var(--c-action);
+}
+
+/* Reading column. */
+.legal__content {
+	max-width: var(--measure);
+	padding-top: var(--space-6);
+	border-top: 1px solid var(--c-line);
+	counter-reset: legal-section;
+}
+
+.legal__content > * + * {
+	margin-top: var(--space-4);
+}
+
+.legal__content h2 {
+	margin-top: var(--space-8);
+	font-size: var(--fs-h4);
+	font-weight: var(--fw-medium);
+	letter-spacing: -0.02em;
+	scroll-margin-top: calc(var(--header-h) + var(--space-5));
+}
+
+.legal__content h2:first-child {
+	margin-top: 0;
+}
+
+/* The sections are a real sequence, so they are numbered (matches the TOC). */
+.legal__content h2::before {
+	counter-increment: legal-section;
+	content: counter(legal-section) ".";
+	margin-right: var(--space-3);
+	color: var(--c-ink-muted);
+	font-weight: var(--fw-regular);
+}
+
+.legal__content h3 {
+	margin-top: var(--space-6);
+	font-size: var(--fs-body);
+	font-weight: var(--fw-semibold);
+	letter-spacing: var(--ls-ui);
+}
+
+.legal__content p,
+.legal__content li {
+	color: var(--c-ink-muted);
+}
+
+.legal__content strong {
+	color: var(--c-ink);
+	font-weight: var(--fw-medium);
+}
+
+.legal__content ul,
+.legal__content ol {
+	padding-left: 1.25rem;
+}
+
+.legal__content li + li {
+	margin-top: var(--space-2);
+}
+
+.legal__content a {
+	color: var(--c-action);
+	text-decoration: underline;
+}
+
+/* A first paragraph styled as a note (e.g. "placeholder text"), via the block editor class "is-style-note". */
+.legal__content .is-style-note {
+	padding: var(--space-4) var(--space-5);
+	border-radius: var(--radius-s);
+	background: var(--c-surface);
+	color: var(--c-ink);
+	font-size: var(--fs-ui);
+}
+
+@media (min-width: 62em) {
+	.legal__body {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+	}
+
+	.legal__toc {
+		position: sticky;
+		top: calc(var(--header-h) + var(--space-6));
+		grid-column: 1 / span 3;
+	}
+
+	.legal__content {
+		grid-column: 5 / span 7;
+	}
+}

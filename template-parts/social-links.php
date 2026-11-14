@@ -1,6 +1,6 @@
 <?php
 /**
- * Social links list (Theme Settings → Social), shared by the footer and the mobile menu.
+ * Social links list (Theme Settings → Social), shared by the footer and the full-screen menu.
  *
  * Args: block — BEM block that styles the list: {block}__social, {block}__social-link.
  *
@@ -38,13 +38,17 @@ if ( ! $aqua_social ) {
 <ul class="<?php echo esc_attr( $aqua_block ); ?>__social">
 	<?php
 	foreach ( $aqua_social as $aqua_item ) :
-		$aqua_net  = $aqua_networks[ $aqua_item['network'] ?? '' ] ?? null;
-		$aqua_icon = $aqua_net ? $aqua_net['icon'] : ( $aqua_item['icon'] ?? 'fas fa-link' );
+		$aqua_key  = (string) ( $aqua_item['network'] ?? '' );
+		$aqua_net  = $aqua_networks[ $aqua_key ] ?? null;
 		$aqua_name = $aqua_net ? $aqua_net['label'] : 'Social link';
 		$aqua_url  = $aqua_item['url'] ?? '#';
+		$aqua_new  = '#' !== $aqua_url;
 		?>
 		<li>
-			<a class="<?php echo esc_attr( $aqua_block ); ?>__social-link" href="<?php echo esc_url( $aqua_url ); ?>" aria-label="<?php echo esc_attr( $aqua_name ); ?>"<?php echo '#' !== $aqua_url ? ' target="_blank" rel="noopener"' : ''; ?>><i class="<?php echo esc_attr( $aqua_icon ); ?>" aria-hidden="true"></i></a>
+			<a class="<?php echo esc_attr( $aqua_block ); ?>__social-link" href="<?php echo esc_url( $aqua_url ); ?>"<?php echo $aqua_new ? ' target="_blank" rel="noopener"' : ''; ?>>
+				<?php echo aqua_ui_icon( $aqua_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
+				<span class="screen-reader-text"><?php echo esc_html( $aqua_name . ( $aqua_new ? ' (' . aqua_label( 'new_tab', 'opens in a new tab' ) . ')' : '' ) ); ?></span>
+			</a>
 		</li>
 	<?php endforeach; ?>
 </ul>

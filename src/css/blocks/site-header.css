@@ -1,0 +1,193 @@
+/**
+ * Block: site-header.
+ * Fixed bar over the top of every page. States (set by src/js/modules/header.js):
+ *   .is-scrolled — left the very top: solid (mobile) / frosted glass (desktop) with a hairline;
+ *   .is-hidden   — scrolling down: slides away; any scroll up brings it back.
+ * Tone at the very top: --dark-text (default, light pages) or --light-text (over a dark photo).
+ * The full-screen mobile menu is a sibling (.menu-overlay), never a child: a transformed or
+ * blurred header would become the containing block of a fixed child.
+ */
+.site-header {
+	--header-fg: var(--c-ink);
+
+	position: fixed;
+	inset: 0 0 auto;
+	z-index: var(--z-header);
+	height: var(--header-h);
+	color: var(--header-fg);
+	transition:
+		transform var(--dur-3) var(--ease-out),
+		background-color var(--dur-2) var(--ease-ui),
+		color var(--dur-2) var(--ease-ui),
+		box-shadow var(--dur-2) var(--ease-ui);
+}
+
+.site-header--light-text {
+	--header-fg: var(--c-on-deep);
+}
+
+.site-header.is-scrolled,
+.has-menu-open .site-header {
+	--header-fg: var(--c-ink);
+
+	background-color: var(--c-ground);
+	box-shadow: 0 1px 0 var(--c-line);
+}
+
+.site-header.is-hidden {
+	transform: translateY(-100%);
+}
+
+.site-header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-5);
+	height: 100%;
+}
+
+.site-header__brand {
+	color: inherit;
+}
+
+.site-header__brand:hover {
+	color: inherit;
+}
+
+.site-header__nav {
+	display: none;
+}
+
+.site-header__actions {
+	display: flex;
+	align-items: center;
+	gap: var(--space-5);
+}
+
+.site-header__phone {
+	display: none;
+	align-items: center;
+	gap: var(--space-2);
+	color: inherit;
+	font-size: var(--fs-ui);
+	font-weight: var(--fw-medium);
+	font-variant-numeric: tabular-nums;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.site-header__phone:hover {
+	color: inherit;
+}
+
+.site-header__phone-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+	opacity: 0.8;
+}
+
+.site-header__cta {
+	display: none;
+}
+
+/* Mobile toggle: two lines that cross into an X. */
+.site-header__toggle {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	margin-right: calc(-1 * var(--space-2));
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius-pill);
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+}
+
+.site-header__toggle-line {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 1.375rem;
+	height: 1.5px;
+	margin-left: -0.6875rem;
+	border-radius: 1px;
+	background: currentColor;
+	transition: transform var(--dur-2) var(--ease-out);
+}
+
+.site-header__toggle-line:first-child {
+	transform: translateY(-4px);
+}
+
+.site-header__toggle-line:last-child {
+	transform: translateY(4px);
+}
+
+.site-header__toggle[aria-expanded="true"] .site-header__toggle-line:first-child {
+	transform: rotate(45deg);
+}
+
+.site-header__toggle[aria-expanded="true"] .site-header__toggle-line:last-child {
+	transform: rotate(-45deg);
+}
+
+@media (min-width: 48em) {
+	.site-header__cta {
+		display: inline-flex;
+	}
+}
+
+/* Desktop: logo | menu in the exact middle | actions. */
+@media (min-width: 62em) {
+	.site-header__inner {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+	}
+
+	.site-header__nav {
+		display: block;
+	}
+
+	.site-header__actions {
+		justify-self: end;
+	}
+
+	.site-header__toggle {
+		display: none;
+	}
+
+	/* Frosted glass only on desktop (on phones a blurred header breaks the fixed menu layer).
+	   slop-ok: K3 — requested in the brief; the only blurred surface, layered over real content. */
+	.site-header.is-scrolled {
+		background-color: rgb(247 249 250 / 0.78);
+		-webkit-backdrop-filter: saturate(1.6) blur(18px);
+		backdrop-filter: saturate(1.6) blur(18px);
+	}
+}
+
+@media (min-width: 80em) {
+	.site-header__phone {
+		display: inline-flex;
+	}
+}
+
+/* WordPress admin bar. */
+.admin-bar .site-header {
+	top: 46px;
+}
+
+@media (min-width: 783px) {
+	.admin-bar .site-header {
+		top: 32px;
+	}
+}
+
+@media (max-width: 600px) {
+	/* The admin bar scrolls away on small phones. */
+	.admin-bar .site-header.is-scrolled {
+		top: 0;
+	}
+}
