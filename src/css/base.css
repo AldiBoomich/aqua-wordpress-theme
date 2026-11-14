@@ -180,6 +180,22 @@ html.lenis body {
 	pointer-events: none;
 }
 
+/* Reveals without GSAP ("low" performance level, src/js/motion-lite.js): one short fade per element. */
+.reveal-lite [data-reveal] {
+	opacity: 0;
+	transform: translateY(1rem);
+	transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+
+.reveal-lite [data-reveal="image"] {
+	transform: none;
+}
+
+.reveal-lite [data-reveal].is-revealed {
+	opacity: 1;
+	transform: none;
+}
+
 /* Page scroll is locked while the full-screen menu is open. */
 html.has-menu-open {
 	overflow: hidden;

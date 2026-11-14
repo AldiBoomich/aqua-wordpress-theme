@@ -56,7 +56,11 @@ function aqua_font_file( $url = true ) {
  * The fallback face is Arial resized to Switzer's metrics, so the swap does not shift the layout.
  */
 function aqua_head_early() {
-	wp_print_inline_script_tag( "document.documentElement.classList.replace('no-js','js');" );
+	// js/no-js switch + the performance level known so far (forced by ?perf=, cached for this visit, or
+	// "low" for reduced motion), applied before the first paint. src/js/perf.js decides the rest.
+	wp_print_inline_script_tag(
+		"(function(d){d.classList.replace('no-js','js');try{var m=/[?&]perf=([^&#]+)/.exec(location.search),f=m&&/(low|medium|high)/.exec(m[1]),l=f?f[1]:(matchMedia('(prefers-reduced-motion: reduce)').matches?'low':sessionStorage.getItem('aqua-perf'));if(/^(low|medium|high)$/.test(l))d.dataset.perf=l}catch(e){}})(document.documentElement);"
+	);
 
 	if ( ! file_exists( aqua_font_file( false ) ) ) {
 		return;
@@ -137,9 +141,6 @@ function aqua_scripts() {
 		wp_enqueue_script( 'aqua-legacy', $uri . '/js/theme.js', array( 'aqua-bootstrap', 'aqua-wow' ), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 	}
 
-	// Liquid physics for the line icons and the bottles (still a plain script).
-	wp_enqueue_script( 'aqua-liquid', $uri . '/js/liquid.js', array(), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
-
 	// Theme module (deferred by nature; chunks load on demand).
 	$js = aqua_vite_url( 'src/js/main.js' );
 	if ( $js ) {
@@ -147,3 +148,37 @@ function aqua_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'aqua_scripts' );
+
+/**
+ * Front-end diet: things WordPress prints by default that this theme never uses.
+ * - emoji detection script and styles (the design has no emoji);
+ * - block library / global styles on screens built from theme templates (no blocks there);
+ *   kept wherever post content is shown (posts, plain pages, the legal template);
+ * - Dashicons for visitors (only the admin bar needs them).
+ */
+function aqua_frontend_diet() {
+	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	add_filter( 'emoji_svg_url', '__return_false' );
+}
+add_action( 'init', 'aqua_frontend_diet' );
+
+/**
+ * Dequeues unused core styles (late, after everything is registered).
+ */
+function aqua_dequeue_unused() {
+	if ( ! is_user_logged_in() ) {
+		wp_deregister_style( 'dashicons' );
+	}
+	$has_blocks = is_singular() && ! is_front_page() && ! is_page_template( array( 'page-about.php', 'page-service.php', 'page-products.php', 'page-contact.php' ) );
+	if ( ! $has_blocks ) {
+		wp_dequeue_style( 'wp-block-library' );
+		wp_dequeue_style( 'wp-block-library-theme' );
+		wp_dequeue_style( 'global-styles' );
+		wp_dequeue_style( 'classic-theme-styles' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'aqua_dequeue_unused', 100 );

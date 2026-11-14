@@ -2,10 +2,11 @@
  * Footer:
  * - the water line at the top edge drifts only while the footer is on screen (.is-active);
  * - the wordmark is sized to fill the content width (any text from Theme Settings fits);
- * - aqua fills the letters as the footer scrolls into view (--fill 0 → 1, --wave-x follows the scroll,
- *   so nothing repaints while the page is still).
+ * - aqua fills the letters as the footer scrolls into view (--fill 0 → 0.8 drives two opposite
+ *   transforms in CSS: compositor only, nothing is repainted).
  */
 import { reducedMotion } from '../tokens.js';
+import { ticker } from '../ticker.js';
 
 export function initFooter() {
 	const footer = document.querySelector( '[data-footer]' );
@@ -33,10 +34,9 @@ export function initFooter() {
 	};
 
 	let visible = false;
-	let queued = false;
+	let shown = '';
 
 	const update = () => {
-		queued = false;
 		if ( ! water || reducedMotion() ) {
 			return;
 		}
@@ -46,14 +46,16 @@ export function initFooter() {
 		const progress = ( vh - rect.top ) / ( rect.height + vh * 0.35 );
 		// Stops at ~80%: the tops of the letters stay outlined, like a glass that is not filled to the brim.
 		const fill = Math.min( 0.8, Math.max( 0, progress ) );
-		water.style.setProperty( '--fill', fill.toFixed( 3 ) );
-		water.style.setProperty( '--wave-x', `${ ( fill * 120 ).toFixed( 1 ) }%` );
+		const value = fill.toFixed( 3 );
+		if ( value !== shown ) {
+			shown = value;
+			water.style.setProperty( '--fill', value ); // drives two transforms in CSS (no repaint)
+		}
 	};
 
 	const onScroll = () => {
-		if ( visible && ! queued ) {
-			queued = true;
-			window.requestAnimationFrame( update );
+		if ( visible ) {
+			ticker.next( update ); // at most once per frame, on the shared loop
 		}
 	};
 

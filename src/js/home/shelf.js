@@ -1,14 +1,15 @@
 /**
  * Bottles shelf: on desktop the section is pinned; the title stays on the left while the bottles slide past.
+ * The slide is one translate3d on the track (its own compositor layer while the scene is active; no layout).
  * Keyboard users: focusing a card scrolls the page to the point where that card is in view.
- * Phones keep the native horizontal scroller.
+ * Phones and the "low" level keep the native horizontal scroller.
  */
 const DESKTOP = '(min-width: 62em) and (min-height: 600px)';
 
 export function initShelf( gsap, ScrollTrigger, getLenis ) {
 	const section = document.querySelector( '[data-shelf]' );
 	if ( ! section || ! window.matchMedia( DESKTOP ).matches ) {
-		return;
+		return null;
 	}
 
 	const pin = section.querySelector( '[data-shelf-pin]' );
@@ -16,7 +17,7 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 	const viewport = section.querySelector( '[data-shelf-viewport]' );
 	const bar = section.querySelector( '[data-shelf-progress]' );
 	if ( ! pin || ! track || ! viewport ) {
-		return;
+		return null;
 	}
 
 	section.classList.add( 'is-scene' );
@@ -25,6 +26,7 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 	const tween = gsap.to( track, {
 		x: () => -distance(),
 		ease: 'none',
+		force3D: true,
 		scrollTrigger: {
 			trigger: pin,
 			start: 'top top',
@@ -33,6 +35,8 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 			scrub: true,
 			anticipatePin: 1,
 			invalidateOnRefresh: true,
+			// will-change only while the scene is on screen.
+			onToggle: ( self ) => section.classList.toggle( 'is-moving', self.isActive ),
 			onUpdate: ( self ) => {
 				if ( bar ) {
 					bar.style.transform = `scaleX(${ self.progress.toFixed( 4 ) })`;
@@ -42,7 +46,7 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 	} );
 
 	// Bring a focused card into view by scrolling to its position on the timeline.
-	track.addEventListener( 'focusin', ( event ) => {
+	const onFocus = ( event ) => {
 		const item = event.target.closest( '.shelf__item' );
 		const st = tween.scrollTrigger;
 		const max = distance();
@@ -57,5 +61,22 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 		} else {
 			window.scrollTo( { top: y, behavior: 'instant' } );
 		}
-	} );
+	};
+	track.addEventListener( 'focusin', onFocus );
+
+	return {
+		/** Un-pin and fall back to the native scroller (the level dropped to "low"). */
+		kill() {
+			track.removeEventListener( 'focusin', onFocus );
+			if ( tween.scrollTrigger ) {
+				tween.scrollTrigger.kill( true );
+			}
+			tween.kill();
+			gsap.set( track, { clearProps: 'all' } );
+			if ( bar ) {
+				bar.removeAttribute( 'style' );
+			}
+			section.classList.remove( 'is-scene', 'is-moving' );
+		},
+	};
 }

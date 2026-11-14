@@ -162,6 +162,20 @@
 	}
 }
 
+/* Static water (no WebGL: "low" level or no hardware context): the photo breathes very slowly, one
+   transform on one layer, only while the hero is on screen. Taps leave small CSS rings (hero-intro.js). */
+@media (prefers-reduced-motion: no-preference) {
+	.water-hero[data-static].is-inview .water-hero__image {
+		animation: aqua-water-breathe 26s ease-in-out infinite alternate;
+	}
+}
+
+@keyframes aqua-water-breathe {
+	to {
+		transform: scale(1.05) translate3d(-0.6%, 0.4%, 0);
+	}
+}
+
 /* Entrance: hidden until the script takes over; CSS shows them anyway after 2.5 s. */
 .js .water-hero__title,
 .js [data-hero-fade] {

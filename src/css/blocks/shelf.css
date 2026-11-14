@@ -171,7 +171,8 @@
 	scroll-snap-type: none;
 }
 
-.shelf.is-scene .shelf__track {
+/* Promoted to its own layer only while the scene is on screen (class from shelf.js). */
+.shelf.is-scene.is-moving .shelf__track {
 	will-change: transform;
 }
 
