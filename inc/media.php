@@ -2,9 +2,9 @@
 /**
  * Images: modern formats and sizes for the full-bleed photos of the design.
  *
- * - JPEG uploads get their resized copies (used in srcset) as AVIF where the server can write it
- *   (about half the bytes of WebP for these photos), otherwise as WebP.
- * - Extra widths 1280 / 1600 / 2560 so full-bleed photos have a close match on every screen.
+ * - JPEG uploads get their resized copies (used in srcset) as WebP: smaller files, decoded fast on phones.
+ *   The original stays JPEG (and is what "full" points to).
+ * - "aqua-2560": the hero photo on large and high-density screens.
  *
  * @package aqua
  */
@@ -12,15 +12,13 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Resized copies of JPEG uploads are saved as AVIF (or WebP when the server cannot write AVIF).
+ * Resized copies of JPEG uploads are saved as WebP.
  *
  * @param array $formats Map of source mime => output mime.
  * @return array
  */
 function aqua_image_output_format( $formats ) {
-	if ( wp_image_editor_supports( array( 'mime_type' => 'image/avif' ) ) ) {
-		$formats['image/jpeg'] = 'image/avif';
-	} elseif ( wp_image_editor_supports( array( 'mime_type' => 'image/webp' ) ) ) {
+	if ( wp_image_editor_supports( array( 'mime_type' => 'image/webp' ) ) ) {
 		$formats['image/jpeg'] = 'image/webp';
 	}
 	return $formats;
@@ -28,16 +26,13 @@ function aqua_image_output_format( $formats ) {
 add_filter( 'image_editor_output_format', 'aqua_image_output_format' );
 
 /**
- * Quality per format (AVIF 55 looks like WebP 80 at half the size).
+ * WebP quality.
  *
  * @param int    $quality   Quality.
  * @param string $mime_type Mime type.
  * @return int
  */
 function aqua_webp_quality( $quality, $mime_type = '' ) {
-	if ( 'image/avif' === $mime_type ) {
-		return 55;
-	}
 	return 'image/webp' === $mime_type ? 80 : $quality;
 }
 add_filter( 'wp_editor_set_quality', 'aqua_webp_quality', 10, 2 );
@@ -46,8 +41,6 @@ add_filter( 'wp_editor_set_quality', 'aqua_webp_quality', 10, 2 );
  * Image sizes.
  */
 function aqua_image_sizes() {
-	add_image_size( 'aqua-1280', 1280, 0, false );
-	add_image_size( 'aqua-1600', 1600, 0, false );
 	add_image_size( 'aqua-2560', 2560, 0, false );
 }
 add_action( 'after_setup_theme', 'aqua_image_sizes' );

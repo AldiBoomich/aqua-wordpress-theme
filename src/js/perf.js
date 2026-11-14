@@ -8,14 +8,12 @@
  *
  * Decision:
  *  1. ?perf=low|medium|high forces a level for this page (testing).
- *  2. low at once for: prefers-reduced-motion, Save-Data, a very small device, no WebGL, a context that
- *     fails with failIfMajorPerformanceCaveat, or a software renderer (SwiftShader, Microsoft Basic Render
- *     Driver, llvmpipe, softpipe…). The WebGL probe runs in a worker (src/js/workers/gl.worker.js), because
- *     creating a context blocks its thread for ~100 ms.
+ *  2. low at once for: prefers-reduced-motion, Save-Data, no WebGL, a context that fails with
+ *     failIfMajorPerformanceCaveat, or a software renderer (SwiftShader, Microsoft Basic Render Driver,
+ *     llvmpipe, softpipe…).
  *  3. Otherwise start at high and measure ~60 real frames after load: late frames → medium, very late → low.
- *     The result is cached in sessionStorage, so inner pages neither probe nor measure again.
- *  4. The monitor keeps running — frames of the page and of the WebGL worker: about 2 s of slow frames in a
- *     row lowers the level on the fly. It never goes back up.
+ *     The result is cached in sessionStorage, so inner pages do not measure again.
+ *  4. The monitor keeps running: about 2 s of slow frames in a row lowers the level on the fly. It never goes back up.
  *
  * ?perf=debug shows a small overlay (level, fps, renderer, render resolution). Combine: ?perf=low,debug.
  * inc/assets.php prints a tiny inline script that applies a cached / forced level before the first paint.
@@ -24,12 +22,11 @@ import { ticker } from './ticker.js';
 
 const KEY = 'aqua-perf';
 const ORDER = [ 'low', 'medium', 'high' ];
+const SOFTWARE = /swiftshader|basic render|llvmpipe|softpipe|software|warp/i;
 
 const root = document.documentElement;
 const listeners = new Set();
-const state = { level: 'high', forced: false, debug: false, reason: '', renderer: '', render: '', fps: 0, waterMs: 0 };
-let spare = null; // the probe's worker, kept for the hero water
-let slowReports = 0;
+const state = { level: 'high', forced: false, debug: false, reason: '', renderer: '', render: '', fps: 0 };
 
 const readCache = () => {
 	try {
@@ -47,60 +44,27 @@ const writeCache = ( level ) => {
 	}
 };
 
-/** The WebGL worker (probe + hero water). */
-export const createGLWorker = () => new Worker( new URL( './workers/gl.worker.js', import.meta.url ), { type: 'module' } );
-
-/** Hands the probe's worker over (once), so the hero does not start a second one. */
-export function takeWorker() {
-	const taken = spare;
-	spare = null;
-	return taken;
-}
-
-/** Stops the probe's worker if nobody took it (pages without the hero). */
-export function releaseWorker() {
-	if ( spare ) {
-		spare.terminate();
-		spare = null;
-	}
-}
-
-/**
- * Hardware WebGL? Asked in a worker, so the page never blocks on the GPU process.
- * Browsers without OffscreenCanvas in workers cannot be probed cheaply: they are treated as capable
- * (the frame measurement still protects them) and simply keep the static hero.
- */
+/** WebGL with real hardware behind it? */
 function probeWebGL() {
-	return new Promise( ( resolve ) => {
-		if ( ! window.Worker || ! window.OffscreenCanvas ) {
-			resolve( { ok: true, renderer: '', why: '' } );
-			return;
+	try {
+		const canvas = document.createElement( 'canvas' );
+		const gl = canvas.getContext( 'webgl', { failIfMajorPerformanceCaveat: true } );
+		if ( ! gl ) {
+			// For the debug overlay: name the software renderer if a context exists without the caveat flag.
+			const soft = state.debug ? document.createElement( 'canvas' ).getContext( 'webgl' ) : null;
+			const softInfo = soft ? soft.getExtension( 'WEBGL_debug_renderer_info' ) : null;
+			return { ok: false, renderer: softInfo ? String( soft.getParameter( softInfo.UNMASKED_RENDERER_WEBGL ) ) : '', why: 'no hardware WebGL' };
 		}
-		let worker;
-		const timer = window.setTimeout( () => finish( { ok: true, renderer: '', why: '' } ), 4000 );
-		const finish = ( result ) => {
-			window.clearTimeout( timer );
-			if ( worker ) {
-				worker.onmessage = null;
-				worker.onerror = null;
-				if ( result.ok && ! spare ) {
-					spare = worker;
-					window.setTimeout( releaseWorker, 15000 );
-				} else {
-					worker.terminate();
-				}
-			}
-			resolve( result );
-		};
-		try {
-			worker = createGLWorker();
-			worker.onmessage = ( event ) => 'probe' === event.data.type && finish( event.data );
-			worker.onerror = () => finish( { ok: true, renderer: '', why: '' } );
-			worker.postMessage( { type: 'probe' } );
-		} catch ( error ) {
-			finish( { ok: true, renderer: '', why: '' } );
+		const info = gl.getExtension( 'WEBGL_debug_renderer_info' );
+		const renderer = info ? String( gl.getParameter( info.UNMASKED_RENDERER_WEBGL ) ) : '';
+		const lose = gl.getExtension( 'WEBGL_lose_context' );
+		if ( lose ) {
+			lose.loseContext();
 		}
-	} );
+		return SOFTWARE.test( renderer ) ? { ok: false, renderer, why: 'software renderer' } : { ok: true, renderer, why: '' };
+	} catch ( error ) {
+		return { ok: false, renderer: '', why: 'WebGL error' };
+	}
 }
 
 function setLevel( level, reason ) {
@@ -122,7 +86,7 @@ function setLevel( level, reason ) {
 /** One step down (high → medium → low). */
 function lower( reason ) {
 	const index = ORDER.indexOf( state.level );
-	if ( index > 0 && ! state.forced ) {
+	if ( index > 0 ) {
 		setLevel( ORDER[ index - 1 ], reason );
 	}
 }
@@ -198,23 +162,6 @@ function monitor() {
 	ticker.add( tick );
 }
 
-/**
- * Frame pacing of the WebGL worker (average frame time, reported about twice a second).
- * Four slow reports in a row (~2 s) lower the level, like slow frames of the page itself.
- */
-export function reportFrameTime( ms ) {
-	state.waterMs = ms;
-	if ( document.hidden || ms > 1000 ) {
-		slowReports = 0;
-		return;
-	}
-	slowReports = ms > 25 ? slowReports + 1 : 0;
-	if ( slowReports >= 4 ) {
-		slowReports = 0;
-		lower( `water frames at ${ ms.toFixed( 0 ) } ms` );
-	}
-}
-
 /** ?perf=debug overlay. */
 function debugOverlay() {
 	const box = document.createElement( 'div' );
@@ -234,8 +181,8 @@ function debugOverlay() {
 		box.textContent =
 			`perf: ${ state.level }${ state.forced ? ' (forced)' : '' } · ${ state.fps } fps\n` +
 			`${ state.reason || 'no reason to lower' }\n` +
-			`renderer: ${ state.renderer || 'not probed (level cached or forced)' }\n` +
-			`water: ${ state.render ? `${ state.render }, frame every ${ state.waterMs.toFixed( 1 ) } ms` : 'static photo (no WebGL)' } · screen DPR ${ window.devicePixelRatio }`;
+			`renderer: ${ state.renderer || 'unknown' }\n` +
+			`water: ${ state.render || 'static photo (no WebGL)' } · screen DPR ${ window.devicePixelRatio }`;
 	} );
 }
 
@@ -248,10 +195,7 @@ export const onPerf = ( fn ) => listeners.add( fn );
 /** Effects report what they render at (shown in the debug overlay). */
 export const setRenderInfo = ( text ) => ( state.render = text );
 
-/**
- * Decides the level. Resolves to 'high' | 'medium' | 'low' (after the worker probe on a first visit).
- */
-export async function initPerf() {
+export function initPerf() {
 	// URLSearchParams decodes the value (WordPress may redirect ?perf=low,debug to ?perf=low%2Cdebug).
 	const param = new URLSearchParams( window.location.search ).get( 'perf' ) || '';
 	const forced = ( /(low|medium|high)/.exec( param ) || [] )[ 1 ];
@@ -262,15 +206,8 @@ export async function initPerf() {
 
 	if ( forced ) {
 		state.forced = true;
+		state.renderer = state.debug ? probeWebGL().renderer : '';
 		setLevel( forced, 'forced by ?perf=' );
-		if ( state.debug ) {
-			probeWebGL().then( ( gl ) => {
-				state.renderer = gl.renderer;
-				if ( 'low' === forced ) {
-					releaseWorker();
-				}
-			} );
-		}
 		return state.level;
 	}
 
@@ -288,28 +225,28 @@ export async function initPerf() {
 		setLevel( 'low', 'cached for this visit' );
 		return state.level;
 	}
-	if ( 'medium' === cached || 'high' === cached ) {
-		setLevel( cached, 'cached for this visit' );
-		afterLoad( monitor );
-		return state.level;
-	}
 
-	// Device hints (where the browser gives them): very small devices skip the heavy path altogether.
-	const cores = navigator.hardwareConcurrency || 8;
-	const memory = navigator.deviceMemory || 8;
-	if ( cores <= 2 || memory <= 2 ) {
-		setLevel( 'low', `small device (${ cores } cores, ${ memory } GB)` );
-		return state.level;
-	}
-
-	const gl = await probeWebGL();
+	const gl = probeWebGL();
 	state.renderer = gl.renderer;
 	if ( ! gl.ok ) {
 		setLevel( 'low', gl.why );
 		return state.level;
 	}
 
-	// Modest phones start one level down. The frame measurement below can still lower the level.
+	if ( 'medium' === cached || 'high' === cached ) {
+		setLevel( cached, 'cached for this visit' );
+		afterLoad( monitor );
+		return state.level;
+	}
+
+	// Device hints (where the browser gives them): very small devices skip the heavy path altogether,
+	// modest phones start one level down. The frame measurement below can still lower the level.
+	const cores = navigator.hardwareConcurrency || 8;
+	const memory = navigator.deviceMemory || 8;
+	if ( cores <= 2 || memory <= 2 ) {
+		setLevel( 'low', `small device (${ cores } cores, ${ memory } GB)` );
+		return state.level;
+	}
 	const phone = window.matchMedia( '(pointer: coarse) and (max-width: 61.99em)' ).matches;
 	setLevel( phone && ( cores < 6 || memory < 4 ) ? 'medium' : 'high', 'measuring…' );
 	afterLoad( () =>

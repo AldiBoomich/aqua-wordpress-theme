@@ -11,10 +11,6 @@ import { defineConfig } from 'vite';
 export default defineConfig( {
 	base: './',
 	publicDir: false,
-	// The WebGL worker (src/js/workers/gl.worker.js) is built as an ES module chunk.
-	worker: {
-		format: 'es',
-	},
 	build: {
 		outDir: 'assets/dist',
 		emptyOutDir: true,

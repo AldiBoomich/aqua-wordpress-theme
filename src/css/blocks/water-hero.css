@@ -4,8 +4,9 @@
  * __canvas: the WebGL water laid over it (src/js/home/hero-water.js), fades in when the first frame is ready;
  * __veil: soft light at the top and bottom keeps the header and the text readable over any photo;
  * __drop / __ring: the opening drop (once per visit).
- * The whole first screen is complete without JavaScript: text and buttons are there from the first paint,
- * the headline words and the facts enter with CSS animations (see "Entrance" below).
+ * The headline lines rise from masks on load; until the script runs they wait hidden (a CSS fallback shows them after 2.5 s).
+ * The text and buttons are visible from the first paint: Chrome does not count a full-screen photo as the LCP element,
+ * so the paragraph is the LCP — it must not wait for any animation.
  */
 .water-hero {
 	position: relative;
@@ -175,48 +176,22 @@
 	}
 }
 
-/* Entrance, CSS only (runs from the first paint; nothing waits for a script):
-   every word of the headline rises out of its own mask one after another, then the facts fade up.
-   --hero-delay is longer when the opening drop plays first (html.intro is set in <head>). */
-.water-hero__word {
-	display: inline-block;
-	overflow: hidden;
-	vertical-align: top;
-	/* room for descenders and side bearings inside the mask, taken back by the margins */
-	padding: 0.06em 0.05em 0.16em;
-	margin: -0.06em -0.05em -0.16em;
+/* Entrance: hidden until the script takes over; CSS shows them anyway after 2.5 s. */
+.js .water-hero__title,
+.js [data-hero-fade] {
+	opacity: 0;
+	animation: aqua-failsafe 0.6s var(--ease-out) 2.5s forwards;
 }
 
-.water-hero__word > span {
-	display: inline-block;
+.js .water-hero.is-ready .water-hero__title,
+.js .water-hero.is-ready [data-hero-fade] {
+	opacity: 1;
+	animation: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-	.water-hero__word > span {
-		animation: aqua-hero-word 1.15s var(--ease-out) both;
-		animation-delay: calc(var(--hero-delay, 0.05s) + var(--i, 0) * 55ms);
-	}
-
-	[data-hero-fade] {
-		animation: aqua-hero-fade 1s var(--ease-out) both;
-		animation-delay: calc(var(--hero-delay, 0.05s) + 0.5s);
-	}
-
-	.intro .water-hero[data-intro] {
-		--hero-delay: 0.8s;
-	}
-}
-
-@keyframes aqua-hero-word {
-	from {
-		transform: translateY(125%);
-	}
-}
-
-@keyframes aqua-hero-fade {
-	from {
-		opacity: 0;
-		transform: translateY(1.25rem);
+@keyframes aqua-failsafe {
+	to {
+		opacity: 1;
 	}
 }
 
@@ -232,5 +207,13 @@
 
 	.water-hero__facts {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js .water-hero__title,
+	.js [data-hero-fade] {
+		opacity: 1;
+		animation: none;
 	}
 }

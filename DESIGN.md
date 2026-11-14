@@ -62,21 +62,7 @@ page → a light typographic page head; a blocking preloader → a short intro p
 - Moments per page: one entrance (hero / page head) + at most two scroll moments. Hovers answer the pointer:
   button fill rises like water, link underlines flow in from the left and out to the right.
 - `prefers-reduced-motion: reduce` → no WebGL, no smooth scroll, no parallax; content simply appears.
-- Content is visible without JavaScript. The hero entrance (words rising from masks, facts fading up) is pure CSS.
-
-## Performance levels
-Every effect reads one switch, `html[data-perf]` (`src/js/perf.js`), so the site degrades on its own instead of lagging:
-
-| Level | When | What runs |
-|---|---|---|
-| high | hardware GPU, frames on time | WebGL water (in a worker, 1 device px per CSS px), glass header, parallax, pinned scenes, smooth scroll |
-| medium | frames run late | water at 0.7 resolution, solid header, no parallax |
-| low | software rendering, Save-Data, reduced motion, very small devices | no WebGL and no GSAP at all: breathing photo, CSS reveals, native scroll, plain lists |
-
-The level is measured (about 60 real frames), cached for the visit and lowered on the fly if frames stay slow.
-`?perf=low|medium|high` forces a level, `?perf=debug` shows fps, renderer and render resolution.
-Rules for new effects: transform and opacity only; no animated filter, box-shadow, clip-path, background-position
-or layout properties; one animation loop (`src/js/ticker.js`); anything heavy checks the level first.
+- Content is visible without JavaScript.
 
 ## Imagery
 - Pexels photos (credits in `assets/img/CREDITS.md`), graded light and cold: lifted shadows, slight desaturation,
