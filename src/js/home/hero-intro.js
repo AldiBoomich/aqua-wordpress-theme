@@ -10,6 +10,11 @@ import { reducedMotion } from '../tokens.js';
 const DROP_SVG =
 	'<svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 2.6c-3.3 4.2-6.6 8-6.6 11.6a6.6 6.6 0 0 0 13.2 0C18.6 10.6 15.3 6.8 12 2.6Z"/><path class="ui-icon__water" d="M7.7 14.6c1.45-.95 2.85-.95 4.3 0s2.85.95 4.3 0"/></svg>';
 
+let splash = null;
+
+/** The WebGL water registers itself here so the drop can land in it. */
+export const setSplashHandler = ( fn ) => ( splash = fn );
+
 /** Where the opening drop lands (px inside the hero media box). */
 export function introPoint( media ) {
 	const rect = media.getBoundingClientRect();
@@ -31,12 +36,12 @@ export function cssRings( media, x, y ) {
 }
 
 /**
- * Plays the opening drop if main.js marked this visit for it (data-intro-playing).
+ * Plays the opening drop if main.js marked this visit for it (data-intro-playing). It starts right away
+ * (it does not wait for WebGL); when it lands, the water answers if it is ready, otherwise two CSS rings do.
  *
- * @param {Element}  hero     The hero section.
- * @param {Function} onSplash Called when the drop lands; return true if the water itself answers.
+ * @param {Element} hero The hero section.
  */
-export function playIntro( hero, onSplash ) {
+export function playIntro( hero ) {
 	if ( ! hero.hasAttribute( 'data-intro-playing' ) || hero.hasAttribute( 'data-intro-done' ) ) {
 		return;
 	}
@@ -62,7 +67,7 @@ export function playIntro( hero, onSplash ) {
 	);
 	fall.onfinish = () => {
 		drop.animate( [ { opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0.3, 0.1)' } ], { duration: 220, fill: 'forwards' } ).onfinish = () => drop.remove();
-		if ( ! onSplash( x, y ) ) {
+		if ( ! splash || ! splash( x, y ) ) {
 			cssRings( media, x, y );
 		}
 	};
@@ -83,7 +88,6 @@ export function initHeroStatic( hero ) {
 	if ( reducedMotion() ) {
 		return;
 	}
-	playIntro( hero, () => false );
 	hero.addEventListener( 'pointerdown', ( event ) => {
 		if ( event.target.closest( 'a, button' ) || ! hero.hasAttribute( 'data-static' ) ) {
 			return;

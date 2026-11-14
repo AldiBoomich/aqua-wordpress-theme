@@ -11,7 +11,7 @@
  *     data-reveal="image"  — the frame grows open while the photo settles (two opposite scales: no clip-path,
  *                            no repaint); on "high" the photo then drifts slightly with the scroll (parallax).
  * - data-count — numbers count up once on view (the final value is printed by PHP).
- * - Homepage scenes: hero entrance, 7 stages (pinned), bottles shelf (horizontal).
+ * - Homepage scenes: 7 stages (pinned), bottles shelf (horizontal). The hero entrance is pure CSS.
  *
  * If the level drops while the page is open: "medium" removes the parallax, "low" also removes the
  * smooth scroll and un-pins the scenes (they fall back to their plain layouts).
@@ -158,30 +158,6 @@ function initCounters() {
 	} );
 }
 
-/** Homepage hero: headline lines rise, then the facts. Waits for the opening drop. */
-function initHeroEntrance() {
-	const hero = document.querySelector( '[data-water-hero]' );
-	if ( ! hero ) {
-		return;
-	}
-	const title = hero.querySelector( '[data-hero-title]' );
-	const fades = hero.querySelectorAll( '[data-hero-fade]' );
-	const delay = hero.hasAttribute( 'data-intro-playing' ) ? 0.85 : 0.1;
-
-	hero.classList.add( 'is-ready' );
-	if ( title ) {
-		let split = SplitText.create( title, { type: 'lines', mask: 'lines', linesClass: 'split-line' } );
-		const finish = () => {
-			if ( split ) {
-				split.revert();
-				split = null;
-			}
-		};
-		gsap.from( split.lines, { yPercent: 115, duration: 1.25, ease: EASE.out, stagger: 0.09, delay, onComplete: finish, onInterrupt: finish } );
-	}
-	gsap.from( fades, { autoAlpha: 0, y: 22, duration: 1.1, ease: EASE.out, stagger: 0.1, delay: delay + 0.35, clearProps: 'transform' } );
-}
-
 function killParallax() {
 	parallax.forEach( ( tween ) => {
 		if ( tween.scrollTrigger ) {
@@ -206,18 +182,12 @@ function applyLevel( level ) {
 }
 
 export function initMotion() {
-	const hero = document.querySelector( '[data-water-hero]' );
-
 	if ( reducedMotion() ) {
-		if ( hero ) {
-			hero.classList.add( 'is-ready' );
-		}
 		return;
 	}
 
 	ticker.adopt( gsap.ticker ); // from here on GSAP's ticker is the one loop
 	initLenis();
-	initHeroEntrance();
 	initLines();
 	initFades();
 	initImages();

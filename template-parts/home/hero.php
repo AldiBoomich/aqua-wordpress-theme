@@ -1,8 +1,9 @@
 <?php
 /**
  * Home: hero — one strong screen over a living water surface.
- * The photo is the LCP image (eager, high priority); src/js/home/hero-water.js lays a WebGL ripple
- * shader over it on capable devices and plays the opening drop once per visit.
+ * The photo loads eagerly with high priority; on capable devices src/js/home/hero-water.js lays a WebGL
+ * ripple shader over it. The headline and facts enter with CSS only, so the first screen is complete
+ * without any JavaScript. The opening drop plays once per visit.
  *
  * @package aqua
  */
@@ -62,7 +63,9 @@ $aqua_facts     = aqua_home_rows(
 					'class'   => 'water-hero__image',
 					'alt'     => '',
 					'loading' => 'eager',
-					'sizes'   => '100vw',
+					// The water photo is soft and sits under a WebGL layer rendered at 1x: on dense
+					// screens a file one step smaller is indistinguishable and much lighter.
+					'sizes'   => '(min-resolution: 2dppx) 60vw, (min-resolution: 1.25dppx) 80vw, 100vw',
 				)
 			);
 			?>
@@ -71,7 +74,16 @@ $aqua_facts     = aqua_home_rows(
 	</div>
 
 	<div class="water-hero__inner wrap">
-		<h1 class="water-hero__title" data-hero-title><?php echo esc_html( $aqua_title ); ?></h1>
+		<?php
+		// Each word sits in its own mask and rises in turn (pure CSS, starts with the first paint — the
+		// headline never waits for JavaScript). Screen readers get the plain sentence.
+		$aqua_words = preg_split( '/\s+/u', trim( (string) $aqua_title ), -1, PREG_SPLIT_NO_EMPTY );
+		?>
+		<h1 class="water-hero__title" aria-label="<?php echo esc_attr( $aqua_title ); ?>">
+			<?php foreach ( $aqua_words as $aqua_i => $aqua_word ) : ?>
+				<span class="water-hero__word" aria-hidden="true" style="--i:<?php echo (int) $aqua_i; ?>"><span><?php echo esc_html( $aqua_word ); ?></span></span>
+			<?php endforeach; ?>
+		</h1>
 
 		<div class="water-hero__aside">
 			<?php if ( $aqua_text ) : ?>

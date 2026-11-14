@@ -58,8 +58,9 @@ function aqua_font_file( $url = true ) {
 function aqua_head_early() {
 	// js/no-js switch + the performance level known so far (forced by ?perf=, cached for this visit, or
 	// "low" for reduced motion), applied before the first paint. src/js/perf.js decides the rest.
+	// html.intro: first page of the visit — the hero plays the opening drop and its headline waits for it.
 	wp_print_inline_script_tag(
-		"(function(d){d.classList.replace('no-js','js');try{var m=/[?&]perf=([^&#]+)/.exec(location.search),f=m&&/(low|medium|high)/.exec(m[1]),l=f?f[1]:(matchMedia('(prefers-reduced-motion: reduce)').matches?'low':sessionStorage.getItem('aqua-perf'));if(/^(low|medium|high)$/.test(l))d.dataset.perf=l}catch(e){}})(document.documentElement);"
+		"(function(d){d.classList.replace('no-js','js');try{var m=/[?&]perf=([^&#]+)/.exec(location.search),f=m&&/(low|medium|high)/.exec(m[1]),l=f?f[1]:(matchMedia('(prefers-reduced-motion: reduce)').matches?'low':sessionStorage.getItem('aqua-perf'));if(/^(low|medium|high)$/.test(l))d.dataset.perf=l;if(!sessionStorage.getItem('aqua-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro')}catch(e){}})(document.documentElement);"
 	);
 
 	if ( ! file_exists( aqua_font_file( false ) ) ) {

@@ -8,10 +8,6 @@
 import { reducedMotion } from './tokens.js';
 
 export function initMotionLite() {
-	const hero = document.querySelector( '[data-water-hero]' );
-	if ( hero ) {
-		hero.classList.add( 'is-ready' );
-	}
 	if ( reducedMotion() || ! ( 'IntersectionObserver' in window ) ) {
 		return;
 	}

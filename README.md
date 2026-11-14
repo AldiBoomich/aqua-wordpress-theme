@@ -16,8 +16,10 @@ from WordPress, no code changes needed.
   deploys as a plain zip). No jQuery, no CSS framework.
 - **Accessible** — skip link, keyboard-friendly menus with real buttons, focus kept inside the full-screen menu,
   visible focus rings, WCAG AA contrast, one `<h1>` per page, `prefers-reduced-motion` support.
-- **Fast** — self-hosted variable font with metric-matched fallback (no layout shift), deferred scripts,
-  animations on transform/opacity only, motion paused off-screen.
+- **Fast everywhere** — Lighthouse mobile 100. The site measures the device and picks a performance level
+  (`high` / `medium` / `low`): WebGL water rendered in a worker on capable GPUs, a still photo and CSS-only
+  motion on software renderers and weak devices. Self-hosted variable font with a metric-matched fallback,
+  AVIF images, animations on transform/opacity only, one animation loop. Try `?perf=debug`.
 - **Contact Form 7** — contact and newsletter forms styled to match the design.
 - **Client help** — "How to edit this website" dashboard widget and hints next to every field.
 
