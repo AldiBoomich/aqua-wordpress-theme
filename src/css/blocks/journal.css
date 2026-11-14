@@ -1,0 +1,130 @@
+/**
+ * Block: journal (latest posts) + journal-card (post card, shared with the blog pages).
+ * The card is one link (stretched title link); the photo zooms slightly inside its frame on hover.
+ */
+.journal {
+	padding-block: var(--section-y);
+}
+
+.journal__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: end;
+	justify-content: space-between;
+	gap: var(--space-5);
+	margin-bottom: var(--space-8);
+}
+
+.journal__grid {
+	display: grid;
+	gap: var(--space-8) var(--grid-gap);
+}
+
+.journal-card {
+	position: relative;
+	display: grid;
+	align-content: start;
+	gap: var(--space-4);
+	border-radius: var(--radius-l);
+}
+
+.journal-card__media {
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	border-radius: var(--radius-l);
+	background: var(--c-surface);
+}
+
+.journal-card--large .journal-card__media {
+	aspect-ratio: 4 / 3;
+}
+
+.journal-card__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.9s var(--ease-out);
+}
+
+.journal-card:hover .journal-card__image {
+	transform: scale(1.035);
+}
+
+.journal-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-4);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.journal-card__title {
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+}
+
+.journal-card--large .journal-card__title {
+	font-size: var(--fs-h3);
+}
+
+.journal-card__link {
+	color: inherit;
+	text-decoration: none;
+	background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+	transition: background-size var(--dur-3) var(--ease-out);
+}
+
+.journal-card__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.journal-card:hover .journal-card__link {
+	color: inherit;
+	background-size: 100% 1px;
+}
+
+.journal-card__link:focus-visible {
+	outline: none;
+}
+
+.journal-card:has(.journal-card__link:focus-visible) {
+	outline: 2px solid var(--c-focus);
+	outline-offset: 6px;
+}
+
+.journal-card__excerpt {
+	max-width: 36rem;
+	color: var(--c-ink-muted);
+}
+
+@media (min-width: 48em) {
+	.journal__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.journal-card--large {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (min-width: 62em) {
+	/* Small cards take the first rows at their own height; the large card spans them plus the rest. */
+	.journal__grid {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		grid-template-rows: auto auto 1fr;
+		row-gap: var(--space-7);
+	}
+
+	.journal-card--large {
+		grid-column: 1 / span 7;
+		grid-row: 1 / span 3;
+	}
+
+	.journal-card:not(.journal-card--large) {
+		grid-column: 8 / span 5;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		column-gap: var(--space-5);
+	}
+}

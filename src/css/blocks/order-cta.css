@@ -1,0 +1,73 @@
+/**
+ * Block: order-cta — the closing call to order, right above the footer's water line.
+ */
+.order-cta {
+	padding-block: var(--section-y) var(--section-y-tight);
+}
+
+.order-cta__grid {
+	display: grid;
+	gap: var(--space-7);
+	padding-top: var(--space-8);
+	border-top: 1px solid var(--c-line-strong);
+}
+
+.order-cta__title {
+	max-width: 12ch;
+	font-size: clamp(2.75rem, 1.2rem + 5.6vw, 7.5rem);
+	font-weight: var(--fw-light);
+	line-height: 0.95;
+	letter-spacing: var(--ls-display);
+}
+
+.order-cta__aside {
+	display: grid;
+	align-content: end;
+	gap: var(--space-6);
+}
+
+.order-cta__text {
+	max-width: 28rem;
+	font-size: var(--fs-lead);
+	line-height: 1.45;
+}
+
+.order-cta__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-5) var(--space-7);
+}
+
+.order-cta__call-label {
+	display: block;
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.order-cta__phone {
+	color: var(--c-ink);
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+	text-decoration: none;
+}
+
+.order-cta__phone:hover {
+	color: var(--c-action);
+}
+
+@media (min-width: 62em) {
+	.order-cta__grid {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+	}
+
+	.order-cta__title {
+		grid-column: 1 / span 8;
+	}
+
+	.order-cta__aside {
+		grid-column: 9 / span 4;
+	}
+}

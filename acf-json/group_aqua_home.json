@@ -3,8 +3,8 @@
     "title": "Homepage Content",
     "fields": [
         {
-            "key": "field_aqua_home_tab_slider",
-            "label": "Slider",
+            "key": "field_aqua_home_tab_hero",
+            "label": "Hero",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -21,12 +21,12 @@
             "selected": 0
         },
         {
-            "key": "field_aqua_home_hero_slides",
-            "label": "Slides",
-            "name": "hero_slides",
+            "key": "field_aqua_home_hero_title",
+            "label": "Headline",
+            "name": "hero_title",
             "aria-label": "",
-            "type": "repeater",
-            "instructions": "The large slider at the top of the homepage. Drag rows to change the order.",
+            "type": "text",
+            "instructions": "The one big line of the first screen (the page H1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -34,167 +34,18 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
-            "pagination": 0,
-            "min": 1,
-            "max": 5,
-            "collapsed": "field_aqua_home_hero_slides_title",
-            "button_label": "Add Slide",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_aqua_home_hero_slides_image",
-                    "label": "Background Image",
-                    "name": "image",
-                    "aria-label": "",
-                    "type": "image",
-                    "instructions": "Landscape photo, at least 1920 × 1080 px. Odd slides show the text on the right, even slides on the left — keep that side of the photo calm and dark.",
-                    "required": 1,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": 35,
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "id",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": "jpg, jpeg, png, webp, svg",
-                    "preview_size": "medium",
-                    "parent_repeater": "field_aqua_home_hero_slides"
-                },
-                {
-                    "key": "field_aqua_home_hero_slides_subtitle",
-                    "label": "Small Heading",
-                    "name": "subtitle",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": 65,
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "Pure. Fresh. Delivered.",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_aqua_home_hero_slides"
-                },
-                {
-                    "key": "field_aqua_home_hero_slides_title",
-                    "label": "Title",
-                    "name": "title",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "Clean Drinking Water Delivered to Your Door",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_aqua_home_hero_slides"
-                },
-                {
-                    "key": "field_aqua_home_hero_slides_text",
-                    "label": "Text",
-                    "name": "text",
-                    "aria-label": "",
-                    "type": "textarea",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "rows": 2,
-                    "placeholder": "One or two short sentences.",
-                    "new_lines": "",
-                    "parent_repeater": "field_aqua_home_hero_slides"
-                },
-                {
-                    "key": "field_aqua_home_hero_slides_primary_button",
-                    "label": "Main Button",
-                    "name": "primary_button",
-                    "aria-label": "",
-                    "type": "link",
-                    "instructions": "Filled button. Leave empty to hide.",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": 50,
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "array",
-                    "parent_repeater": "field_aqua_home_hero_slides"
-                },
-                {
-                    "key": "field_aqua_home_hero_slides_secondary_button",
-                    "label": "Second Button",
-                    "name": "secondary_button",
-                    "aria-label": "",
-                    "type": "link",
-                    "instructions": "Outlined button. Leave empty to hide.",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": 50,
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "array",
-                    "parent_repeater": "field_aqua_home_hero_slides"
-                }
-            ]
-        },
-        {
-            "key": "field_aqua_home_hero_interval",
-            "label": "Autoplay Speed",
-            "name": "hero_interval",
-            "aria-label": "",
-            "type": "number",
-            "instructions": "How long each slide is shown.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": 30,
-                "class": "",
-                "id": ""
-            },
-            "default_value": 7,
-            "min": 3,
-            "max": 20,
-            "step": 1,
-            "placeholder": "",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Clean drinking water, delivered to your door.",
             "prepend": "",
-            "append": "seconds"
+            "append": ""
         },
         {
-            "key": "field_aqua_home_tab_features",
-            "label": "Features",
-            "name": "",
+            "key": "field_aqua_home_hero_text",
+            "label": "Text",
+            "name": "hero_text",
             "aria-label": "",
-            "type": "tab",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -203,17 +54,101 @@
                 "class": "",
                 "id": ""
             },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Spring water purified through 7-stage filtration and delivered within 24 hours, for homes and offices across the city.",
+            "new_lines": ""
         },
         {
-            "key": "field_aqua_home_features_items",
-            "label": "Feature Cards",
-            "name": "features_items",
+            "key": "field_aqua_home_hero_primary",
+            "label": "Main Button",
+            "name": "hero_primary",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Default: Order water → Products.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_aqua_home_hero_secondary",
+            "label": "Second Button",
+            "name": "hero_secondary",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Default: Get a free quote → Contact.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_aqua_home_hero_image",
+            "label": "Water Photo",
+            "name": "hero_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "A bright photo of a water surface, 2400 px wide or more. On computers the visitor’s cursor makes ripples on it.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_aqua_home_hero_image_mobile",
+            "label": "Phone Photo (optional)",
+            "name": "hero_image_mobile",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional portrait crop (4:5) for phones. Empty = the water photo.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_aqua_home_hero_facts",
+            "label": "Facts Under the Buttons",
+            "name": "hero_facts",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "White cards right under the slider. Looks best with 4 cards.",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -221,76 +156,43 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "layout": "table",
             "pagination": 0,
             "min": 0,
             "max": 4,
-            "collapsed": "field_aqua_home_features_items_title",
-            "button_label": "Add Feature",
+            "collapsed": "",
+            "button_label": "Add Fact",
             "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_aqua_home_features_items_icon",
-                    "label": "Icon",
-                    "name": "icon",
+                    "key": "field_aqua_home_value",
+                    "label": "Value",
+                    "name": "value",
                     "aria-label": "",
-                    "type": "select",
+                    "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": 30,
-                        "class": "aqua-icon-select",
+                        "class": "",
                         "id": ""
                     },
-                    "choices": {
-                        "fas fa-tint": "Water drop",
-                        "fas fa-hand-holding-water": "Hand with a water drop",
-                        "fas fa-truck": "Water tanker — delivery",
-                        "fas fa-shipping-fast": "Bottle on the move — fast delivery",
-                        "fas fa-home": "House",
-                        "fas fa-building": "Office building",
-                        "fas fa-snowflake": "Glass of ice water — cooling",
-                        "fas fa-fire": "Hot drink — hot water",
-                        "fas fa-filter": "Filter cartridge",
-                        "fas fa-flask": "Lab flask — water testing",
-                        "fas fa-vial": "Test tube",
-                        "fas fa-award": "Medal — award",
-                        "fas fa-certificate": "Quality certificate",
-                        "fas fa-shield-alt": "Shield — safety",
-                        "fas fa-leaf": "Leaf — eco friendly",
-                        "fas fa-recycle": "Recyclable bottle",
-                        "fas fa-calendar-check": "Calendar — subscription",
-                        "fas fa-clock": "Clock",
-                        "fas fa-headset": "Chat bubble — support",
-                        "fas fa-phone-alt": "Smartphone — call us",
-                        "fas fa-smile": "Smile — happy customers",
-                        "fas fa-users": "People",
-                        "fas fa-heart": "Heart",
-                        "fas fa-star": "Star",
-                        "fas fa-thumbs-up": "Thumbs up",
-                        "fas fa-map-marker-alt": "Map pin",
-                        "fas fa-wallet": "Wallet — prices",
-                        "fas fa-percent": "Price tag — discount",
-                        "fas fa-check-circle": "Check mark"
-                    },
-                    "default_value": "fas fa-tint",
-                    "return_format": "value",
-                    "multiple": 0,
-                    "allow_null": 0,
-                    "ui": 1,
-                    "ajax": 0,
-                    "placeholder": "",
-                    "parent_repeater": "field_aqua_home_features_items"
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "24 h",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_hero_facts"
                 },
                 {
-                    "key": "field_aqua_home_features_items_title",
-                    "label": "Title",
-                    "name": "title",
+                    "key": "field_aqua_home_label",
+                    "label": "Label",
+                    "name": "label",
                     "aria-label": "",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": 70,
@@ -299,33 +201,73 @@
                     },
                     "default_value": "",
                     "maxlength": "",
-                    "placeholder": "Free Delivery",
+                    "placeholder": "delivery",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_aqua_home_features_items"
-                },
-                {
-                    "key": "field_aqua_home_features_items_text",
-                    "label": "Text",
-                    "name": "text",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "Free same-day delivery on orders over $20.",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_aqua_home_features_items"
+                    "parent_repeater": "field_aqua_home_hero_facts"
                 }
             ]
+        },
+        {
+            "key": "field_aqua_home_hero_intro",
+            "label": "Opening Drop",
+            "name": "hero_intro",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Play the falling drop once per visit (skipped for visitors who prefer less motion)",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_home_tab_marquee",
+            "label": "Facts Ribbon",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_home_marquee_items",
+            "label": "Ribbon Items",
+            "name": "marquee_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Short facts that slide across the screen under the first screen.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 10,
+            "collapsed": "",
+            "button_label": "Add Item",
+            "rows_per_page": 20,
+            "sub_fields": []
         },
         {
             "key": "field_aqua_home_tab_about",
@@ -351,7 +293,7 @@
             "name": "about_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Portrait photo, at least 900 × 1100 px.",
+            "instructions": "Portrait photo (4:5) next to the story.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -376,7 +318,7 @@
             "name": "about_badge",
             "aria-label": "",
             "type": "text",
-            "instructions": "Blue label in the photo corner. Leave empty to hide.",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -396,7 +338,7 @@
             "name": "about_subtitle",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -427,6 +369,66 @@
             "default_value": "",
             "maxlength": "",
             "placeholder": "Pure Water From Source to Your Glass",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_home_about_years_number",
+            "label": "Big Number",
+            "name": "about_years_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 25,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": 15,
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_home_about_years_suffix",
+            "label": "Suffix",
+            "name": "about_years_suffix",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "e.g. +",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 15,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_home_about_years_label",
+            "label": "Number Label",
+            "name": "about_years_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 60,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "years of delivering spring water",
             "prepend": "",
             "append": ""
         },
@@ -587,6 +589,201 @@
             "return_format": "array"
         },
         {
+            "key": "field_aqua_home_tab_stages",
+            "label": "7 Stages",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_home_stages_title",
+            "label": "Title",
+            "name": "stages_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "From source to glass",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_home_stages_text",
+            "label": "Text",
+            "name": "stages_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Seven stages between the mountain spring and your glass. Every batch is checked against 40+ quality markers before bottling.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_home_stages_source_image",
+            "label": "Source Photo",
+            "name": "stages_source_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Shown at the start of the scene (the spring).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_aqua_home_stages_glass_image",
+            "label": "Glass Photo",
+            "name": "stages_glass_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Shown at the end of the scene (the glass).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg, jpeg, png, webp",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_aqua_home_stages_items",
+            "label": "Stages",
+            "name": "stages_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Shown one by one while the visitor scrolls. The order of the rows is the order of the stages.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 9,
+            "collapsed": "",
+            "button_label": "Add Stage",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_home_title",
+                    "label": "Stage",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 30,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Sediment pre-filter",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_stages_items"
+                },
+                {
+                    "key": "field_aqua_home_text",
+                    "label": "What It Does",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": 2,
+                    "placeholder": "A 5-micron mesh catches sand, silt and rust.",
+                    "new_lines": "",
+                    "parent_repeater": "field_aqua_home_stages_items"
+                },
+                {
+                    "key": "field_aqua_home_detail",
+                    "label": "Detail",
+                    "name": "detail",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 20,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "5 µm",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_stages_items"
+                }
+            ]
+        },
+        {
             "key": "field_aqua_home_tab_services",
             "label": "Services",
             "name": "",
@@ -610,7 +807,7 @@
             "name": "service_subtitle",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -650,7 +847,7 @@
             "name": "service_bottle",
             "aria-label": "",
             "type": "select",
-            "instructions": "A drawn bottle with live water (it tilts towards the mouse and the water sloshes). Choose \"Uploaded image\" to show the Center Image instead.",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -680,7 +877,7 @@
             "name": "service_bottle_label",
             "aria-label": "",
             "type": "text",
-            "instructions": "Text on the bottle sticker.",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -700,7 +897,7 @@
             "name": "service_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Used only when \"Center Bottle\" is set to \"Uploaded image\". Transparent PNG or SVG works best.",
+            "instructions": "Photo next to the list of services.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -863,7 +1060,7 @@
             "name": "stats_subtitle",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -925,7 +1122,7 @@
                     "name": "icon",
                     "aria-label": "",
                     "type": "select",
-                    "instructions": "",
+                    "instructions": "Not shown by the current design.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -1064,7 +1261,7 @@
             "name": "product_subtitle",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -1329,7 +1526,7 @@
                     "name": "badge",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "Any text highlights the card. Empty = regular card.",
+                    "instructions": "Not shown by the current design.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -1428,7 +1625,7 @@
             "name": "blog_subtitle",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Not shown by the current design (kept from version 1).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -1485,6 +1682,26 @@
             "append": ""
         },
         {
+            "key": "field_aqua_home_blog_link_text",
+            "label": "Link to All Posts",
+            "name": "blog_link_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "All articles",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_aqua_home_blog_hint",
             "label": "Posts",
             "name": "",
@@ -1501,6 +1718,425 @@
             "message": "<div class=\"aqua-hint\"><span>The articles themselves are written in Posts.<\/span><a class=\"button button-primary\" href=\"edit.php\">Open Posts<\/a><\/div>",
             "new_lines": "",
             "esc_html": 0
+        },
+        {
+            "key": "field_aqua_home_tab_order",
+            "label": "Order Call",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_home_cta_title",
+            "label": "Title",
+            "name": "cta_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Order today. Fresh water tomorrow.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_home_cta_text",
+            "label": "Text",
+            "name": "cta_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Free delivery on orders over $20 and free cooler rental with any monthly plan.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_home_cta_button",
+            "label": "Button",
+            "name": "cta_button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Default: Order water → Products.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_aqua_home_cta_phone_label",
+            "label": "Phone Label",
+            "name": "cta_phone_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown above the phone number (Theme Settings → Contacts).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Or call us",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_home_tab_archive",
+            "label": "Archive (v1)",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_home_archive_hint",
+            "label": "Version 1",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<div class=\"aqua-hint\"><span>The slider and the feature cards of the first design. They are not shown on the site any more; kept so nothing is lost.<\/span><\/div>",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_home_hero_slides",
+            "label": "Slides",
+            "name": "hero_slides",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "The large slider at the top of the homepage. Drag rows to change the order.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 1,
+            "max": 5,
+            "collapsed": "field_aqua_home_hero_slides_title",
+            "button_label": "Add Slide",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_home_hero_slides_image",
+                    "label": "Background Image",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Landscape photo, at least 1920 × 1080 px. Odd slides show the text on the right, even slides on the left — keep that side of the photo calm and dark.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 35,
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "jpg, jpeg, png, webp, svg",
+                    "preview_size": "medium",
+                    "parent_repeater": "field_aqua_home_hero_slides"
+                },
+                {
+                    "key": "field_aqua_home_hero_slides_subtitle",
+                    "label": "Small Heading",
+                    "name": "subtitle",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 65,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Pure. Fresh. Delivered.",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_hero_slides"
+                },
+                {
+                    "key": "field_aqua_home_hero_slides_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Clean Drinking Water Delivered to Your Door",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_hero_slides"
+                },
+                {
+                    "key": "field_aqua_home_hero_slides_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": 2,
+                    "placeholder": "One or two short sentences.",
+                    "new_lines": "",
+                    "parent_repeater": "field_aqua_home_hero_slides"
+                },
+                {
+                    "key": "field_aqua_home_hero_slides_primary_button",
+                    "label": "Main Button",
+                    "name": "primary_button",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "Filled button. Leave empty to hide.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "parent_repeater": "field_aqua_home_hero_slides"
+                },
+                {
+                    "key": "field_aqua_home_hero_slides_secondary_button",
+                    "label": "Second Button",
+                    "name": "secondary_button",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "Outlined button. Leave empty to hide.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "parent_repeater": "field_aqua_home_hero_slides"
+                }
+            ]
+        },
+        {
+            "key": "field_aqua_home_hero_interval",
+            "label": "Autoplay Speed",
+            "name": "hero_interval",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "How long each slide is shown.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 30,
+                "class": "",
+                "id": ""
+            },
+            "default_value": 7,
+            "min": 3,
+            "max": 20,
+            "step": 1,
+            "placeholder": "",
+            "prepend": "",
+            "append": "seconds"
+        },
+        {
+            "key": "field_aqua_home_features_items",
+            "label": "Feature Cards",
+            "name": "features_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "White cards right under the slider. Looks best with 4 cards.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 4,
+            "collapsed": "field_aqua_home_features_items_title",
+            "button_label": "Add Feature",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_home_features_items_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 30,
+                        "class": "aqua-icon-select",
+                        "id": ""
+                    },
+                    "choices": {
+                        "fas fa-tint": "Water drop",
+                        "fas fa-hand-holding-water": "Hand with a water drop",
+                        "fas fa-truck": "Water tanker — delivery",
+                        "fas fa-shipping-fast": "Bottle on the move — fast delivery",
+                        "fas fa-home": "House",
+                        "fas fa-building": "Office building",
+                        "fas fa-snowflake": "Glass of ice water — cooling",
+                        "fas fa-fire": "Hot drink — hot water",
+                        "fas fa-filter": "Filter cartridge",
+                        "fas fa-flask": "Lab flask — water testing",
+                        "fas fa-vial": "Test tube",
+                        "fas fa-award": "Medal — award",
+                        "fas fa-certificate": "Quality certificate",
+                        "fas fa-shield-alt": "Shield — safety",
+                        "fas fa-leaf": "Leaf — eco friendly",
+                        "fas fa-recycle": "Recyclable bottle",
+                        "fas fa-calendar-check": "Calendar — subscription",
+                        "fas fa-clock": "Clock",
+                        "fas fa-headset": "Chat bubble — support",
+                        "fas fa-phone-alt": "Smartphone — call us",
+                        "fas fa-smile": "Smile — happy customers",
+                        "fas fa-users": "People",
+                        "fas fa-heart": "Heart",
+                        "fas fa-star": "Star",
+                        "fas fa-thumbs-up": "Thumbs up",
+                        "fas fa-map-marker-alt": "Map pin",
+                        "fas fa-wallet": "Wallet — prices",
+                        "fas fa-percent": "Price tag — discount",
+                        "fas fa-check-circle": "Check mark"
+                    },
+                    "default_value": "fas fa-tint",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_aqua_home_features_items"
+                },
+                {
+                    "key": "field_aqua_home_features_items_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 70,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Free Delivery",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_features_items"
+                },
+                {
+                    "key": "field_aqua_home_features_items_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Free same-day delivery on orders over $20.",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_home_features_items"
+                }
+            ]
         }
     ],
     "location": [
@@ -1533,5 +2169,5 @@
     "active": true,
     "description": "All homepage sections. Slider, About, Services, Stats and Price List are also reused on the inner pages.",
     "show_in_rest": 0,
-    "modified": 1794611828
+    "modified": 1794685087
 }

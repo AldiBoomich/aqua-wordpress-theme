@@ -8,6 +8,7 @@
  * --wobble rocks it after a tap; --paused stops the water off screen. liquid.js counter-rotates
  * __tilt, so the water stays level while the bottle moves.
  * Modifiers: --small, --family, --jug, --cooler (shapes). Grid: 160 × 320 units.
+ * v2 line style: 1.5px ink outlines (non-scaling), soft aqua water, no glare or gradients.
  */
 
 .bottle {
@@ -25,7 +26,7 @@
 	aspect-ratio: 1 / 2;
 	transform: rotate(var(--bottle-tilt));
 	transform-origin: 50% 93%; /* rocks on its base */
-	transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* springs back with a small overshoot */
+	transition: transform 0.9s var(--ease-out); /* settles back without overshoot (design system: no bounce) */
 }
 
 .bottle__body--wobble {
@@ -51,7 +52,7 @@
 	width: 58%;
 	height: 14px;
 	border-radius: 50%;
-	background: radial-gradient(closest-side, rgba(0, 20, 66, 0.24), rgba(0, 20, 66, 0));
+	background: radial-gradient(closest-side, rgb(14 42 59 / 0.16), rgb(14 42 59 / 0));
 	transform: translateX(-50%);
 }
 
@@ -80,7 +81,7 @@
 /* Far side of the surface, seen from slightly above: a lighter band behind the front wave. */
 .bottle__wave--back {
 	top: calc(var(--liquid-level) - 2.813%); /* 5 units higher + amplitude 4 */
-	background-color: #a6f1ff;
+	background-color: var(--bottle-water-back, rgb(0 209 249 / 0.14));
 	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 640' preserveAspectRatio='none'%3E%3Cpath d='M0 4q12-4 24 0t24 0V640H0z'/%3E%3C/svg%3E") 0 0 / 10% 100% repeat-x;
 	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 640' preserveAspectRatio='none'%3E%3Cpath d='M0 4q12-4 24 0t24 0V640H0z'/%3E%3C/svg%3E") 0 0 / 10% 100% repeat-x;
 	animation-name: aqua-bottle-roll-back;
@@ -90,7 +91,7 @@
 
 .bottle__wave--front {
 	top: calc(var(--liquid-level) - 1%); /* amplitude 3.2 / 320 */
-	background-color: #2bcff6;
+	background-color: var(--bottle-water, rgb(0 209 249 / 0.32));
 	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 640' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2q9-3.2 18 0t18 0V640H0z'/%3E%3C/svg%3E") 0 0 / 7.5% 100% repeat-x;
 	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 640' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2q9-3.2 18 0t18 0V640H0z'/%3E%3C/svg%3E") 0 0 / 7.5% 100% repeat-x;
 }
@@ -201,4 +202,25 @@
 	55% { transform: rotate(3.5deg); }
 	75% { transform: rotate(-1.5deg); }
 	100% { transform: rotate(0deg); }
+}
+
+/* ---------- v2 line style ---------- */
+.bottle {
+	color: var(--c-ink);
+}
+
+.bottle__sticker,
+.bottle__cap {
+	fill: var(--c-ground);
+}
+
+.bottle__mark {
+	stroke: var(--c-water);
+}
+
+.bottle__label {
+	fill: var(--c-ink);
+	font-family: var(--font-sans);
+	font-weight: var(--fw-medium);
+	letter-spacing: -0.02em;
 }

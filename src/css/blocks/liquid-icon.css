@@ -1,6 +1,7 @@
 /**
  * Block: liquid-icon
  * Icons with live water inside (markup: aqua_icon() in inc/icons.php).
+ * v2 line style: 1.5px ink outlines (non-scaling strokes), soft aqua water.
  *
  * Layers: __glass (empty vessel, SVG) → __water (HTML, masked to the vessel shape with --liquid-mask)
  * → __lines (outline and details, SVG) → __steam. Waves, bubbles and steam move only with
@@ -13,12 +14,12 @@
  */
 
 .liquid-icon {
-	--liquid-stroke: var(--aqua-secondary);
-	--liquid-front: var(--aqua-primary);
-	--liquid-back: var(--aqua-secondary);
-	--liquid-back-opacity: 0.35;
-	--liquid-glass: rgba(0, 209, 249, 0.08);
-	--liquid-solid: var(--aqua-white);
+	--liquid-stroke: var(--c-ink);
+	--liquid-front: rgb(0 209 249 / 0.42);
+	--liquid-back: var(--c-water);
+	--liquid-back-opacity: 0.18;
+	--liquid-glass: transparent;
+	--liquid-solid: var(--c-ground);
 	position: relative;
 	display: block;
 	flex-shrink: 0;
@@ -28,11 +29,12 @@
 }
 
 .liquid-icon--on-dark {
-	--liquid-stroke: rgba(255, 255, 255, 0.92);
-	--liquid-back: var(--aqua-white);
-	--liquid-back-opacity: 0.22;
-	--liquid-glass: rgba(255, 255, 255, 0.06);
-	--liquid-solid: var(--aqua-dark);
+	--liquid-stroke: var(--c-on-deep);
+	--liquid-front: rgb(0 209 249 / 0.55);
+	--liquid-back: var(--c-on-deep);
+	--liquid-back-opacity: 0.16;
+	--liquid-glass: transparent;
+	--liquid-solid: var(--c-deep);
 }
 
 .liquid-icon__glass,

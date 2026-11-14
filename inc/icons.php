@@ -1,6 +1,6 @@
 <?php
 /**
- * "Liquid" icon set: hand-drawn SVG icons (48×48 grid, 2px rounded strokes) with live water inside.
+ * "Liquid" icon set: hand-drawn SVG icons (48×48 grid, 1.5px rounded non-scaling strokes) with live water inside.
  *
  * Every icon has a vessel (the area that holds the water), an outline and optional details.
  * The water is two rolling waves + bubbles (assets/css/blocks/liquid-icon.css);
@@ -363,7 +363,8 @@ function aqua_icon( $value, $class = '' ) {
 	$cx     = (float) $icon['cx'];
 	$level  = (float) $icon['level'];
 	$bottom = (float) $icon['bottom'];
-	$stroke = ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+	// v2 line style: 1.5px at any rendered size.
+	$stroke = ' stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"';
 
 	$style = '--liquid-mask:' . aqua_svg_mask_url( '0 0 48 48', $icon['vessel'] ) . ';--liquid-cx:' . aqua_grid_pct( $cx, 48 ) . ';--liquid-level:' . aqua_grid_pct( $level, 48 );
 

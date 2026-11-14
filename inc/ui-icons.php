@@ -26,6 +26,8 @@ function aqua_ui_icons() {
 		'chevron'   => '<path d="m6.5 9.5 5.5 5.5 5.5-5.5"/>',
 		'arrow-up'  => '<path d="M12 19.25V4.75M6.25 10.5 12 4.75l5.75 5.75"/>',
 		'close'     => '<path d="m6.25 6.25 11.5 11.5M17.75 6.25 6.25 17.75"/>',
+		'pause'     => '<path d="M9 6.25v11.5M15 6.25v11.5"/>',
+		'play'      => '<path d="M8.75 6.1v11.8L18.25 12Z"/>',
 		'search'    => '<circle cx="10.75" cy="10.75" r="6.5"/><path d="m15.5 15.5 4.75 4.75"/>',
 		// Social (simplified line marks).
 		'facebook'  => '<path d="M14.75 3.75h-1.6a4 4 0 0 0-4 4v2.75H6.75v3.25h2.4v6.5h3.35v-6.5h2.6l.45-3.25H12.5V8.4c0-.6.45-1.05 1.05-1.05h1.2Z"/>',

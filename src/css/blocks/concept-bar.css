@@ -93,7 +93,11 @@
 	visibility: hidden;
 }
 
-/* Keep the page end readable above the pill. */
+/* Keep the first screen and the page end readable above the pill. */
+html:not(.concept-bar-closed) .has-concept-bar .water-hero {
+	padding-bottom: calc(var(--space-7) + 3.5rem);
+}
+
 .site-footer__bottom {
 	padding-bottom: calc(var(--space-6) + 3.5rem);
 }

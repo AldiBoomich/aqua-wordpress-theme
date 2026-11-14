@@ -1,0 +1,44 @@
+/**
+ * Block: numbers — four large figures. The label is the <dt> (read first), the figure the <dd>.
+ */
+.numbers {
+	padding-block: var(--section-y);
+	background: var(--c-surface);
+}
+
+.numbers__list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-8) var(--grid-gap);
+	margin: var(--space-9) 0 0;
+}
+
+.numbers__item {
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: flex-end;
+	gap: var(--space-4);
+	padding-top: var(--space-5);
+	border-top: 1px solid var(--c-line-strong);
+}
+
+.numbers__value {
+	margin: 0;
+	font-size: clamp(2.75rem, 1.2rem + 4.2vw, 5.25rem); /* "12,000+" fits a quarter of the 1440 grid */
+	font-weight: var(--fw-light);
+	line-height: 0.9;
+	letter-spacing: -0.045em;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.numbers__label {
+	max-width: 14rem;
+	color: var(--c-ink-muted);
+}
+
+@media (min-width: 62em) {
+	.numbers__list {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}

@@ -65,6 +65,7 @@ add_action( 'after_setup_theme', 'aqua_content_width', 0 );
 require get_template_directory() . '/inc/acf-helpers.php';
 require get_template_directory() . '/inc/assets.php';
 require get_template_directory() . '/inc/meta.php';
+require get_template_directory() . '/inc/media.php';
 require get_template_directory() . '/inc/portfolio.php';
 require get_template_directory() . '/inc/ui-icons.php';
 require get_template_directory() . '/inc/icons.php';

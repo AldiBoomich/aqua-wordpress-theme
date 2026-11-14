@@ -48,6 +48,7 @@ export function initMenuOverlay() {
 		outside.forEach( ( el ) => setInert( el, open ) );
 		toggle.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
 		toggle.setAttribute( 'aria-label', toggle.dataset[ open ? 'labelClose' : 'labelOpen' ] || '' );
+		document.dispatchEvent( new CustomEvent( 'aqua:menu', { detail: { open } } ) );
 
 		if ( open ) {
 			const first = overlay.querySelector( 'a[href]' );

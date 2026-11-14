@@ -29,7 +29,7 @@ add_filter( 'body_class', 'aqua_body_classes' );
  * @return bool
  */
 function aqua_has_page_head() {
-	return is_page_template( 'page-legal.php' );
+	return is_front_page() || is_page_template( 'page-legal.php' );
 }
 
 /**

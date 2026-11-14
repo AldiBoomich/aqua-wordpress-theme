@@ -977,6 +977,66 @@
             "placeholder": "Site notice",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_label_facts",
+            "label": "Facts Ribbon Name",
+            "name": "label_facts",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Screen readers: name of the sliding facts ribbon.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Key facts",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_pause",
+            "label": "Pause Button",
+            "name": "label_pause",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The small button on the facts ribbon.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Pause moving text",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_play",
+            "label": "Play Button",
+            "name": "label_play",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Same button while paused.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Play moving text",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -997,5 +1057,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794683778
+    "modified": 1794685087
 }

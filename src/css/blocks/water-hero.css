@@ -1,0 +1,205 @@
+/**
+ * Block: water-hero — the first screen of the homepage.
+ * __image: the LCP photo (always there: no JS, reduced motion, phones without WebGL);
+ * __canvas: the WebGL water laid over it (src/js/home/hero-water.js), fades in when the first frame is ready;
+ * __veil: soft light at the top and bottom keeps the header and the text readable over any photo;
+ * __drop / __ring: the opening drop (once per visit).
+ * The headline lines rise from masks on load; until the script runs they wait hidden (a CSS fallback shows them after 2.5 s).
+ * The text and buttons are visible from the first paint: Chrome does not count a full-screen photo as the LCP element,
+ * so the paragraph is the LCP — it must not wait for any animation.
+ */
+.water-hero {
+	position: relative;
+	isolation: isolate;
+	display: grid;
+	align-items: end;
+	min-height: 100svh;
+	padding: calc(var(--header-h) + var(--space-8)) 0 var(--space-7);
+	overflow: hidden;
+	color: var(--c-ink);
+}
+
+.water-hero__media {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: var(--c-surface);
+}
+
+.water-hero__media picture {
+	display: contents;
+}
+
+.water-hero__image,
+.water-hero__canvas {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.water-hero__canvas {
+	opacity: 0;
+	transition: opacity var(--dur-4) var(--ease-out);
+}
+
+.water-hero__canvas.is-ready {
+	opacity: 1;
+}
+
+.water-hero__veil {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: linear-gradient(180deg, rgb(247 249 250 / 0.7) 0%, rgb(247 249 250 / 0) 24%, rgb(247 249 250 / 0) 44%, rgb(247 249 250 / 0.88) 100%);
+}
+
+.water-hero__inner {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	column-gap: var(--grid-gap);
+	row-gap: var(--space-6);
+	align-items: end;
+}
+
+.water-hero__title {
+	grid-column: 1 / -1;
+	max-width: 11.5ch;
+	font-size: var(--fs-h1);
+	font-weight: var(--fw-light);
+	line-height: var(--lh-display);
+	letter-spacing: var(--ls-display);
+}
+
+.water-hero__aside {
+	grid-column: 1 / -1;
+	display: grid;
+	gap: var(--space-5);
+	max-width: 30rem;
+}
+
+.water-hero__text {
+	font-size: var(--fs-lead);
+	line-height: 1.4;
+	letter-spacing: -0.01em;
+}
+
+.water-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+}
+
+.water-hero__facts {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-4) var(--space-6);
+	margin-top: var(--space-3);
+	padding-top: var(--space-5);
+	border-top: 1px solid var(--c-line-strong);
+}
+
+.water-hero__fact-value {
+	display: block;
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+}
+
+.water-hero__fact-label {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+/* Opening drop (created by JS). */
+.water-hero__drop {
+	position: absolute;
+	z-index: 1;
+	width: 1.75rem;
+	height: 1.75rem;
+	margin: -0.875rem 0 0 -0.875rem;
+	color: var(--c-ink);
+	pointer-events: none;
+}
+
+.water-hero__drop .ui-icon {
+	width: 100%;
+	height: 100%;
+}
+
+.water-hero__drop .ui-icon__water {
+	stroke: var(--c-water);
+}
+
+.water-hero__ring {
+	position: absolute;
+	z-index: 1;
+	width: 18rem;
+	height: 18rem;
+	margin: -9rem 0 0 -9rem;
+	border: 1.5px solid rgb(14 42 59 / 0.35);
+	border-radius: 50%;
+	pointer-events: none;
+	transform: scale(0.05);
+	opacity: 0;
+	animation: aqua-ring 1.6s var(--ease-out) forwards;
+}
+
+.water-hero__ring + .water-hero__ring {
+	animation-delay: 0.18s;
+}
+
+@keyframes aqua-ring {
+	10% {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+		transform: scale(1);
+	}
+}
+
+/* Entrance: hidden until the script takes over; CSS shows them anyway after 2.5 s. */
+.js .water-hero__title,
+.js [data-hero-fade] {
+	opacity: 0;
+	animation: aqua-failsafe 0.6s var(--ease-out) 2.5s forwards;
+}
+
+.js .water-hero.is-ready .water-hero__title,
+.js .water-hero.is-ready [data-hero-fade] {
+	opacity: 1;
+	animation: none;
+}
+
+@keyframes aqua-failsafe {
+	to {
+		opacity: 1;
+	}
+}
+
+@media (min-width: 62em) {
+	.water-hero__title {
+		grid-column: 1 / span 8;
+	}
+
+	.water-hero__aside {
+		grid-column: 9 / span 4;
+		padding-bottom: var(--space-2);
+	}
+
+	.water-hero__facts {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js .water-hero__title,
+	.js [data-hero-fade] {
+		opacity: 1;
+		animation: none;
+	}
+}

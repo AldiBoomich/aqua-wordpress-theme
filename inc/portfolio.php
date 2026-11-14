@@ -39,6 +39,20 @@ function aqua_concept_bar_key() {
 }
 
 /**
+ * Body class while the notice is on (layout keeps room for it).
+ *
+ * @param array $classes Body classes.
+ * @return array
+ */
+function aqua_concept_bar_body_class( $classes ) {
+	if ( aqua_concept_bar_enabled() ) {
+		$classes[] = 'has-concept-bar';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'aqua_concept_bar_body_class' );
+
+/**
  * Before the first paint: hide the notice for visitors who closed it (no flash).
  */
 function aqua_concept_bar_head() {

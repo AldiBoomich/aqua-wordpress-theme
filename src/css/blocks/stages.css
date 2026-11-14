@@ -1,0 +1,254 @@
+/**
+ * Block: stages — "From source to glass".
+ * Default (phones, reduced motion, no JS): photos + a numbered list.
+ * .is-scene (desktop with motion, set by src/js/home/stages.js): one pinned screen — photo | filter column | the
+ * active stage; a drop travels down the column, clear water fills behind it, each stage's impurities dissolve.
+ */
+.stages {
+	padding-top: var(--section-y);
+	background: var(--c-surface);
+}
+
+.stages__head {
+	display: grid;
+	gap: var(--space-5);
+	padding-bottom: var(--space-8);
+}
+
+.stages__lead {
+	max-width: 34rem;
+	color: var(--c-ink-muted);
+	font-size: var(--fs-lead);
+	line-height: 1.45;
+}
+
+.stages__stage {
+	display: grid;
+	gap: var(--space-7);
+	padding-bottom: var(--section-y);
+}
+
+.stages__photos {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--grid-gap);
+}
+
+.stages__photo {
+	margin: 0;
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	border-radius: var(--radius-l);
+	background: var(--c-ground);
+}
+
+.stages__photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.stages__column,
+.stages__progress {
+	display: none;
+}
+
+.stages__item {
+	display: grid;
+	grid-template-columns: 3rem minmax(0, 1fr);
+	column-gap: var(--space-4);
+	padding-block: var(--space-5);
+	border-top: 1px solid var(--c-line-strong);
+}
+
+.stages__count {
+	grid-row: span 3;
+	font-variant-numeric: tabular-nums;
+}
+
+.stages__num {
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-light);
+	line-height: 1;
+	letter-spacing: -0.03em;
+}
+
+.stages__of {
+	display: none;
+	margin-left: var(--space-2);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-body);
+}
+
+.stages__title {
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+}
+
+.stages__text {
+	margin-top: var(--space-2);
+	max-width: 32rem;
+	color: var(--c-ink-muted);
+}
+
+.stages__detail {
+	margin-top: var(--space-3);
+	color: var(--c-action);
+	font-size: var(--fs-sm);
+	font-weight: var(--fw-medium);
+}
+
+/* Filter column drawing. */
+.stages__svg {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.stages__tube {
+	fill: none;
+	stroke: var(--c-ink);
+	stroke-width: 1.5;
+	vector-effect: non-scaling-stroke;
+}
+
+.stages__divider {
+	stroke: var(--c-line-strong);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.stages__water {
+	fill: rgb(116 128 112 / 0.2); /* untreated spring water: a little cloudy */
+}
+
+.stages__clear {
+	fill: rgb(0 209 249 / 0.24);
+	transform: scaleY(0);
+	transform-box: fill-box;
+	transform-origin: top;
+}
+
+.stages__dirt circle {
+	fill: var(--c-ink-muted);
+	opacity: 0.5;
+	transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+
+.stages__dirt.is-clean circle {
+	opacity: 0;
+	transform: translateY(-6px);
+}
+
+.stages__drop {
+	fill: var(--c-water);
+}
+
+.stages__tick {
+	fill: var(--c-ink-muted);
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: var(--fw-medium);
+	transition: fill var(--dur-2) var(--ease-ui);
+}
+
+.stages__tick.is-active {
+	fill: var(--c-ink);
+}
+
+/* ---------- Pinned scene ---------- */
+.stages.is-scene .stages__stage {
+	position: relative;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	column-gap: var(--grid-gap);
+	align-items: center;
+	height: 100svh;
+	padding-block: calc(var(--header-h) + var(--space-5)) var(--space-8);
+}
+
+.stages.is-scene .stages__photos {
+	position: relative;
+	grid-column: 1 / span 4;
+	grid-template-columns: 1fr;
+	height: min(68svh, 40rem);
+}
+
+.stages.is-scene .stages__photo {
+	position: absolute;
+	inset: 0;
+	aspect-ratio: auto;
+}
+
+.stages.is-scene .stages__photo--glass {
+	opacity: 0;
+}
+
+.stages.is-scene .stages__column {
+	display: block;
+	grid-column: 5 / span 3;
+	height: min(70svh, 42rem);
+}
+
+.stages.is-scene .stages__list {
+	display: grid;
+	grid-column: 8 / span 5;
+}
+
+/* All stages share one cell; only the active one shows (all stay readable to screen readers). */
+.stages.is-scene .stages__item {
+	display: block;
+	grid-area: 1 / 1;
+	padding: 0;
+	border: 0;
+	opacity: 0;
+	transform: translateY(1.5rem);
+	pointer-events: none;
+	transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+
+.stages.is-scene .stages__item.is-active {
+	opacity: 1;
+	transform: none;
+	pointer-events: auto;
+}
+
+.stages.is-scene .stages__count {
+	margin-bottom: var(--space-6);
+}
+
+.stages.is-scene .stages__num {
+	font-size: clamp(5rem, 2rem + 7vw, 10rem);
+	line-height: 0.85;
+	letter-spacing: -0.05em;
+}
+
+.stages.is-scene .stages__of {
+	display: inline;
+}
+
+.stages.is-scene .stages__title {
+	font-size: var(--fs-h3);
+}
+
+.stages.is-scene .stages__text {
+	font-size: var(--fs-lead);
+	line-height: 1.45;
+}
+
+.stages.is-scene .stages__progress {
+	display: block;
+	position: absolute;
+	left: var(--wrap-pad);
+	right: var(--wrap-pad);
+	bottom: var(--space-6);
+	height: 1px;
+	background: var(--c-line-strong);
+}
+
+.stages__progress-bar {
+	display: block;
+	height: 100%;
+	background: var(--c-ink);
+	transform: scaleX(0);
+	transform-origin: left;
+}

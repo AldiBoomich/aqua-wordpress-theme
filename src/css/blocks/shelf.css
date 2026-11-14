@@ -1,0 +1,209 @@
+/**
+ * Block: shelf — the bottles with prices.
+ * Default: the title on top, the bottles in a native horizontal scroller with snap points (phones, no JS, reduced motion).
+ * Desktop: the title on the left, the bottles on the right.
+ * .is-scene (desktop with motion, src/js/home/shelf.js): pinned; the title stays, the bottles slide past with the scroll.
+ */
+.shelf {
+	padding-block: var(--section-y);
+}
+
+.shelf__viewport {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: var(--wrap-pad);
+	scrollbar-width: none;
+}
+
+.shelf__viewport::-webkit-scrollbar {
+	display: none;
+}
+
+.shelf__track {
+	display: flex;
+	gap: var(--grid-gap);
+	width: max-content;
+	padding-inline: var(--wrap-pad);
+}
+
+.shelf__layout {
+	display: grid;
+	gap: var(--space-7);
+}
+
+.shelf__intro {
+	display: grid;
+	align-content: start;
+	gap: var(--space-5);
+	max-width: 30rem;
+	padding-inline: var(--wrap-pad);
+}
+
+.shelf__lead {
+	font-size: var(--fs-lead);
+	line-height: 1.45;
+}
+
+.shelf__note {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.shelf__item {
+	display: grid;
+	flex: none;
+	grid-template-rows: auto 1fr;
+	width: min(78vw, 22rem);
+	overflow: hidden;
+	border: 1px solid var(--c-line);
+	border-radius: var(--radius-l);
+	background: var(--c-surface-raised);
+	scroll-snap-align: start;
+}
+
+.shelf__bottle {
+	display: grid;
+	place-items: center;
+	height: 19rem;
+	padding: var(--space-6) 0 var(--space-4);
+	background: var(--c-surface);
+}
+
+.shelf__bottle .bottle {
+	height: 100%;
+}
+
+.shelf__image {
+	max-height: 100%;
+	width: auto;
+}
+
+.shelf__info {
+	display: grid;
+	align-content: start;
+	gap: var(--space-3);
+	padding: var(--space-5) var(--space-5) var(--space-6);
+}
+
+.shelf__volume {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+.shelf__title {
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+}
+
+.shelf__text {
+	color: var(--c-ink-muted);
+}
+
+.shelf__features li {
+	padding-block: 0.375rem;
+	border-top: 1px solid var(--c-line);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.shelf__buy {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+	margin-top: var(--space-3);
+}
+
+.shelf__amount {
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-light);
+	letter-spacing: -0.03em;
+	font-variant-numeric: tabular-nums;
+}
+
+.shelf__unit {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.shelf__progress {
+	display: none;
+}
+
+@media (min-width: 62em) {
+	.shelf__layout {
+		grid-template-columns: minmax(18rem, 30%) minmax(0, 1fr);
+		align-items: center;
+		gap: 0;
+	}
+
+	.shelf__intro {
+		padding-right: var(--space-8);
+	}
+
+	.shelf__track {
+		padding-left: 0;
+	}
+
+	.shelf__viewport {
+		scroll-padding-inline: 0;
+	}
+}
+
+/* ---------- Pinned scene ---------- */
+.shelf.is-scene {
+	padding-block: 0;
+}
+
+.shelf.is-scene .shelf__pin {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100svh;
+	padding-top: var(--header-h);
+}
+
+.shelf.is-scene .shelf__viewport {
+	overflow: hidden;
+	scroll-snap-type: none;
+}
+
+.shelf.is-scene .shelf__track {
+	will-change: transform;
+}
+
+.shelf.is-scene .shelf__item {
+	width: clamp(19rem, 24vw, 24rem);
+}
+
+.shelf.is-scene .shelf__progress {
+	display: block;
+	position: relative;
+	height: 1px;
+	margin-top: var(--space-7);
+}
+
+.shelf.is-scene .shelf__progress::before {
+	content: "";
+	position: absolute;
+	inset: 0 var(--wrap-pad);
+	background: var(--c-line-strong);
+}
+
+.shelf__progress-bar {
+	position: absolute;
+	inset: 0 var(--wrap-pad);
+	display: block;
+	background: var(--c-ink);
+	transform: scaleX(0);
+	transform-origin: left;
+}
+
+@media (min-width: 62em) {
+	.shelf__bottle {
+		height: clamp(16rem, 34svh, 22rem);
+	}
+}

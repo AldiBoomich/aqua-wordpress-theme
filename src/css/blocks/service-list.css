@@ -1,0 +1,97 @@
+/**
+ * Block: service-list — sticky title + photo, and an editorial list of services.
+ * Hover: a line draws along the bottom of the row; the liquid icon sloshes (liquid.js).
+ */
+.service-list {
+	padding-block: var(--section-y);
+}
+
+.service-list__grid {
+	display: grid;
+	gap: var(--space-8);
+}
+
+.service-list__aside {
+	display: grid;
+	align-content: start;
+	gap: var(--space-7);
+}
+
+.service-list__media {
+	margin: 0;
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	border-radius: var(--radius-l);
+	background: var(--c-surface);
+}
+
+.service-list__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.service-list__items {
+	border-top: 1px solid var(--c-line-strong);
+}
+
+.service-list__item {
+	position: relative;
+	display: grid;
+	grid-template-columns: 3rem minmax(0, 1fr);
+	column-gap: var(--space-5);
+	row-gap: var(--space-2);
+	padding-block: var(--space-6);
+	border-bottom: 1px solid var(--c-line);
+}
+
+.service-list__item::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 1px;
+	background: var(--c-ink);
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform var(--dur-3) var(--ease-out);
+}
+
+.service-list__item:hover::after {
+	transform: scaleX(1);
+	transform-origin: left;
+}
+
+.service-list__icon {
+	grid-row: span 2;
+	font-size: 3rem;
+}
+
+.service-list__title {
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+}
+
+.service-list__text {
+	max-width: 32rem;
+	color: var(--c-ink-muted);
+}
+
+@media (min-width: 62em) {
+	.service-list__grid {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+	}
+
+	.service-list__aside {
+		position: sticky;
+		top: calc(var(--header-h) + var(--space-6));
+		grid-column: 1 / span 5;
+		align-self: start;
+	}
+
+	.service-list__items {
+		grid-column: 7 / span 6;
+	}
+}

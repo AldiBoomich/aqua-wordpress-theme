@@ -1,18 +1,17 @@
 <?php
 /**
- * Homepage. The hero slider is printed in header.php.
- * All content is edited in Pages → Home (tabs: Slider, Features, About, Services, Stats, Pricing, Blog).
+ * Homepage: living-water hero → facts ribbon → story → from source to glass (7 stages) →
+ * bottles shelf → services → numbers → journal → order call.
+ *
+ * Content: Pages → Home (ACF "Homepage Content"). One template part per section in template-parts/home/.
  *
  * @package aqua
  */
 
 get_header();
 
-get_template_part( 'template-parts/sections/features' );
-get_template_part( 'template-parts/sections/about' );
-get_template_part( 'template-parts/sections/services' );
-get_template_part( 'template-parts/sections/stats' );
-get_template_part( 'template-parts/sections/pricing' );
-get_template_part( 'template-parts/sections/blog' );
+foreach ( array( 'hero', 'marquee', 'story', 'stages', 'shelf', 'services', 'numbers', 'journal', 'order' ) as $aqua_section ) {
+	get_template_part( 'template-parts/home/' . $aqua_section );
+}
 
 get_footer();

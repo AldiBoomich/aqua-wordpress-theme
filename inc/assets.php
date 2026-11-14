@@ -85,8 +85,6 @@ if ( ! defined( 'AQUA_FALLBACK_SIZE_ADJUST' ) ) {
  */
 function aqua_legacy_css_blocks() {
 	return array(
-		'liquid-icon',
-		'bottle',
 		'hero',
 		'page-banner',
 		'section-heading',
@@ -107,18 +105,21 @@ function aqua_legacy_css_blocks() {
  * Front-end styles and scripts.
  */
 function aqua_scripts() {
-	$uri  = get_template_directory_uri() . '/assets';
-	$deps = array();
+	$uri    = get_template_directory_uri() . '/assets';
+	$deps   = array();
+	$legacy = ! aqua_has_page_head(); // Rebuilt screens (home, legal…) need none of the old assets.
 
-	// Legacy (removed when the home and inner pages are rebuilt).
-	wp_enqueue_style( 'aqua-fontawesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css', array(), '5.15.4' );
-	wp_enqueue_style( 'aqua-animate', $uri . '/lib/animate/animate.min.css', array(), _S_VERSION );
-	wp_enqueue_style( 'aqua-bootstrap', $uri . '/css/bootstrap.min.css', array(), _S_VERSION );
-	wp_enqueue_style( 'aqua-legacy-base', $uri . '/css/base.css', array( 'aqua-bootstrap' ), _S_VERSION );
-	$deps[] = 'aqua-legacy-base';
-	foreach ( aqua_legacy_css_blocks() as $block ) {
-		wp_enqueue_style( 'aqua-block-' . $block, $uri . '/css/blocks/' . $block . '.css', array( 'aqua-legacy-base' ), _S_VERSION );
-		$deps[] = 'aqua-block-' . $block;
+	// Legacy (removed when the inner pages are rebuilt).
+	if ( $legacy ) {
+		wp_enqueue_style( 'aqua-fontawesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css', array(), '5.15.4' );
+		wp_enqueue_style( 'aqua-animate', $uri . '/lib/animate/animate.min.css', array(), _S_VERSION );
+		wp_enqueue_style( 'aqua-bootstrap', $uri . '/css/bootstrap.min.css', array(), _S_VERSION );
+		wp_enqueue_style( 'aqua-legacy-base', $uri . '/css/base.css', array( 'aqua-bootstrap' ), _S_VERSION );
+		$deps[] = 'aqua-legacy-base';
+		foreach ( aqua_legacy_css_blocks() as $block ) {
+			wp_enqueue_style( 'aqua-block-' . $block, $uri . '/css/blocks/' . $block . '.css', array( 'aqua-legacy-base' ), _S_VERSION );
+			$deps[] = 'aqua-block-' . $block;
+		}
 	}
 
 	// Theme build (loaded after the legacy files so the new design system wins).
@@ -130,9 +131,13 @@ function aqua_scripts() {
 	wp_enqueue_style( 'aqua-style', get_stylesheet_uri(), $deps, _S_VERSION );
 
 	// Legacy scripts.
-	wp_enqueue_script( 'aqua-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js', array(), '5.0.0', array( 'in_footer' => true, 'strategy' => 'defer' ) );
-	wp_enqueue_script( 'aqua-wow', $uri . '/lib/wow/wow.min.js', array(), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
-	wp_enqueue_script( 'aqua-legacy', $uri . '/js/theme.js', array( 'aqua-bootstrap', 'aqua-wow' ), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+	if ( $legacy ) {
+		wp_enqueue_script( 'aqua-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js', array(), '5.0.0', array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		wp_enqueue_script( 'aqua-wow', $uri . '/lib/wow/wow.min.js', array(), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		wp_enqueue_script( 'aqua-legacy', $uri . '/js/theme.js', array( 'aqua-bootstrap', 'aqua-wow' ), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+	}
+
+	// Liquid physics for the line icons and the bottles (still a plain script).
 	wp_enqueue_script( 'aqua-liquid', $uri . '/js/liquid.js', array(), _S_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 
 	// Theme module (deferred by nature; chunks load on demand).

@@ -118,9 +118,8 @@ $aqua_cta         = aqua_link(
 	</div>
 
 	<?php
-	if ( is_front_page() ) {
-		get_template_part( 'template-parts/sections/hero' );
-	} elseif ( ! aqua_has_page_head() ) {
+	// Pages not rebuilt yet still open with the old photo banner (the homepage hero is part of front-page.php).
+	if ( ! aqua_has_page_head() ) {
 		aqua_breadcrumb();
 	}
 	?>
