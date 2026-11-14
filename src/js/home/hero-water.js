@@ -1,29 +1,18 @@
 /**
- * Living water: a WebGL (OGL) layer over the hero photo. Loaded only on the "high" and "medium"
- * performance levels (src/js/perf.js); "low" keeps the photo (hero-intro.js).
+ * Living water: a WebGL (OGL) layer over the hero photo.
  *
- * Shader, one pass per pixel: the slope of the surface is computed analytically (the derivative of the
- * ambient swell and of each circular ripple is known in closed form), so there is no finite-difference
- * sampling. Only the active ripples are looped over (uCount ≤ 8) and a pixel outside a ripple's ring is
- * skipped before any exp / sin. The photo is refracted by the slope and gets a soft glint.
+ * The surface height is computed analytically in the fragment shader: a slow ambient swell plus up to
+ * 16 circular ripples (pointer moves, taps, the opening drop) — no frame buffers, so it runs on WebGL1.
+ * The photo is refracted by the slope of that surface and gets a soft specular glint.
  *
- * Budget:
- *  - render resolution: high = 1 device pixel per CSS pixel on desktop (≤ 1.5 on phones),
- *    medium = 0.7 (1 on phones); CSS stretches the canvas — the water is soft, the upscale does not show;
- *  - 30 fps while the water is at rest, 60 fps only while ripples are alive;
- *  - paused off screen, in a background tab and under the open mobile menu;
- *  - context loss is handled (photo shows through, the layer is rebuilt on restore);
- *    everything is released on pagehide and when the level drops to "low".
+ * Budget: canvas ≤ 1.5 device pixels per CSS pixel (1.25 on phones), rendering only while the hero is on
+ * screen and the tab is visible; the GL context is released on pagehide. Not started for reduced motion,
+ * Save-Data, or phones with few cores / little memory (the static photo stays).
  */
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
-import { ticker } from '../ticker.js';
-import { getPerf, onPerf, setRenderInfo } from '../perf.js';
-import { finePointer } from '../tokens.js';
-import { playIntro, initHeroStatic } from './hero-intro.js';
+import { reducedMotion, finePointer } from '../tokens.js';
 
-const MAX_RIPPLES = 8;
-const LIFE = 4; // seconds a ripple is kept
-const DECAY = '1.1'; // amplitude falloff per second (GLSL float literal)
+const MAX_RIPPLES = 16;
 
 const VERTEX = /* glsl */ `
 attribute vec2 uv;
@@ -34,14 +23,12 @@ void main() {
 	gl_Position = vec4(position, 0.0, 1.0);
 }`;
 
-// highp for positions and texture coordinates (phones need it at 1000+ px), mediump for colour.
 const FRAGMENT = /* glsl */ `
 precision highp float;
 uniform sampler2D tMap;
-uniform vec2 uRes;   // canvas size in CSS px
-uniform vec2 uImg;   // photo size in px
+uniform vec2 uRes;      // canvas size in CSS px
+uniform vec2 uImg;      // photo size in px
 uniform float uTime;
-uniform int uCount;  // active ripples
 uniform vec4 uRipples[${ MAX_RIPPLES }]; // x, y (CSS px, origin bottom-left), start time, strength
 varying vec2 vUv;
 
@@ -53,337 +40,255 @@ vec2 cover(vec2 uv) {
 	return (uv - 0.5) * s + 0.5;
 }
 
-void main() {
-	vec2 p = vUv * uRes;
-
-	// Ambient swell: d/dp of 0.45·sin(ax)·sin(by) + 0.25·sin(c).
-	float ax = p.x * 0.011 + uTime * 0.6;
-	float by = p.y * 0.015 - uTime * 0.45;
-	float c = 0.00475 * cos((p.x + p.y) * 0.019 - uTime * 0.8);
-	vec2 slope = vec2(0.00495 * cos(ax) * sin(by) + c, 0.00675 * sin(ax) * cos(by) + c);
-
-	// Ripples: h = 7·w·sin(k·x)·exp(-x²/9000)·exp(-decay·age), x = distance from the travelling ring.
+float surface(vec2 p) {
+	float h = 0.45 * sin(p.x * 0.011 + uTime * 0.6) * sin(p.y * 0.015 - uTime * 0.45);
+	h += 0.25 * sin((p.x + p.y) * 0.019 - uTime * 0.8);
 	for (int i = 0; i < ${ MAX_RIPPLES }; i++) {
-		if (i >= uCount) break;
 		vec4 r = uRipples[i];
 		float age = uTime - r.z;
-		float ring = age * 240.0;
-		vec2 q = p - r.xy;
-		float d2 = dot(q, q);
-		float lo = max(ring - 260.0, 0.0);
-		float hi = ring + 260.0;
-		if (d2 < lo * lo || d2 > hi * hi) continue; // outside the ring: nothing to add
-		float d = sqrt(d2) + 0.001;
-		float x = d - ring;
-		float k = x * 0.065;
-		float envelope = 7.0 * r.w * exp(-x * x / 9000.0 - age * ${ DECAY });
-		slope += (q / d) * envelope * (0.065 * cos(k) - (x / 4500.0) * sin(k));
+		if (r.w <= 0.0 || age < 0.0 || age > 5.0) continue;
+		float d = distance(p, r.xy);
+		float x = d - age * 240.0;                       // ring travels outward
+		float envelope = exp(-x * x / 9000.0) * exp(-age * 0.85) * r.w;
+		h += sin(x * 0.065) * envelope * 7.0;
 	}
-
-	vec2 uv = cover(vUv + slope * 16.0 / uRes);
-	mediump vec3 color = texture2D(tMap, uv).rgb;
-
-	mediump vec3 n = normalize(vec3(-slope * 1.3, 1.0));
-	mediump float glint = pow(max(dot(n, vec3(0.2933, 0.4190, 0.8381)), 0.0), 70.0);
-	gl_FragColor = vec4(color + glint * 0.32, 1.0);
-}`;
-
-/** Render scale (canvas pixels per CSS pixel) for a level. */
-function scaleFor( level ) {
-	const dpr = window.devicePixelRatio || 1;
-	const phone = ! window.matchMedia( '(min-width: 62em)' ).matches;
-	if ( 'medium' === level ) {
-		return phone ? Math.min( dpr, 1 ) : 0.7;
-	}
-	return phone ? Math.min( dpr, 1.5 ) : Math.min( dpr, 1 );
+	return h;
 }
 
-/**
- * Builds the WebGL layer. Throws when no hardware context is available.
- *
- * @param {Element}  hero      The hero section.
- * @param {Function} onRestore Called when a lost context comes back (the caller rebuilds the layer).
- */
-function createWater( hero, onRestore ) {
-	const media = hero.querySelector( '.water-hero__media' );
-	const image = hero.querySelector( '.water-hero__image' );
-	const canvas = document.createElement( 'canvas' );
-	const attributes = { alpha: false, depth: false, stencil: false, antialias: false, powerPreference: 'low-power', failIfMajorPerformanceCaveat: true };
-	// Create the context ourselves (OGL then reuses it): software renderers are refused here.
-	const context = canvas.getContext( 'webgl2', attributes ) || canvas.getContext( 'webgl', attributes );
-	if ( ! context ) {
-		throw new Error( 'no hardware WebGL' );
+void main() {
+	vec2 p = vUv * uRes;
+	float e = 1.5;
+	vec2 slope = vec2(
+		surface(p + vec2(e, 0.0)) - surface(p - vec2(e, 0.0)),
+		surface(p + vec2(0.0, e)) - surface(p - vec2(0.0, e))
+	) / (2.0 * e);
+
+	vec2 uv = cover(vUv + slope * 16.0 / uRes);
+	vec3 color = texture2D(tMap, uv).rgb;
+
+	vec3 n = normalize(vec3(-slope * 1.3, 1.0));
+	float glint = pow(max(dot(n, normalize(vec3(0.35, 0.5, 1.0))), 0.0), 70.0);
+	color += glint * 0.32;
+
+	gl_FragColor = vec4(color, 1.0);
+}`;
+
+/** Whether this device should run the shader. */
+function capable() {
+	if ( reducedMotion() ) {
+		return false;
+	}
+	const connection = navigator.connection;
+	if ( connection && connection.saveData ) {
+		return false;
+	}
+	if ( window.matchMedia( '(min-width: 62em)' ).matches ) {
+		return true;
+	}
+	const cores = navigator.hardwareConcurrency || 2;
+	const memory = navigator.deviceMemory || 4;
+	return cores >= 6 && memory >= 4;
+}
+
+/** The opening drop: a line drop falls and the water answers (rings in CSS when WebGL is off). */
+function playIntro( hero, x, y, onSplash ) {
+	// Decided synchronously in main.js (once per visit), so the headline can wait for the drop.
+	if ( ! hero.hasAttribute( 'data-intro-playing' ) ) {
+		return false;
 	}
 
-	const renderer = new Renderer( { canvas, dpr: scaleFor( getPerf() ), alpha: false, depth: false, antialias: false } );
+	const media = hero.querySelector( '.water-hero__media' );
+	const drop = document.createElement( 'span' );
+	drop.className = 'water-hero__drop';
+	drop.setAttribute( 'aria-hidden', 'true' );
+	drop.innerHTML =
+		'<svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 2.6c-3.3 4.2-6.6 8-6.6 11.6a6.6 6.6 0 0 0 13.2 0C18.6 10.6 15.3 6.8 12 2.6Z"/><path class="ui-icon__water" d="M7.7 14.6c1.45-.95 2.85-.95 4.3 0s2.85.95 4.3 0"/></svg>';
+	drop.style.left = `${ x }px`;
+	drop.style.top = `${ y }px`;
+	media.appendChild( drop );
+
+	const fall = drop.animate(
+		[
+			{ transform: `translateY(${ -y - 60 }px) scale(0.9)`, opacity: 0 },
+			{ transform: `translateY(${ -y * 0.4 }px) scale(1)`, opacity: 1, offset: 0.5 },
+			{ transform: 'translateY(0) scale(1, 1.1)', opacity: 1 },
+		],
+		{ duration: 750, easing: 'cubic-bezier(0.55, 0, 1, 0.45)', fill: 'forwards' }
+	);
+	fall.onfinish = () => {
+		drop.animate( [ { opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0.3, 0.1)' } ], { duration: 220, fill: 'forwards' } ).onfinish = () =>
+			drop.remove();
+		if ( ! onSplash() ) {
+			for ( let i = 0; i < 2; i++ ) {
+				const ring = document.createElement( 'span' );
+				ring.className = 'water-hero__ring';
+				ring.style.left = `${ x }px`;
+				ring.style.top = `${ y }px`;
+				media.appendChild( ring );
+				window.setTimeout( () => ring.remove(), 2200 );
+			}
+		}
+	};
+	return true;
+}
+
+export function initHeroWater() {
+	const hero = document.querySelector( '[data-water-hero]' );
+	const image = hero ? hero.querySelector( '.water-hero__image' ) : null;
+	if ( ! hero || ! image ) {
+		return;
+	}
+
+	const media = hero.querySelector( '.water-hero__media' );
+	const introPoint = () => {
+		const rect = media.getBoundingClientRect();
+		const wide = rect.width >= 992;
+		return { x: rect.width * ( wide ? 0.72 : 0.62 ), y: rect.height * ( wide ? 0.34 : 0.3 ) };
+	};
+
+	if ( ! capable() ) {
+		const point = introPoint();
+		playIntro( hero, point.x, point.y, () => false );
+		return;
+	}
+
+	const small = ! window.matchMedia( '(min-width: 62em)' ).matches;
+	let renderer;
+	try {
+		renderer = new Renderer( {
+			dpr: Math.min( window.devicePixelRatio || 1, small ? 1.25 : 1.5 ),
+			alpha: false,
+			antialias: false,
+			powerPreference: 'low-power',
+		} );
+	} catch ( error ) {
+		return; // No WebGL: the photo stays.
+	}
 	const gl = renderer.gl;
+	const canvas = gl.canvas;
 	canvas.className = 'water-hero__canvas';
 	canvas.setAttribute( 'aria-hidden', 'true' );
 
-	const slots = Array.from( { length: MAX_RIPPLES }, () => [ 0, 0, -10, 0 ] ); // plain arrays: OGL flattens them
-	const texture = new Texture( gl, { image, generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR } );
-	const geometry = new Triangle( gl );
+	// A plain Array of vec4s: OGL only uploads uniform arrays given as Array (flattened per frame).
+	const ripples = Array.from( { length: MAX_RIPPLES }, () => [ 0, 0, -10, 0 ] );
+	let next = 0;
+	const texture = new Texture( gl, { generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR } );
 	const program = new Program( gl, {
 		vertex: VERTEX,
 		fragment: FRAGMENT,
-		depthTest: false,
-		depthWrite: false,
 		uniforms: {
 			tMap: { value: texture },
 			uRes: { value: [ 1, 1 ] },
-			uImg: { value: [ image.naturalWidth || 1, image.naturalHeight || 1 ] },
+			uImg: { value: [ 1, 1 ] },
 			uTime: { value: 0 },
-			uCount: { value: 0 },
-			uRipples: { value: slots },
+			uRipples: { value: ripples },
 		},
 	} );
-	const mesh = new Mesh( gl, { geometry, program } );
+	const mesh = new Mesh( gl, { geometry: new Triangle( gl ), program } );
 
-	const started = window.performance.now();
-	const time = () => ( window.performance.now() - started ) / 1000;
-	const abort = new AbortController();
-	const listen = { signal: abort.signal };
-	let ripples = []; // { x, y, t, w }
+	const start = performance.now();
+	const now = () => ( performance.now() - start ) / 1000;
 	let size = { w: 1, h: 1 };
-	let onScreen = true;
-	let menuOpen = false;
-	let lost = false;
-	let running = false;
-	let shown = false;
-	let frameNo = 0;
 
 	const addRipple = ( x, y, strength ) => {
-		const ripple = { x, y: size.h - y, t: time(), w: strength }; // shader origin is bottom-left
-		if ( ripples.length < MAX_RIPPLES ) {
-			ripples.push( ripple );
-			return;
-		}
-		// Full: replace the faintest ripple, so strong ones (a click, the opening drop) never pop out.
-		const now = ripple.t;
-		let weakest = 0;
-		let min = Infinity;
-		ripples.forEach( ( r, i ) => {
-			const amplitude = r.w * Math.exp( -( now - r.t ) * parseFloat( DECAY ) );
-			if ( amplitude < min ) {
-				min = amplitude;
-				weakest = i;
-			}
-		} );
-		ripples[ weakest ] = ripple;
+		const r = ripples[ next ];
+		r[ 0 ] = x;
+		r[ 1 ] = size.h - y; // shader origin is bottom-left
+		r[ 2 ] = now();
+		r[ 3 ] = strength;
+		next = ( next + 1 ) % MAX_RIPPLES;
 	};
 
 	const resize = () => {
 		const rect = media.getBoundingClientRect();
-		size = { w: Math.max( 1, Math.round( rect.width ) ), h: Math.max( 1, Math.round( rect.height ) ) };
+		size = { w: Math.max( 1, rect.width ), h: Math.max( 1, rect.height ) };
 		renderer.setSize( size.w, size.h );
-		canvas.style.width = '';
-		canvas.style.height = ''; // sized by CSS (100% × 100%)
 		program.uniforms.uRes.value = [ size.w, size.h ];
-		setRenderInfo( `WebGL ${ canvas.width }×${ canvas.height } (×${ renderer.dpr } of CSS px)` );
 	};
 
-	const frame = () => {
-		const now = time();
-		ripples = ripples.filter( ( r ) => now - r.t < LIFE );
-		frameNo++;
-		// At rest the slow swell is drawn at 30 fps; ripples get every frame.
-		if ( ! ripples.length && shown && frameNo % 2 ) {
+	// Pointer: moving makes small rings (throttled), a press makes a big one.
+	let last = { x: -999, y: -999, t: 0 };
+	const local = ( event ) => {
+		const rect = media.getBoundingClientRect();
+		return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+	};
+	if ( finePointer() ) {
+		hero.addEventListener( 'pointermove', ( event ) => {
+			const p = local( event );
+			const t = now();
+			const moved = Math.hypot( p.x - last.x, p.y - last.y );
+			if ( t - last.t > 0.06 && moved > 22 ) {
+				addRipple( p.x, p.y, Math.min( 0.55, 0.18 + moved / 180 ) );
+				last = { x: p.x, y: p.y, t };
+			}
+		} );
+	}
+	hero.addEventListener( 'pointerdown', ( event ) => {
+		if ( event.target.closest( 'a, button' ) ) {
 			return;
 		}
-		ripples.forEach( ( r, i ) => {
-			const slot = slots[ i ];
-			slot[ 0 ] = r.x;
-			slot[ 1 ] = r.y;
-			slot[ 2 ] = r.t;
-			slot[ 3 ] = r.w;
-		} );
-		program.uniforms.uCount.value = ripples.length;
-		program.uniforms.uTime.value = now;
+		const p = local( event );
+		addRipple( p.x, p.y, 1.1 );
+	} );
+
+	// Render loop: only while visible.
+	let running = false;
+	let raf = 0;
+	let shown = false;
+	const frame = () => {
+		program.uniforms.uTime.value = now();
 		renderer.render( { scene: mesh } );
 		if ( ! shown ) {
 			shown = true;
 			canvas.classList.add( 'is-ready' );
 		}
+		raf = window.requestAnimationFrame( frame );
 	};
-
-	const update = () => {
-		const should = onScreen && ! document.hidden && ! menuOpen && ! lost;
-		if ( should === running ) {
+	const setRunning = ( on ) => {
+		if ( on === running ) {
 			return;
 		}
-		running = should;
-		if ( should ) {
-			ticker.add( frame );
+		running = on;
+		if ( on ) {
+			raf = window.requestAnimationFrame( frame );
 		} else {
-			ticker.remove( frame );
+			window.cancelAnimationFrame( raf );
 		}
 	};
 
-	// Pointer: moving leaves small rings (throttled), a press leaves a big one.
-	const local = ( event ) => {
-		const rect = media.getBoundingClientRect();
-		return { x: event.clientX - rect.left, y: event.clientY - rect.top };
-	};
-	let last = { x: -999, y: -999, t: 0 };
-	if ( finePointer() ) {
-		hero.addEventListener(
-			'pointermove',
-			( event ) => {
-				const p = local( event );
-				const t = time();
-				const moved = Math.hypot( p.x - last.x, p.y - last.y );
-				if ( t - last.t > 0.09 && moved > 28 ) {
-					addRipple( p.x, p.y, Math.min( 0.55, 0.18 + moved / 180 ) );
-					last = { x: p.x, y: p.y, t };
-				}
-			},
-			listen
-		);
-	}
-	hero.addEventListener(
-		'pointerdown',
-		( event ) => {
-			if ( ! event.target.closest( 'a, button' ) ) {
-				const p = local( event );
-				addRipple( p.x, p.y, 1.1 );
-			}
-		},
-		listen
-	);
-
-	const observer = new IntersectionObserver( ( entries ) => {
+	let onScreen = true;
+	new IntersectionObserver( ( entries ) => {
 		onScreen = entries[ 0 ].isIntersecting;
-		update();
+		setRunning( onScreen && ! document.hidden );
+	} ).observe( hero );
+	document.addEventListener( 'visibilitychange', () => setRunning( onScreen && ! document.hidden ) );
+	window.addEventListener( 'pagehide', () => {
+		setRunning( false );
+		const lose = gl.getExtension( 'WEBGL_lose_context' );
+		if ( lose ) {
+			lose.loseContext();
+		}
 	} );
-	observer.observe( hero );
-	document.addEventListener( 'visibilitychange', update, listen );
-	document.addEventListener(
-		'aqua:menu',
-		( event ) => {
-			menuOpen = !! ( event.detail && event.detail.open );
-			update();
-		},
-		listen
-	);
 
 	let resizeTimer = 0;
-	window.addEventListener(
-		'resize',
-		() => {
-			window.clearTimeout( resizeTimer );
-			resizeTimer = window.setTimeout( resize, 120 );
-		},
-		listen
-	);
-
-	canvas.addEventListener(
-		'webglcontextlost',
-		( event ) => {
-			event.preventDefault(); // allow a restore
-			lost = true;
-			canvas.classList.remove( 'is-ready' ); // the photo underneath shows through
-			update();
-		},
-		listen
-	);
-	canvas.addEventListener( 'webglcontextrestored', () => onRestore(), listen );
-
-	media.insertBefore( canvas, hero.querySelector( '.water-hero__veil' ) );
-	resize();
-	update();
-
-	return {
-		addRipple,
-		/** Apply the render scale of the current level. */
-		rescale() {
-			renderer.dpr = scaleFor( getPerf() );
-			resize();
-		},
-		destroy() {
-			abort.abort();
-			observer.disconnect();
-			window.clearTimeout( resizeTimer );
-			ticker.remove( frame );
-			running = false;
-			try {
-				gl.deleteTexture( texture.texture );
-				program.remove();
-				geometry.remove();
-				const lose = gl.getExtension( 'WEBGL_lose_context' );
-				if ( lose && ! lost ) {
-					lose.loseContext();
-				}
-			} catch ( error ) {
-				// The context is already gone.
-			}
-			canvas.remove();
-			setRenderInfo( '' );
-		},
-	};
-}
-
-export function initHeroWater( hero ) {
-	const image = hero.querySelector( '.water-hero__image' );
-	if ( ! image ) {
-		return;
-	}
-	let water = null;
-
-	const toStatic = () => {
-		if ( water ) {
-			water.destroy();
-			water = null;
-		}
-		initHeroStatic( hero );
-	};
-
-	const build = () => {
-		if ( water || 'low' === getPerf() ) {
-			return;
-		}
-		try {
-			water = createWater( hero, () => {
-				// Restored context: every GL resource is gone — rebuild the layer from scratch.
-				water.destroy();
-				water = null;
-				build();
-			} );
-		} catch ( error ) {
-			toStatic();
-			return;
-		}
-		hero.removeAttribute( 'data-static' );
-		playIntro( hero, ( x, y ) => {
-			if ( ! water ) {
-				return false;
-			}
-			water.addRipple( x, y, 2.2 );
-			return true;
-		} );
-	};
-
-	onPerf( ( level ) => {
-		if ( 'low' === level ) {
-			toStatic();
-		} else if ( water ) {
-			water.rescale();
-		}
-	} );
-
-	// Release the GPU when the page is put away; come back cleanly from the back/forward cache.
-	window.addEventListener( 'pagehide', () => {
-		if ( water ) {
-			water.destroy();
-			water = null;
-		}
-	} );
-	window.addEventListener( 'pageshow', ( event ) => {
-		if ( event.persisted ) {
-			build();
-		}
+	window.addEventListener( 'resize', () => {
+		window.clearTimeout( resizeTimer );
+		resizeTimer = window.setTimeout( resize, 100 );
 	} );
 
 	// Start once the photo (the texture) is decoded.
-	const ready = image.complete && image.naturalWidth ? Promise.resolve() : new Promise( ( resolve ) => image.addEventListener( 'load', resolve, { once: true } ) );
-	ready.then( () => ( image.decode ? image.decode().catch( () => {} ) : null ) ).then( build );
+	const begin = () => {
+		texture.image = image;
+		program.uniforms.uImg.value = [ image.naturalWidth || 1, image.naturalHeight || 1 ];
+		media.insertBefore( canvas, hero.querySelector( '.water-hero__veil' ) );
+		resize();
+		const point = introPoint();
+		playIntro( hero, point.x, point.y, () => {
+			addRipple( point.x, point.y, 2.2 );
+			return true;
+		} );
+		setRunning( onScreen && ! document.hidden );
+	};
+	const ready = image.complete && image.naturalWidth ? Promise.resolve() : new Promise( ( r ) => image.addEventListener( 'load', r, { once: true } ) );
+	ready.then( () => ( image.decode ? image.decode().catch( () => {} ) : null ) ).then( begin );
 }

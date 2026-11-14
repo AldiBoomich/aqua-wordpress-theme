@@ -131,7 +131,7 @@ $aqua_legal     = aqua_link(
 		<?php if ( $aqua_wordmark ) : ?>
 			<p class="site-footer__wordmark" aria-hidden="true">
 				<span class="site-footer__wordmark-outline"><?php echo esc_html( $aqua_wordmark ); ?></span>
-				<span class="site-footer__wordmark-water"><span class="site-footer__wordmark-text"><?php echo esc_html( $aqua_wordmark ); ?></span></span>
+				<span class="site-footer__wordmark-water"><?php echo esc_html( $aqua_wordmark ); ?></span>
 			</p>
 		<?php endif; ?>
 

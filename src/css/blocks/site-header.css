@@ -159,19 +159,12 @@
 		display: none;
 	}
 
-	/* Desktop, scrolled: a nearly opaque bar by default ("medium" / "low" performance levels: a blur over
-	   moving content is the most expensive thing a header can do without a GPU)… */
-	.site-header.is-scrolled {
-		background-color: rgb(247 249 250 / 0.94);
-	}
-
-	/* …and frosted glass only on the "high" level (hardware GPU, frames on time).
-	   Never on phones: a blurred header would become the containing block of fixed children.
+	/* Frosted glass only on desktop (on phones a blurred header breaks the fixed menu layer).
 	   slop-ok: K3 — requested in the brief; the only blurred surface, layered over real content. */
-	[data-perf="high"] .site-header.is-scrolled {
+	.site-header.is-scrolled {
 		background-color: rgb(247 249 250 / 0.78);
-		-webkit-backdrop-filter: saturate(1.6) blur(12px);
-		backdrop-filter: saturate(1.6) blur(12px);
+		-webkit-backdrop-filter: saturate(1.6) blur(18px);
+		backdrop-filter: saturate(1.6) blur(18px);
 	}
 }
 

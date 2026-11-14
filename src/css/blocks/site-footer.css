@@ -211,27 +211,18 @@
 	-webkit-text-stroke: 1px rgb(247 249 250 / 0.22);
 }
 
-/* Same text on top, filled with aqua. The fill level follows --fill (0 → 0.8, set by footer.js on scroll)
-   with two opposite transforms: the clipping box slides down, the text inside slides back up, so the
-   letters stay put and only the water line moves. Transform only: nothing is repainted while scrolling.
-   The box has a static wavy top edge (mask).
-   slop-ok: C6 — not decorative gradient text: the letters fill with water (the one motif of the site). */
+/* Same text on top, filled with aqua, masked by a wave whose level follows --fill
+   (mask image: transparent top half, solid bottom half with a wavy edge; 200% tall, so
+   position y = fill × 100% puts the surface at (1 − fill) of the height). Repaints only while scrolling.
+   slop-ok: C6 — not decorative gradient text: the letters fill with water (the site's one motif). */
 .site-footer__wordmark-water {
-	--shift: calc((1 - var(--fill, 0)) * 100%);
-	--wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' preserveAspectRatio='none'%3E%3Cpath d='M0 14Q50 0 100 14T200 14T300 14T400 14V400H0Z'/%3E%3C/svg%3E");
+	--wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' preserveAspectRatio='none'%3E%3Cpath d='M0 200Q50 186 100 200T200 200T300 200T400 200V400H0Z'/%3E%3C/svg%3E");
 
 	position: absolute;
 	inset: 0 var(--wrap-pad);
-	overflow: hidden;
 	color: var(--c-water);
-	transform: translate3d(0, var(--shift), 0);
-	-webkit-mask: var(--wave-mask) 0 0 / 50% 100% repeat-x;
-	mask: var(--wave-mask) 0 0 / 50% 100% repeat-x;
-}
-
-.site-footer__wordmark-text {
-	display: block;
-	transform: translate3d(0, calc(-1 * var(--shift)), 0);
+	-webkit-mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 100%) / 50% 200% repeat-x;
+	mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 100%) / 50% 200% repeat-x;
 }
 
 .site-footer__bottom {

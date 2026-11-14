@@ -1,9 +1,9 @@
 <?php
 /**
  * Home: "From source to glass" — the 7 purification stages.
- * Desktop on the "high" / "medium" performance levels: the scene is pinned and the stages follow the scroll:
- * a drop travels down a line-drawn filter column, the impurities of each stage dissolve, the spring photo
- * turns into the glass. Phones / "low" level / reduced motion / no JS: the same content as a plain numbered list.
+ * Desktop with motion: the scene is pinned and the stages follow the scroll: a drop travels down a
+ * line-drawn filter column, the impurities of each stage dissolve, the spring photo turns into the glass.
+ * Phones / reduced motion / no JS: the same content as a plain numbered list (src/js/home/stages.js).
  *
  * @package aqua
  */
@@ -82,39 +82,40 @@ $aqua_seg    = $aqua_height / $aqua_count;
 				</figure>
 			</div>
 
-			<?php // Filter column. The two things that move every frame (clear water, the drop) are HTML layers: transform only. ?>
 			<div class="stages__column" aria-hidden="true">
-				<div class="stages__figure">
-					<div class="stages__fill">
-						<span class="stages__clear" data-stages-clear></span>
+				<svg class="stages__svg" viewBox="0 0 160 560" preserveAspectRatio="xMidYMid meet" focusable="false">
+					<defs>
+						<clipPath id="stages-tube"><rect x="44" y="<?php echo (int) $aqua_top; ?>" width="72" height="<?php echo (int) $aqua_height; ?>" rx="36"/></clipPath>
+					</defs>
+					<g clip-path="url(#stages-tube)">
+						<rect class="stages__water" x="44" y="<?php echo (int) $aqua_top; ?>" width="72" height="<?php echo (int) $aqua_height; ?>"/>
+						<rect class="stages__clear" data-stages-clear x="44" y="<?php echo (int) $aqua_top; ?>" width="72" height="<?php echo (int) $aqua_height; ?>"/>
 						<?php
 						for ( $aqua_i = 0; $aqua_i < $aqua_count; $aqua_i++ ) :
-							$aqua_y0 = $aqua_i * $aqua_seg;
+							$aqua_y0 = $aqua_top + $aqua_i * $aqua_seg;
 							?>
-							<span class="stages__dirt" data-stages-dirt>
+							<g class="stages__dirt" data-stages-dirt>
 								<?php
 								for ( $aqua_d = 0; $aqua_d < 5 - min( 4, (int) floor( $aqua_i * 0.7 ) ); $aqua_d++ ) :
-									// Deterministic scatter (same on every load), in % of the tube.
-									$aqua_x = ( 12 + ( ( $aqua_i * 37 + $aqua_d * 23 ) % 48 ) ) / 72 * 100;
-									$aqua_y = ( $aqua_y0 + 12 + ( ( $aqua_i * 19 + $aqua_d * 29 ) % max( 8, (int) $aqua_seg - 24 ) ) ) / $aqua_height * 100;
-									$aqua_r = 2.8 + ( ( $aqua_i + $aqua_d ) % 3 );
+									// Deterministic scatter (same on every load).
+									$aqua_x = 56 + ( ( $aqua_i * 37 + $aqua_d * 23 ) % 48 );
+									$aqua_y = $aqua_y0 + 12 + ( ( $aqua_i * 19 + $aqua_d * 29 ) % max( 8, (int) $aqua_seg - 24 ) );
+									$aqua_r = 1.4 + ( ( $aqua_i + $aqua_d ) % 3 ) * 0.5;
 									?>
-									<i style="<?php echo esc_attr( sprintf( 'left:%.2f%%;top:%.2f%%;width:%.1fpx;height:%.1fpx', $aqua_x, $aqua_y, $aqua_r, $aqua_r ) ); ?>"></i>
+									<circle cx="<?php echo esc_attr( $aqua_x ); ?>" cy="<?php echo esc_attr( round( $aqua_y, 1 ) ); ?>" r="<?php echo esc_attr( $aqua_r ); ?>"/>
 								<?php endfor; ?>
-							</span>
+							</g>
 						<?php endfor; ?>
-						<span class="stages__drop" data-stages-drop></span>
-					</div>
-					<svg class="stages__svg" viewBox="0 0 160 560" focusable="false">
-						<rect class="stages__tube" x="44" y="<?php echo (int) $aqua_top; ?>" width="72" height="<?php echo (int) $aqua_height; ?>" rx="36"/>
-						<?php for ( $aqua_i = 1; $aqua_i < $aqua_count; $aqua_i++ ) : ?>
-							<line class="stages__divider" x1="44" x2="116" y1="<?php echo esc_attr( round( $aqua_top + $aqua_i * $aqua_seg, 1 ) ); ?>" y2="<?php echo esc_attr( round( $aqua_top + $aqua_i * $aqua_seg, 1 ) ); ?>"/>
-						<?php endfor; ?>
-						<?php for ( $aqua_i = 0; $aqua_i < $aqua_count; $aqua_i++ ) : ?>
-							<text class="stages__tick" data-stages-tick x="132" y="<?php echo esc_attr( round( $aqua_top + ( $aqua_i + 0.5 ) * $aqua_seg + 4, 1 ) ); ?>"><?php echo (int) ( $aqua_i + 1 ); ?></text>
-						<?php endfor; ?>
-					</svg>
-				</div>
+						<circle class="stages__drop" data-stages-drop cx="80" cy="<?php echo (int) $aqua_top; ?>" r="7"/>
+					</g>
+					<rect class="stages__tube" x="44" y="<?php echo (int) $aqua_top; ?>" width="72" height="<?php echo (int) $aqua_height; ?>" rx="36"/>
+					<?php for ( $aqua_i = 1; $aqua_i < $aqua_count; $aqua_i++ ) : ?>
+						<line class="stages__divider" x1="44" x2="116" y1="<?php echo esc_attr( round( $aqua_top + $aqua_i * $aqua_seg, 1 ) ); ?>" y2="<?php echo esc_attr( round( $aqua_top + $aqua_i * $aqua_seg, 1 ) ); ?>"/>
+					<?php endfor; ?>
+					<?php for ( $aqua_i = 0; $aqua_i < $aqua_count; $aqua_i++ ) : ?>
+						<text class="stages__tick" data-stages-tick x="132" y="<?php echo esc_attr( round( $aqua_top + ( $aqua_i + 0.5 ) * $aqua_seg + 4, 1 ) ); ?>"><?php echo (int) ( $aqua_i + 1 ); ?></text>
+					<?php endfor; ?>
+				</svg>
 			</div>
 
 			<ol class="stages__list">

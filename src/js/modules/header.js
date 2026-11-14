@@ -4,7 +4,6 @@
  * focus is inside the header, or the visitor prefers reduced motion.
  */
 import { reducedMotion } from '../tokens.js';
-import { ticker } from '../ticker.js';
 
 const HIDE_AFTER = 160; // px from the top before the header may hide
 const DELTA = 4; // ignore tiny scroll jitter
@@ -16,6 +15,7 @@ export function initHeader() {
 	}
 
 	let lastY = window.scrollY;
+	let queued = false;
 
 	const isLocked = () =>
 		reducedMotion() ||
@@ -24,6 +24,7 @@ export function initHeader() {
 		header.querySelector( '.is-open' );
 
 	const update = () => {
+		queued = false;
 		const y = Math.max( 0, window.scrollY );
 		header.classList.toggle( 'is-scrolled', y > 8 );
 
@@ -40,8 +41,16 @@ export function initHeader() {
 		}
 	};
 
-	// At most one update per frame, on the shared loop.
-	window.addEventListener( 'scroll', () => ticker.next( update ), { passive: true } );
+	window.addEventListener(
+		'scroll',
+		() => {
+			if ( ! queued ) {
+				queued = true;
+				window.requestAnimationFrame( update );
+			}
+		},
+		{ passive: true }
+	);
 
 	header.addEventListener( 'focusin', () => header.classList.remove( 'is-hidden' ) );
 	update();

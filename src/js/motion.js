@@ -1,37 +1,25 @@
 /**
- * Motion layer — its own chunk, loaded only on the "high" and "medium" performance levels
- * ("low" uses motion-lite.js and never downloads GSAP).
- *
- * - One loop: GSAP's ticker takes over the shared ticker (src/js/ticker.js); Lenis runs on it too.
- * - Lenis smooth scroll for mouse users, synced with ScrollTrigger.
- * - Reveals from data attributes, all transform / opacity only:
- *     data-reveal="lines"  — lines rise from masks. The text is split only when it comes into view and the
- *                            split is reverted when the animation ends (no extra spans left in the DOM);
+ * Motion layer (loaded as its own chunk on every page).
+ * - Lenis smooth scroll on devices with a mouse, synced with GSAP ScrollTrigger.
+ * - Reveals from data attributes:
+ *     data-reveal="lines"  — lines rise from masks (SplitText);
  *     data-reveal="fade"   — rise + fade (batched, staggered);
- *     data-reveal="image"  — the frame grows open while the photo settles (two opposite scales: no clip-path,
- *                            no repaint); on "high" the photo then drifts slightly with the scroll (parallax).
+ *     data-reveal="image"  — the frame opens (clip-path) while the photo settles, then drifts slightly (parallax).
  * - data-count — numbers count up once on view (the final value is printed by PHP).
  * - Homepage scenes: hero entrance, 7 stages (pinned), bottles shelf (horizontal).
- *
- * If the level drops while the page is open: "medium" removes the parallax, "low" also removes the
- * smooth scroll and un-pins the scenes (they fall back to their plain layouts).
+ * Reduced motion: no smooth scroll, no reveals, no scenes — content is simply there.
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import { EASE, finePointer, reducedMotion } from './tokens.js';
-import { ticker } from './ticker.js';
-import { getPerf, onPerf } from './perf.js';
 import { initStages } from './home/stages.js';
 import { initShelf } from './home/shelf.js';
 
 gsap.registerPlugin( ScrollTrigger, SplitText );
 
 let lenis = null;
-let lenisTick = null;
-let parallax = []; // scrubbed tweens ("high" only)
-let scenes = []; // { kill() } of the pinned scenes
 
 /** Smooth scroll for mouse users; paused while the full-screen menu is open. */
 function initLenis() {
@@ -40,56 +28,31 @@ function initLenis() {
 	}
 	lenis = new Lenis( { lerp: 0.1, anchors: { offset: -96 }, autoRaf: false } );
 	lenis.on( 'scroll', ScrollTrigger.update );
-	lenisTick = ( now ) => lenis.raf( now );
-	ticker.add( lenisTick );
+	gsap.ticker.add( ( time ) => lenis.raf( time * 1000 ) );
 	gsap.ticker.lagSmoothing( 0 );
-	document.addEventListener( 'aqua:menu', ( event ) => {
-		if ( lenis ) {
-			if ( event.detail && event.detail.open ) {
-				lenis.stop();
-			} else {
-				lenis.start();
-			}
-		}
-	} );
+	document.addEventListener( 'aqua:menu', ( event ) => ( event.detail && event.detail.open ? lenis.stop() : lenis.start() ) );
 	window.aquaLenis = lenis;
-}
-
-function killLenis() {
-	if ( ! lenis ) {
-		return;
-	}
-	ticker.remove( lenisTick );
-	lenis.destroy();
-	lenis = null;
-	delete window.aquaLenis;
-}
-
-/** Splits `target` into masked lines, plays them in, then restores the original markup. */
-function playLines( target, delay = 0 ) {
-	let split = null;
-	const finish = () => {
-		if ( split ) {
-			split.revert();
-			split = null;
-		}
-	};
-	split = SplitText.create( target, { type: 'lines', mask: 'lines', linesClass: 'split-line' } );
-	gsap.set( target, { autoAlpha: 1 } );
-	gsap.from( split.lines, { yPercent: 110, duration: 1.1, ease: EASE.out, stagger: 0.08, delay, onComplete: finish, onInterrupt: finish } );
 }
 
 /** Text lines rise from masks. Paragraph containers (WYSIWYG) are split per paragraph. */
 function initLines() {
 	document.querySelectorAll( '[data-reveal="lines"]' ).forEach( ( el ) => {
-		const inner = el.matches( 'h1, h2, h3, p' ) ? [ el ] : [ ...el.querySelectorAll( 'p, h2, h3, li' ) ];
-		const targets = inner.length ? inner : [ el ];
-		gsap.set( targets, { autoAlpha: 0 } ); // waits hidden; split only when it is about to be seen
-		ScrollTrigger.create( {
-			trigger: el,
-			start: 'top 88%',
-			once: true,
-			onEnter: () => targets.forEach( ( target, i ) => playLines( target, i * 0.12 ) ),
+		const targets = el.matches( 'h1, h2, h3, p' ) ? [ el ] : [ ...el.querySelectorAll( 'p, h2, h3, li' ) ];
+		( targets.length ? targets : [ el ] ).forEach( ( target ) => {
+			SplitText.create( target, {
+				type: 'lines',
+				mask: 'lines',
+				linesClass: 'split-line',
+				autoSplit: true,
+				onSplit: ( self ) =>
+					gsap.from( self.lines, {
+						yPercent: 110,
+						duration: 1.1,
+						ease: EASE.out,
+						stagger: 0.08,
+						scrollTrigger: { trigger: target, start: 'top 88%', once: true },
+					} ),
+			} );
 		} );
 	} );
 }
@@ -104,23 +67,25 @@ function initFades() {
 	ScrollTrigger.batch( items, {
 		start: 'top 90%',
 		once: true,
-		onEnter: ( batch ) => gsap.to( batch, { autoAlpha: 1, y: 0, duration: 1, ease: EASE.out, stagger: 0.08, overwrite: true, clearProps: 'transform' } ),
+		onEnter: ( batch ) => gsap.to( batch, { autoAlpha: 1, y: 0, duration: 1, ease: EASE.out, stagger: 0.08, overwrite: true } ),
 	} );
 }
 
-/** Photo frames grow open (frame scales up, photo scales down); on "high" the photo then drifts with the scroll. */
+/** Photo frames open up; the photo inside drifts a little slower than the page. */
 function initImages() {
 	document.querySelectorAll( '[data-reveal="image"]' ).forEach( ( frame ) => {
 		const img = frame.querySelector( 'img' );
-		const trigger = { trigger: frame, start: 'top 85%', once: true };
-		gsap.fromTo( frame, { scale: 0.86, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.4, ease: EASE.out, scrollTrigger: trigger, clearProps: 'transform' } );
-		if ( ! img ) {
-			return;
-		}
-		gsap.fromTo( img, { scale: 1.3 }, { scale: 1.06, duration: 1.6, ease: EASE.out, scrollTrigger: trigger } );
-		if ( 'high' === getPerf() ) {
-			parallax.push(
-				gsap.fromTo( img, { yPercent: -4 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true } } )
+		gsap.fromTo(
+			frame,
+			{ clipPath: 'inset(14% 10% 14% 10% round 28px)' },
+			{ clipPath: 'inset(0% 0% 0% 0% round 28px)', duration: 1.4, ease: EASE.out, scrollTrigger: { trigger: frame, start: 'top 85%', once: true } }
+		);
+		if ( img ) {
+			gsap.fromTo( img, { scale: 1.18 }, { scale: 1.06, duration: 1.6, ease: EASE.out, scrollTrigger: { trigger: frame, start: 'top 85%', once: true } } );
+			gsap.fromTo(
+				img,
+				{ yPercent: -4 },
+				{ yPercent: 4, ease: 'none', scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true } }
 			);
 		}
 	} );
@@ -135,8 +100,7 @@ function initCounters() {
 		}
 		const format = ( value ) => Math.round( value ).toLocaleString( 'en-US' );
 		const state = { value: 0 };
-		let shown = format( 0 );
-		el.textContent = shown;
+		el.textContent = format( 0 );
 		ScrollTrigger.create( {
 			trigger: el,
 			start: 'top 90%',
@@ -146,19 +110,13 @@ function initCounters() {
 					value: target,
 					duration: 1.8,
 					ease: 'power3.out',
-					onUpdate: () => {
-						const text = format( state.value );
-						if ( text !== shown ) {
-							shown = text;
-							el.textContent = text; // only when the visible number changes
-						}
-					},
+					onUpdate: () => ( el.textContent = format( state.value ) ),
 				} ),
 		} );
 	} );
 }
 
-/** Homepage hero: headline lines rise, then the facts. Waits for the opening drop. */
+/** Homepage hero: headline lines rise, then text, buttons and facts. Waits for the opening drop. */
 function initHeroEntrance() {
 	const hero = document.querySelector( '[data-water-hero]' );
 	if ( ! hero ) {
@@ -170,39 +128,15 @@ function initHeroEntrance() {
 
 	hero.classList.add( 'is-ready' );
 	if ( title ) {
-		let split = SplitText.create( title, { type: 'lines', mask: 'lines', linesClass: 'split-line' } );
-		const finish = () => {
-			if ( split ) {
-				split.revert();
-				split = null;
-			}
-		};
-		gsap.from( split.lines, { yPercent: 115, duration: 1.25, ease: EASE.out, stagger: 0.09, delay, onComplete: finish, onInterrupt: finish } );
+		SplitText.create( title, {
+			type: 'lines',
+			mask: 'lines',
+			linesClass: 'split-line',
+			autoSplit: true,
+			onSplit: ( self ) => gsap.from( self.lines, { yPercent: 115, duration: 1.25, ease: EASE.out, stagger: 0.09, delay } ),
+		} );
 	}
-	gsap.from( fades, { autoAlpha: 0, y: 22, duration: 1.1, ease: EASE.out, stagger: 0.1, delay: delay + 0.35, clearProps: 'transform' } );
-}
-
-function killParallax() {
-	parallax.forEach( ( tween ) => {
-		if ( tween.scrollTrigger ) {
-			tween.scrollTrigger.kill();
-		}
-		tween.kill();
-	} );
-	parallax = [];
-}
-
-/** The level only goes down: strip what the new level does not allow. */
-function applyLevel( level ) {
-	if ( 'high' !== level ) {
-		killParallax();
-	}
-	if ( 'low' === level ) {
-		killLenis();
-		scenes.forEach( ( scene ) => scene.kill() );
-		scenes = [];
-		ScrollTrigger.refresh();
-	}
+	gsap.from( fades, { autoAlpha: 0, y: 22, duration: 1.1, ease: EASE.out, stagger: 0.1, delay: delay + 0.35 } );
 }
 
 export function initMotion() {
@@ -215,15 +149,14 @@ export function initMotion() {
 		return;
 	}
 
-	ticker.adopt( gsap.ticker ); // from here on GSAP's ticker is the one loop
 	initLenis();
 	initHeroEntrance();
 	initLines();
 	initFades();
 	initImages();
 	initCounters();
-	scenes = [ initStages( gsap, ScrollTrigger ), initShelf( gsap, ScrollTrigger, () => lenis ) ].filter( Boolean );
-	onPerf( applyLevel );
+	initStages( gsap, ScrollTrigger );
+	initShelf( gsap, ScrollTrigger, () => lenis );
 
 	// Late layout changes (fonts, images) move trigger positions.
 	if ( document.fonts && document.fonts.ready ) {
