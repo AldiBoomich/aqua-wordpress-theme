@@ -1,6 +1,6 @@
 <?php
 /**
- * Template functions: body classes, page links and the inner page banner.
+ * Template functions: body classes, page links, page head helpers, pagination.
  *
  * @package aqua
  */
@@ -15,22 +15,9 @@ function aqua_body_classes( $classes ) {
 	if ( ! is_singular() ) {
 		$classes[] = 'hfeed';
 	}
-	if ( aqua_has_page_head() ) {
-		$classes[] = 'has-page-head';
-	}
 	return $classes;
 }
 add_filter( 'body_class', 'aqua_body_classes' );
-
-/**
- * Whether the screen starts with the new light page head (instead of the old dark photo banner).
- * Every screen is rebuilt in the v2 design now; kept until the old banner code is removed.
- *
- * @return bool
- */
-function aqua_has_page_head() {
-	return true;
-}
 
 /**
  * Splits a headline into words wrapped in masks, so the page head entrance (pure CSS) can raise
@@ -173,13 +160,13 @@ function aqua_legal_sections( $html ) {
 }
 
 /**
- * Header text tone at the very top of the screen: light text over the dark top sections
- * that are not rebuilt yet, dark text on the new light pages.
+ * Header text tone at the very top of the screen. Every page starts light (hero water photo or the light
+ * page head), so the text is dark; site-header.css also has --light-text for a page that opens on a dark photo.
  *
- * @return string 'light-text' or 'dark-text'.
+ * @return string 'dark-text' or 'light-text'.
  */
 function aqua_header_tone() {
-	return aqua_has_page_head() ? 'dark-text' : 'light-text';
+	return 'dark-text';
 }
 
 /**
@@ -225,7 +212,7 @@ function aqua_blog_url() {
 }
 
 /**
- * Title shown in the inner page banner.
+ * Default H1 of the page head (Page Head → Title, else the page / archive title).
  *
  * @return string
  */
@@ -245,68 +232,8 @@ function aqua_banner_title() {
 		return sprintf( 'Search: %s', get_search_query() );
 	}
 	if ( is_404() ) {
-		return aqua_field( 'error_title', 'Page Not Found' );
+		return aqua_field( 'error_title', 'Page not found' );
 	}
 	return get_bloginfo( 'name' );
 }
 
-/**
- * Background image of the inner page banner: page's own image → Header Settings → CSS default.
- *
- * @return string Image URL or an empty string (use the CSS default).
- */
-function aqua_banner_image_url() {
-	$object_id = is_home() ? (int) get_option( 'page_for_posts' ) : ( is_singular() ? get_queried_object_id() : 0 );
-
-	$image = $object_id ? aqua_field( 'banner_image', '', $object_id ) : '';
-	if ( ! $image ) {
-		$image = aqua_field( 'breadcrumb_image', '' );
-	}
-
-	return $image ? aqua_image_url( $image, '', 'full' ) : '';
-}
-
-/**
- * Inner page banner: title + breadcrumbs (block "page-banner").
- */
-function aqua_breadcrumb() {
-	$title  = aqua_banner_title();
-	$crumbs = array(
-		array(
-			'title' => 'Home',
-			'url'   => home_url( '/' ),
-		),
-	);
-
-	if ( is_singular( 'post' ) || is_archive() ) {
-		$crumbs[] = array(
-			'title' => 'Blog',
-			'url'   => aqua_blog_url(),
-		);
-	} elseif ( is_page() ) {
-		foreach ( array_reverse( get_post_ancestors( get_queried_object_id() ) ) as $ancestor_id ) {
-			$crumbs[] = array(
-				'title' => get_the_title( $ancestor_id ),
-				'url'   => get_permalink( $ancestor_id ),
-			);
-		}
-	}
-
-	$bg    = aqua_banner_image_url();
-	$style = $bg ? ' style="background-image: linear-gradient(rgba(0, 20, 66, 0.7), rgba(0, 20, 66, 0.7)), url(' . esc_url( $bg ) . ');"' : '';
-	?>
-	<section class="page-banner"<?php echo $style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- URL escaped above. ?>>
-		<div class="page-banner__inner">
-			<h1 class="page-banner__title wow fadeInDown" data-wow-delay="0.1s"><?php echo esc_html( $title ); ?></h1>
-			<nav aria-label="Breadcrumb">
-				<ol class="page-banner__crumbs wow fadeInDown" data-wow-delay="0.3s">
-					<?php foreach ( $crumbs as $crumb ) : ?>
-						<li class="page-banner__crumb"><a class="page-banner__link" href="<?php echo esc_url( $crumb['url'] ); ?>"><?php echo esc_html( $crumb['title'] ); ?></a></li>
-					<?php endforeach; ?>
-					<li class="page-banner__crumb page-banner__crumb--current" aria-current="page"><?php echo esc_html( $title ); ?></li>
-				</ol>
-			</nav>
-		</div>
-	</section>
-	<?php
-}

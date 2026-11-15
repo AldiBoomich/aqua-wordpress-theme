@@ -87,16 +87,26 @@ page → a light typographic page head; a blocking preloader → a short intro p
   a short list of key pages (and on the 404, one drop of living water).
 - **Pagination:** round 44px targets, Previous / Next, the current page filled with ink.
 - **Legal:** sticky numbered table of contents from the H2s + a 65ch reading column.
+- **Ledger:** facts or terms as an editorial list (title | text | short detail) on hairlines; no icons, no cards
+  (About: quality & eco; Products: delivery terms).
+- **Business panel:** the only deep-water panel above the footer (Service): title | text + light button, three points.
+- **Contact:** visible labels, 48px fields, 16px+ text, the error under its field and focus on the first error;
+  details as a list on hairlines; the map loads only on demand (rings on still water mark the place until then).
+- **Blog:** topic links (plain text, the current one underlined) → the first post large, then three columns;
+  a post: compact head (topic, date, reading time) → wide photo → prose → previous / next → more articles.
 
 ## Page structure
 - **Home:** hero (living water, one screen) → facts marquee → about (line-by-line statement, 15 years) →
   From source to glass (pinned, 7 stages) → bottles shelf (horizontal scroll) → services list → numbers →
   journal (1 large + 2 small) → final call to order → footer.
-- **About:** page head + photo → story → certificates and eco → short 7-stage version → numbers → call to order.
-- **Service:** page head → six services in detail → for business (cooler rental, invoices, manager) → call to order.
-- **Products:** page head → bottles with prices → cooler-rental note → call to order.
-- **Contact:** page head → form + contact cards + hours → map on demand.
-- **Blog / search / 404 / legal:** page head, editorial grid or reading column.
+- **About:** page head + spring photo → story (statement, text, portrait) → quality & eco ledger →
+  7 stages as a list (a hairline fills with water on scroll) → numbers → call to order.
+- **Service:** page head + office photo → six services with what is included → for business (deep panel) →
+  call to order.
+- **Products:** page head → the bottles shelf (same as the homepage, with the cooler-rental note) →
+  delivery terms ledger → call to order. A bottle's order button opens the contact form with that bottle as the subject.
+- **Contact:** page head with the phone → form beside the contact details and hours → map on demand.
+- **Blog / post / search / 404 / legal:** page head, editorial grid or reading column.
 
 ## Copy rules
 Plain, specific, sentence case. Buttons say what happens ("Order water", "Get a free quote").

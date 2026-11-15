@@ -1,7 +1,6 @@
 <?php
 /**
- * Site header: <head>, the fixed header bar and the full-screen mobile menu,
- * followed by the top section of the page (homepage hero / page banner while those are rebuilt).
+ * Site header: <head>, the fixed header bar and the full-screen mobile menu; opens <main>.
  *
  * Fields: Theme Settings → Header (logo, phone, button), Theme Settings → Labels.
  *
@@ -116,12 +115,5 @@ $aqua_cta         = aqua_link(
 			</div>
 		</div>
 	</div>
-
-	<?php
-	// Pages not rebuilt yet still open with the old photo banner (the homepage hero is part of front-page.php).
-	if ( ! aqua_has_page_head() ) {
-		aqua_breadcrumb();
-	}
-	?>
 
 	<main id="main" class="site-main">
