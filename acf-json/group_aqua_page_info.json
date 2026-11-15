@@ -16,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "<div class=\"aqua-hint\"><span>The main block of this page is shared with the homepage, so you only edit it once. Text added in the editor below appears under the block.<\/span><a class=\"button button-primary\" href=\"\">Edit Homepage Blocks<\/a><\/div>",
+            "message": "<div class=\"aqua-hint\"><span>Some blocks of this page are shared with the homepage (story, 7 stages, services, bottles and prices, numbers, the call to order), so you edit them once there. This page’s own texts are in the boxes below; the title, intro and photo are in Page Head.<\/span><a class=\"button button-primary\" href=\"\">Edit Homepage Blocks<\/a><\/div>",
             "new_lines": "",
             "esc_html": 0
         }
@@ -53,5 +53,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794348650
+    "modified": 1794778067
 }

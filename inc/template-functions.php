@@ -24,23 +24,12 @@ add_filter( 'body_class', 'aqua_body_classes' );
 
 /**
  * Whether the screen starts with the new light page head (instead of the old dark photo banner).
- * Grows as pages are rebuilt.
+ * Every screen is rebuilt in the v2 design now; kept until the old banner code is removed.
  *
  * @return bool
  */
 function aqua_has_page_head() {
-	if ( is_front_page() || is_page_template( 'page-legal.php' ) || is_404() || is_search() ) {
-		return true;
-	}
-	// Blog: posts page, archives, single posts.
-	if ( is_home() || is_archive() || is_singular( 'post' ) ) {
-		return true;
-	}
-	if ( is_page_template( array( 'page-about.php', 'page-service.php', 'page-products.php', 'page-contact.php' ) ) ) {
-		return true;
-	}
-	// Regular pages (default template). Template pages join as they are rebuilt.
-	return is_page() && ! is_page_template();
+	return true;
 }
 
 /**
