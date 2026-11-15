@@ -652,7 +652,7 @@
             "name": "stages_source_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Shown at the start of the scene (the spring).",
+            "instructions": "Shown at the start of the scene (the spring). Also the top photo of the About page when that page has none of its own.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -702,7 +702,7 @@
             "name": "stages_items",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Shown one by one while the visitor scrolls. The order of the rows is the order of the stages.",
+            "instructions": "On the homepage they appear one by one while the visitor scrolls; the About page lists them. The order of the rows is the order of the stages.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -897,7 +897,7 @@
             "name": "service_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Photo next to the list of services.",
+            "instructions": "Photo next to the list of services. Also the top photo of the Service page when that page has none of its own.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -922,7 +922,7 @@
             "name": "service_items",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "The first half is shown in the left column, the rest in the right column. Use an even number.",
+            "instructions": "Shown as a list beside the title on the homepage, and with “What’s included” on the Service page. Six services read best.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -1121,7 +1121,7 @@
             "name": "stats_items",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Dark section with animated numbers (homepage and Services page).",
+            "instructions": "Large numbers that count up once when they come into view (homepage and About page).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -1568,7 +1568,7 @@
                     "name": "link",
                     "aria-label": "",
                     "type": "url",
-                    "instructions": "Empty = Contact page.",
+                    "instructions": "Empty = the Contact page, with this bottle filled in as the subject of the message.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -2190,5 +2190,5 @@
     "active": true,
     "description": "All homepage sections. Slider, About, Services, Stats and Price List are also reused on the inner pages.",
     "show_in_rest": 0,
-    "modified": 1794777163
+    "modified": 1794778197
 }

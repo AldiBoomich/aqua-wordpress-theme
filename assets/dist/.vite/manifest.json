@@ -1,4 +1,13 @@
 {
+  "src/css/admin-icons.css": {
+    "file": "assets/admin-DIPW8oDW.css",
+    "name": "admin",
+    "names": [
+      "admin.css"
+    ],
+    "src": "src/css/admin-icons.css",
+    "isEntry": true
+  },
   "src/css/main.css": {
     "file": "assets/style-DIcc5rzv.css",
     "name": "style",

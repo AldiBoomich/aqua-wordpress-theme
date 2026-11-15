@@ -1,0 +1,6 @@
+/**
+ * Admin only: styles for the liquid icon previews in ACF icon fields (inc/admin.php).
+ * Tokens give the icons the same colours as on the site.
+ */
+@import "./tokens.css";
+@import "./blocks/liquid-icon.css";

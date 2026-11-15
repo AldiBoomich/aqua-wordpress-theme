@@ -92,8 +92,11 @@ function aqua_dashboard_widget_render() {
 function aqua_acf_admin_assets() {
 	$uri = get_template_directory_uri() . '/assets';
 	wp_enqueue_style( 'aqua-fontawesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css', array(), '5.15.4' );
-	wp_enqueue_style( 'aqua-liquid-icon', $uri . '/css/blocks/liquid-icon.css', array(), _S_VERSION );
-	wp_enqueue_style( 'aqua-acf-admin', $uri . '/admin/acf-admin.css', array( 'aqua-liquid-icon' ), _S_VERSION );
+	$icons_css = aqua_vite_url( 'src/css/admin-icons.css' ); // Liquid icon styles, built from src/ (Vite).
+	if ( $icons_css ) {
+		wp_enqueue_style( 'aqua-liquid-icon', $icons_css, array(), null );
+	}
+	wp_enqueue_style( 'aqua-acf-admin', $uri . '/admin/acf-admin.css', array(), _S_VERSION );
 	wp_enqueue_script( 'aqua-acf-icons', $uri . '/admin/acf-icons.js', array( 'acf-input' ), _S_VERSION, true );
 
 	$icons = array();

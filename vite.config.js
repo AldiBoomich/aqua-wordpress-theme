@@ -26,6 +26,7 @@ export default defineConfig( {
 			input: {
 				main: 'src/js/main.js',
 				style: 'src/css/main.css',
+				admin: 'src/css/admin-icons.css',
 			},
 		},
 	},
