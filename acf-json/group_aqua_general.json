@@ -1457,6 +1457,186 @@
             "placeholder": "Play moving text",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_topics",
+            "label": "Blog Topics",
+            "name": "label_topics",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Name of the row of category links on the blog (screen readers).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Topics",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_all_posts",
+            "label": "All Articles",
+            "name": "label_all_posts",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "First link in the row of categories.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "All articles",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_no_posts",
+            "label": "No Articles",
+            "name": "label_no_posts",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Empty blog or category.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 100,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "No articles here yet. Start from one of these pages.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_read_time",
+            "label": "Reading Time",
+            "name": "label_read_time",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "After the number of minutes on a post, e.g. “4 min read”.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "min read",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_tags",
+            "label": "Tags",
+            "name": "label_tags",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Label before the post tags.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Tags",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_post_nav",
+            "label": "Post Navigation",
+            "name": "label_post_nav",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Name of the previous \/ next links (screen readers).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "More from the journal",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_prev_post",
+            "label": "Previous Article",
+            "name": "label_prev_post",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 25,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Previous article",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_next_post",
+            "label": "Next Article",
+            "name": "label_next_post",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 25,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Next article",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_more_articles",
+            "label": "More Articles",
+            "name": "label_more_articles",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Heading of the related posts under a post.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "More articles",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -1477,5 +1657,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794769052
+    "modified": 1794776018
 }

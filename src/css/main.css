@@ -23,6 +23,8 @@
 @import "./blocks/service-list.css";
 @import "./blocks/numbers.css";
 @import "./blocks/journal.css";
+@import "./blocks/topics.css";
+@import "./blocks/post-nav.css";
 @import "./blocks/order-cta.css";
 @import "./blocks/legal.css";
 @import "./blocks/prose.css";

@@ -1,0 +1,88 @@
+/**
+ * Block: post-nav — previous / next article under a post: two quiet text links with the article titles.
+ * Block: post-tags — the tags of a post under the text.
+ */
+.post-nav__grid {
+	display: grid;
+	border-top: 1px solid var(--c-line);
+}
+
+.post-nav__link {
+	display: grid;
+	align-content: start;
+	gap: var(--space-2);
+	padding-block: var(--space-6);
+	color: var(--c-ink);
+	text-decoration: none;
+}
+
+.post-nav__link + .post-nav__link {
+	border-top: 1px solid var(--c-line);
+}
+
+.post-nav__label {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.post-nav__title {
+	justify-self: start;
+	max-width: 24ch;
+	font-size: var(--fs-h4);
+	line-height: var(--lh-snug);
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+	background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+	transition: background-size var(--dur-3) var(--ease-out);
+}
+
+.post-nav__link:hover {
+	color: var(--c-ink);
+}
+
+.post-nav__link:hover .post-nav__title {
+	background-size: 100% 1px;
+}
+
+@media (min-width: 48em) {
+	.post-nav__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+	}
+
+	.post-nav__link + .post-nav__link {
+		border-top: 0;
+	}
+
+	.post-nav__link--next {
+		grid-column: 2;
+		justify-items: end;
+		text-align: right;
+	}
+
+	.post-nav__link--next .post-nav__title {
+		justify-self: end;
+		background-position: 100% 100%;
+	}
+}
+
+.post-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-3) var(--space-5);
+	max-width: var(--measure);
+	margin-top: var(--space-8);
+}
+
+.post-tags__title {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+	font-weight: var(--fw-regular);
+}
+
+.post-tags__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3) var(--space-5);
+}

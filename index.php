@@ -1,6 +1,6 @@
 <?php
 /**
- * Fallback template — lists posts in the blog layout.
+ * Fallback template: the blog index: page head, topic links, post grid (template-parts/blog-index.php).
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -9,6 +9,6 @@
 
 get_header();
 
-get_template_part( 'template-parts/sections/blog' );
+get_template_part( 'template-parts/blog-index' );
 
 get_footer();

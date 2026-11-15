@@ -1,6 +1,6 @@
 <?php
 /**
- * Archives (categories, tags, dates, authors). The archive title is shown in the page banner.
+ * Archives (categories, tags, dates, authors): page head, topic links, post grid (template-parts/blog-index.php).
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -9,6 +9,6 @@
 
 get_header();
 
-get_template_part( 'template-parts/sections/blog' );
+get_template_part( 'template-parts/blog-index' );
 
 get_footer();

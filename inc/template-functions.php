@@ -32,6 +32,10 @@ function aqua_has_page_head() {
 	if ( is_front_page() || is_page_template( 'page-legal.php' ) || is_404() || is_search() ) {
 		return true;
 	}
+	// Blog: posts page, archives, single posts.
+	if ( is_home() || is_archive() || is_singular( 'post' ) ) {
+		return true;
+	}
 	// Regular pages (default template). Template pages join as they are rebuilt.
 	return is_page() && ! is_page_template();
 }
@@ -50,6 +54,22 @@ function aqua_title_words( $text ) {
 		$html[] = '<span class="page-head__word" style="--i:' . (int) $i . '"><span class="page-head__word-inner">' . esc_html( $word ) . '</span></span>';
 	}
 	return implode( ' ', $html );
+}
+
+/**
+ * Archive titles without the "Category:" / "Tag:" prefix (the page head says it plainly).
+ */
+add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+
+/**
+ * Reading time of a post in minutes (about 220 words a minute, at least 1).
+ *
+ * @param int|WP_Post|null $post Post (default: current).
+ * @return int
+ */
+function aqua_read_time( $post = null ) {
+	$words = str_word_count( wp_strip_all_tags( (string) get_post_field( 'post_content', $post ) ) );
+	return max( 1, (int) ceil( $words / 220 ) );
 }
 
 /**

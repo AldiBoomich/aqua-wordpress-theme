@@ -183,3 +183,23 @@
 	margin-top: var(--space-8);
 	font-size: var(--fs-ui);
 }
+
+/* Blog post: a wide photo above the column; the post navigation follows closely. */
+.page-body--post {
+	padding-bottom: var(--space-9);
+}
+
+.page-body__media--wide {
+	aspect-ratio: 3 / 2;
+}
+
+.page-body__media--wide .page-body__image {
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (min-width: 48em) {
+	.page-body__media--wide {
+		aspect-ratio: 16 / 9;
+	}
+}

@@ -128,3 +128,52 @@
 		column-gap: var(--space-5);
 	}
 }
+
+/* Blog index (--archive: the first card large, then three columns) and the related posts under a post (--row). */
+.journal--archive {
+	padding-top: 0;
+}
+
+@media (min-width: 48em) and (max-width: 61.99em) {
+	/* Two columns: the third related card would sit alone on its row. */
+	.journal__grid--row .journal-card:nth-child(3) {
+		display: none;
+	}
+}
+
+@media (min-width: 62em) {
+	.journal__grid--archive,
+	.journal__grid--row {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-rows: none;
+		row-gap: var(--space-8);
+	}
+
+	/* Related posts: as many columns as cards (a post with two neighbours shows two wide cards, not a gap). */
+	.journal__grid--row {
+		grid-template-columns: repeat(var(--cards, 3), minmax(0, 1fr));
+	}
+
+	.journal__grid--archive .journal-card:not(.journal-card--large),
+	.journal__grid--row .journal-card {
+		grid-column: auto;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.journal__grid--archive .journal-card--large {
+		grid-column: 1 / -1;
+		grid-row: auto;
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		align-items: end;
+		column-gap: var(--grid-gap);
+		padding-bottom: var(--space-8);
+		border-bottom: 1px solid var(--c-line);
+		border-radius: 0;
+	}
+
+	.journal__grid--archive .journal-card--large .journal-card__body {
+		display: grid;
+		gap: var(--space-4);
+		padding-bottom: var(--space-4);
+	}
+}

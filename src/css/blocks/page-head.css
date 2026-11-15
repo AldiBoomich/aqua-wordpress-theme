@@ -122,3 +122,15 @@
 		transform: translateY(110%);
 	}
 }
+
+/* A link inside the meta row (the topic of a post). */
+.page-head__meta-link {
+	color: var(--c-ink);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+
+.page-head__meta-link:hover {
+	color: var(--c-action);
+}

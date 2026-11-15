@@ -1,0 +1,39 @@
+/**
+ * Block: topics — the row of blog categories under the page head: plain text links on a hairline,
+ * the current one in ink with its underline drawn (no chips, no pills).
+ */
+.topics {
+	padding-bottom: var(--space-7);
+}
+
+.topics__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 var(--space-6);
+	padding-top: var(--space-3);
+	border-top: 1px solid var(--c-line);
+}
+
+.topics__link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem; /* 44px tap target */
+	color: var(--c-ink-muted);
+	font-size: var(--fs-ui);
+	font-weight: var(--fw-medium);
+	text-decoration: none;
+	background: linear-gradient(currentColor, currentColor) 0 calc(100% - 0.55rem) / 0 1px no-repeat;
+	transition:
+		color var(--dur-1) var(--ease-ui),
+		background-size var(--dur-2) var(--ease-out);
+}
+
+.topics__link:hover {
+	color: var(--c-ink);
+	background-size: 100% 1px;
+}
+
+.topics__link[aria-current] {
+	color: var(--c-ink);
+	background-size: 100% 1px;
+}
