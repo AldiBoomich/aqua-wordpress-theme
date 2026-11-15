@@ -75,8 +75,9 @@ $aqua_button = aqua_home_field( 'product_button_text', 'Order water' );
 				foreach ( $aqua_products as $aqua_item ) :
 					$aqua_shape    = aqua_bottle_shape( $aqua_item['bottle'] ?? 'auto', $aqua_item['volume'] ?? '' );
 					$aqua_features = aqua_lines( $aqua_item['features'] ?? '' );
-					$aqua_url      = ! empty( $aqua_item['link'] ) ? $aqua_item['link'] : aqua_page_url( 'contact' );
 					$aqua_name     = trim( ( $aqua_item['volume'] ?? '' ) . ' ' . ( $aqua_item['title'] ?? '' ) );
+					// No link of its own → the contact form, with this bottle filled in as the subject.
+					$aqua_url      = ! empty( $aqua_item['link'] ) ? $aqua_item['link'] : add_query_arg( 'product', rawurlencode( $aqua_name ), aqua_page_url( 'contact' ) );
 					?>
 					<li class="shelf__item">
 						<div class="shelf__bottle">

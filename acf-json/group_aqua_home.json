@@ -1033,6 +1033,27 @@
                     "placeholder": "",
                     "new_lines": "",
                     "parent_repeater": "field_aqua_home_service_items"
+                },
+                {
+                    "key": "field_aqua_home_service_items_details",
+                    "label": "What's Included",
+                    "name": "details",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "One point per line. Shown on the Service page only.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Same-day delivery when you order before 2 pm",
+                    "rows": 3,
+                    "new_lines": "",
+                    "parent_repeater": "field_aqua_home_service_items"
                 }
             ]
         },
@@ -2169,5 +2190,5 @@
     "active": true,
     "description": "All homepage sections. Slider, About, Services, Stats and Price List are also reused on the inner pages.",
     "show_in_rest": 0,
-    "modified": 1794685087
+    "modified": 1794777163
 }

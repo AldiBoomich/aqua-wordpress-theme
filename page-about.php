@@ -40,7 +40,37 @@ get_template_part(
 		'points' => false,
 	)
 );
-get_template_part( 'template-parts/inner/proof' );
+get_template_part(
+	'template-parts/inner/ledger',
+	null,
+	array(
+		'prefix' => 'proof',
+		'title'  => 'Proof in every bottle',
+		'text'   => 'Certificates, lab checks and reusable bottles. What we promise on the label, we can show on paper.',
+		'items'  => array(
+			array(
+				'title'  => 'ISO 22000 certified plant',
+				'text'   => 'Our food-safety system is audited every year, from the spring to the sealed cap.',
+				'detail' => 'Audited yearly',
+			),
+			array(
+				'title'  => 'Every batch lab-tested',
+				'text'   => 'An independent lab checks each batch for microbiology, minerals and taste before it leaves the plant.',
+				'detail' => '40+ markers',
+			),
+			array(
+				'title'  => 'Reusable 19 L bottles',
+				'text'   => 'Large bottles are washed, inspected and refilled. Worn ones are recycled into new bottles.',
+				'detail' => 'Up to 50 refills',
+			),
+			array(
+				'title'  => 'Cleaner delivery routes',
+				'text'   => 'Routes are planned to avoid empty runs, and our city vans are electric.',
+				'detail' => 'Electric city vans',
+			),
+		),
+	)
+);
 get_template_part( 'template-parts/home/stages', null, array( 'variant' => 'lite' ) );
 get_template_part( 'template-parts/home/numbers' );
 get_template_part( 'template-parts/home/order' );

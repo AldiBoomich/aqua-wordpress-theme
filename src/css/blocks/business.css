@@ -1,0 +1,96 @@
+/**
+ * Block: business — the offer for offices on the Service page: one deep-water panel
+ * (title | text + quote button), then three plain points on hairlines. The only deep panel above the footer.
+ */
+.business {
+	padding-bottom: var(--section-y);
+}
+
+.business__panel {
+	display: grid;
+	gap: var(--space-8);
+	padding: var(--space-8) var(--space-5);
+	border-radius: var(--radius-l);
+	background: var(--c-deep);
+	color: var(--c-on-deep);
+}
+
+.business__head {
+	display: grid;
+	gap: var(--space-6);
+}
+
+.business__title {
+	max-width: 14ch;
+	font-size: var(--fs-h2);
+	font-weight: var(--fw-light);
+	line-height: var(--lh-heading);
+	letter-spacing: var(--ls-heading);
+	text-wrap: balance;
+}
+
+.business__aside {
+	display: grid;
+	justify-items: start;
+	align-content: end;
+	gap: var(--space-6);
+}
+
+.business__text {
+	max-width: 30rem;
+	color: var(--c-on-deep-muted);
+	font-size: var(--fs-lead);
+	line-height: 1.45;
+	text-wrap: pretty;
+}
+
+.business__points {
+	display: grid;
+	gap: 0 var(--grid-gap);
+}
+
+.business__point {
+	display: grid;
+	align-content: start;
+	gap: var(--space-3);
+	padding-block: var(--space-5);
+	border-top: 1px solid var(--c-on-deep-line);
+}
+
+.business__point-title {
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+}
+
+.business__point-text {
+	max-width: 26rem;
+	color: var(--c-on-deep-muted);
+	text-wrap: pretty;
+}
+
+.business :focus-visible {
+	outline-color: var(--c-focus-on-deep);
+}
+
+@media (min-width: 48em) {
+	.business__panel {
+		padding: var(--space-9) var(--space-8);
+	}
+
+	.business__points {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 62em) {
+	.business__panel {
+		gap: var(--space-10);
+		padding: var(--space-10) var(--space-9);
+	}
+
+	.business__head {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		align-items: end;
+		column-gap: var(--grid-gap);
+	}
+}

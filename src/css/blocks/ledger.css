@@ -1,18 +1,18 @@
 /**
- * Block: proof — certificates, lab checks and eco facts (About) as an editorial ledger:
- * title | text | short fact, rows separated by hairlines. No icons, no cards.
+ * Block: ledger — facts or terms as an editorial list (About: quality & eco; Products: delivery terms):
+ * title | text | short detail, rows separated by hairlines. No icons, no cards.
  */
-.proof {
+.ledger {
 	padding-block: var(--section-y);
 }
 
-.proof__head {
+.ledger__head {
 	display: grid;
 	gap: var(--space-5);
 	padding-bottom: var(--space-8);
 }
 
-.proof__lead {
+.ledger__lead {
 	max-width: 34rem;
 	color: var(--c-ink-muted);
 	font-size: var(--fs-lead);
@@ -20,18 +20,18 @@
 	text-wrap: pretty;
 }
 
-.proof__list {
+.ledger__list {
 	border-bottom: 1px solid var(--c-line-strong);
 }
 
-.proof__item {
+.ledger__item {
 	display: grid;
 	gap: var(--space-3);
 	padding-block: var(--space-6);
 	border-top: 1px solid var(--c-line-strong);
 }
 
-.proof__name {
+.ledger__name {
 	font-size: var(--fs-h3);
 	font-weight: var(--fw-light);
 	line-height: var(--lh-heading);
@@ -39,13 +39,13 @@
 	text-wrap: balance;
 }
 
-.proof__text {
+.ledger__text {
 	max-width: 32rem;
 	color: var(--c-ink-muted);
 	text-wrap: pretty;
 }
 
-.proof__detail {
+.ledger__detail {
 	color: var(--c-action);
 	font-size: var(--fs-sm);
 	font-weight: var(--fw-medium);
@@ -53,36 +53,36 @@
 }
 
 @media (min-width: 62em) {
-	.proof__head {
+	.ledger__head {
 		grid-template-columns: repeat(12, minmax(0, 1fr));
 		align-items: end;
 		column-gap: var(--grid-gap);
 	}
 
-	.proof__title {
+	.ledger__title {
 		grid-column: 1 / span 7;
 	}
 
-	.proof__lead {
+	.ledger__lead {
 		grid-column: 8 / -1;
 	}
 
-	.proof__item {
+	.ledger__item {
 		grid-template-columns: repeat(12, minmax(0, 1fr));
 		align-items: baseline;
 		column-gap: var(--grid-gap);
 		padding-block: var(--space-7);
 	}
 
-	.proof__name {
+	.ledger__name {
 		grid-column: 1 / span 5;
 	}
 
-	.proof__text {
+	.ledger__text {
 		grid-column: 6 / span 5;
 	}
 
-	.proof__detail {
+	.ledger__detail {
 		grid-column: 11 / -1;
 		justify-self: end;
 		text-align: right;

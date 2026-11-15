@@ -1,0 +1,165 @@
+{
+    "key": "group_aqua_service",
+    "title": "Service Page",
+    "fields": [
+        {
+            "key": "field_aqua_service_tab_business",
+            "label": "For Business",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_service_business_title",
+            "label": "Title",
+            "name": "business_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Water for your office, sorted",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_service_business_text",
+            "label": "Text",
+            "name": "business_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "One plan for the whole office: coolers, bottles and a single monthly invoice.",
+            "rows": 3,
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_service_business_items",
+            "label": "Points",
+            "name": "business_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Three points read best. Empty = the default points.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 4,
+            "collapsed": "",
+            "button_label": "Add Point",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_service_business_item_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 35,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Free cooler rental",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_service_business_items"
+                },
+                {
+                    "key": "field_aqua_service_business_item_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 65,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Hot and cold coolers at no cost with a monthly plan of 4+ bottles.",
+                    "rows": 2,
+                    "new_lines": "",
+                    "parent_repeater": "field_aqua_service_business_items"
+                }
+            ]
+        },
+        {
+            "key": "field_aqua_service_business_button",
+            "label": "Button",
+            "name": "business_button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Empty = “Get a free quote” to the Contact page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-service.php"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794777164
+}

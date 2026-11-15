@@ -1637,6 +1637,26 @@
             "placeholder": "More articles",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_included",
+            "label": "Included",
+            "name": "label_included",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Name of the list of points under each service (screen readers).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "What’s included",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -1657,5 +1677,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794776018
+    "modified": 1794777164
 }

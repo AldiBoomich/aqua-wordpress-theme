@@ -1,0 +1,170 @@
+{
+    "key": "group_aqua_products",
+    "title": "Products Page",
+    "fields": [
+        {
+            "key": "field_aqua_products_tab_delivery",
+            "label": "Delivery Terms",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_products_delivery_title",
+            "label": "Title",
+            "name": "delivery_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "How delivery works",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_products_delivery_text",
+            "label": "Intro",
+            "name": "delivery_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Clear terms before you order. Questions? Call us, real people answer around the clock.",
+            "rows": 3,
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_products_delivery_items",
+            "label": "Terms",
+            "name": "delivery_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Zones, minimum order, times, deposit. Empty = the default terms.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 6,
+            "collapsed": "",
+            "button_label": "Add Term",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_products_delivery_item_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 30,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Delivery zones",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_products_delivery_items"
+                },
+                {
+                    "key": "field_aqua_products_delivery_item_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "We deliver across the city and to suburbs within 30 km.",
+                    "rows": 2,
+                    "new_lines": "",
+                    "parent_repeater": "field_aqua_products_delivery_items"
+                },
+                {
+                    "key": "field_aqua_products_delivery_item_detail",
+                    "label": "Detail",
+                    "name": "detail",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "A short fact on the right. Optional.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 20,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "30 km radius",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_products_delivery_items"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-products.php"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794777164
+}

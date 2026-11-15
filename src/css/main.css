@@ -19,9 +19,10 @@
 @import "./blocks/marquee.css";
 @import "./blocks/story.css";
 @import "./blocks/stages.css";
-@import "./blocks/proof.css";
+@import "./blocks/ledger.css";
 @import "./blocks/shelf.css";
 @import "./blocks/service-list.css";
+@import "./blocks/business.css";
 @import "./blocks/numbers.css";
 @import "./blocks/journal.css";
 @import "./blocks/topics.css";

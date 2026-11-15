@@ -95,3 +95,34 @@
 		grid-column: 7 / span 6;
 	}
 }
+
+/* --detailed (Service page): no photo beside the title; each service lists what is included. */
+.service-list__details {
+	grid-column: 2;
+	display: grid;
+	gap: var(--space-2);
+	margin-top: var(--space-3);
+	font-size: var(--fs-ui);
+}
+
+.service-list__detail {
+	position: relative;
+	padding-left: var(--space-5);
+	text-wrap: pretty;
+}
+
+/* A short hairline instead of a bullet. */
+.service-list__detail::before {
+	content: "";
+	position: absolute;
+	top: calc(0.8em - 0.5px);
+	left: 0;
+	width: 0.75rem;
+	border-top: 1px solid var(--c-ink-muted);
+}
+
+@media (min-width: 62em) {
+	.service-list--detailed .service-list__items {
+		grid-column: 6 / -1;
+	}
+}
