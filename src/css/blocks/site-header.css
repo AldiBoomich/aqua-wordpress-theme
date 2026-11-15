@@ -163,9 +163,27 @@
 	   slop-ok: K3 — requested in the brief; the only blurred surface, layered over real content. */
 	.site-header.is-scrolled {
 		background-color: rgb(247 249 250 / 0.78);
-		-webkit-backdrop-filter: saturate(1.6) blur(18px);
-		backdrop-filter: saturate(1.6) blur(18px);
+		-webkit-backdrop-filter: var(--header-glass);
+		backdrop-filter: var(--header-glass);
 	}
+
+	/* GPU warm-up (src/js/modules/header.js): the first frame of the glass makes the graphics card build the
+	   blur (a ~35 ms hitch on the first scroll). An invisible layer with the same filter does that while the
+	   page loads; at 0.2% opacity it changes no pixel, and it is removed after a few frames. */
+	.site-header__warm {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		opacity: 0.002;
+		pointer-events: none;
+		-webkit-backdrop-filter: var(--header-glass);
+		backdrop-filter: var(--header-glass);
+	}
+}
+
+:root {
+	--header-glass: saturate(1.6) blur(18px);
 }
 
 @media (min-width: 80em) {

@@ -5,7 +5,7 @@
  *
  * Messages in:  init { canvas, bitmap, dpr, width, height, epoch } · resize { width, height }
  *               ripple { x, y, strength, at } · run { on } · lose
- * Messages out: ready (first frame drawn) · failed (no WebGL here: the page keeps the photo)
+ * Messages out: ready { software } (first frame drawn) · failed (no WebGL here: the page keeps the photo)
  *
  * Clock: seconds since `epoch` (a performance.timeOrigin-based timestamp shared with the page), so
  * rings start exactly when the pointer event happened.
@@ -30,7 +30,7 @@ const frame = () => {
 	water.render( now() );
 	if ( ! shown ) {
 		shown = true;
-		self.postMessage( { type: 'ready' } );
+		self.postMessage( { type: 'ready', software: water.software } );
 	}
 	handle = schedule( frame );
 };

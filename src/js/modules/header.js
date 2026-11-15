@@ -54,4 +54,41 @@ export function initHeader() {
 
 	header.addEventListener( 'focusin', () => header.classList.remove( 'is-hidden' ) );
 	update();
+	warmGlass( header );
+}
+
+/**
+ * Builds the header glass on the graphics card before the first scroll (see .site-header__warm):
+ * only with hardware WebGL (reported by the hero water, event "aqua:gpu"), on desktop where the glass
+ * exists, and while the page is still at the top. Software rendering has nothing to warm up.
+ */
+function warmGlass( header ) {
+	document.addEventListener(
+		'aqua:gpu',
+		( event ) => {
+			if (
+				event.detail.software ||
+				reducedMotion() ||
+				header.classList.contains( 'is-scrolled' ) ||
+				! window.matchMedia( '(min-width: 62em)' ).matches
+			) {
+				return;
+			}
+			const layer = document.createElement( 'div' );
+			layer.className = 'site-header__warm';
+			layer.setAttribute( 'aria-hidden', 'true' );
+			layer.style.height = `${ header.getBoundingClientRect().height }px`;
+			document.body.appendChild( layer );
+			let frames = 0;
+			const tick = () => {
+				if ( ++frames < 12 ) {
+					window.requestAnimationFrame( tick );
+				} else {
+					layer.remove();
+				}
+			};
+			window.requestAnimationFrame( tick );
+		},
+		{ once: true }
+	);
 }

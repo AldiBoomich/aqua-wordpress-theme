@@ -17,7 +17,7 @@ const SLOPE_STEP = 3;
  * @param {HTMLCanvasElement|OffscreenCanvas} canvas
  * @param {{dpr: number, image: TexImageSource, width: number, height: number, flipY: boolean}} options
  *        flipY: false when the image is an ImageBitmap that is already flipped (UNPACK_FLIP_Y does not apply to it)
- * @return {{resize: Function, addRipple: Function, render: Function, lose: Function}|null} null without WebGL
+ * @return {{software: boolean, resize: Function, addRipple: Function, render: Function, lose: Function}|null} null without WebGL
  */
 export function createWaterRenderer( canvas, { dpr, image, width, height, flipY } ) {
 	let renderer;
@@ -30,6 +30,11 @@ export function createWaterRenderer( canvas, { dpr, image, width, height, flipY 
 	if ( ! gl ) {
 		return null;
 	}
+
+	// Software rasterisers (no hardware acceleration): the page uses this to skip GPU-only warm-ups.
+	const info = gl.getExtension( 'WEBGL_debug_renderer_info' );
+	const rendererName = info ? String( gl.getParameter( info.UNMASKED_RENDERER_WEBGL ) ) : '';
+	const software = /SwiftShader|Basic Render|llvmpipe|softpipe|Software/i.test( rendererName );
 
 	const texture = new Texture( gl, { image, flipY, generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR } );
 	// <img>: natural size (width is the layout size); ImageBitmap: width/height.
@@ -103,6 +108,7 @@ export function createWaterRenderer( canvas, { dpr, image, width, height, flipY 
 	resize( width, height );
 
 	return {
+		software,
 		resize,
 		/** x, y in CSS px from the top-left of the hero media; time in the renderer's clock (s). */
 		addRipple( x, y, strength, time ) {

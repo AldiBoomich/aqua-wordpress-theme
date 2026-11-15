@@ -85,6 +85,12 @@ function offscreenSupported() {
 	);
 }
 
+/**
+ * Tells the page whether WebGL runs on real graphics hardware (event "aqua:gpu", detail { software }),
+ * so GPU-only warm-ups (the header glass, src/js/modules/header.js) can be skipped on software rasterisers.
+ */
+const announceGpu = ( software ) => document.dispatchEvent( new CustomEvent( 'aqua:gpu', { detail: { software: !! software } } ) );
+
 /** Wall-clock timestamp (ms) shared by the page and the worker. */
 const stamp = () => performance.timeOrigin + performance.now();
 
@@ -105,6 +111,7 @@ function workerBackend( canvas, bitmap, dpr, size, epoch, onFail ) {
 			fail();
 		} else if ( data.type === 'ready' ) {
 			canvas.classList.add( 'is-ready' );
+			announceGpu( data.software );
 		}
 	} );
 	worker.postMessage( { type: 'init', canvas: offscreen, bitmap, dpr, width: size.w, height: size.h, epoch }, [ offscreen, bitmap ] );
@@ -132,6 +139,7 @@ async function mainBackend( canvas, image, dpr, size, epoch ) {
 		if ( ! shown ) {
 			shown = true;
 			canvas.classList.add( 'is-ready' );
+			announceGpu( water.software );
 		}
 		raf = window.requestAnimationFrame( frame );
 	};
