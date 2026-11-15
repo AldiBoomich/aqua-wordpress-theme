@@ -92,7 +92,6 @@ function aqua_legacy_css_blocks() {
 		'about',
 		'services',
 		'stats',
-		'pricing',
 		'blog',
 		'swipe',
 		'contact',

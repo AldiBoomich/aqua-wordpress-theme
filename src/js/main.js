@@ -8,8 +8,10 @@ import { initMenuOverlay } from './modules/menu-overlay.js';
 import { initFooter } from './modules/footer.js';
 import { initConceptBar } from './modules/concept-bar.js';
 import { initMarquee } from './modules/marquee.js';
+import { initGpu } from './modules/gpu.js';
 import { reducedMotion } from './tokens.js';
 
+initGpu();
 initHeader();
 initNav();
 initMenuOverlay();

@@ -37,6 +37,14 @@
 	backdrop-filter: var(--header-glass);
 }
 
+/* No hardware acceleration (html.no-gpu, src/js/modules/gpu.js): the blur would cost every scroll frame,
+   so the bar is solid there. */
+.no-gpu .site-header.is-scrolled {
+	background-color: var(--c-ground);
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
 /* Over the open full-screen menu the bar stays solid. */
 .has-menu-open .site-header {
 	--header-fg: var(--c-ink);
