@@ -99,6 +99,46 @@
             "new_lines": ""
         },
         {
+            "key": "field_aqua_footer_newsletter_placeholder",
+            "label": "Email Placeholder",
+            "name": "footer_newsletter_placeholder",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Hint text inside the email field. Leave empty to use the text from the Contact Form 7 form.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "60",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Your email for news & offers",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_footer_newsletter_button",
+            "label": "Button Text",
+            "name": "footer_newsletter_button",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Text on the sign-up button. Leave empty to use the text from the Contact Form 7 form.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "40",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Subscribe",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_aqua_footer_newsletter_hint",
             "label": "Form",
             "name": "",
@@ -466,5 +506,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794683777
+    "modified": 1794717570
 }

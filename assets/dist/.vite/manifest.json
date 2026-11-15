@@ -1,6 +1,6 @@
 {
   "src/css/main.css": {
-    "file": "assets/style-DvkdNw49.css",
+    "file": "assets/style-Dq9Ywx87.css",
     "name": "style",
     "names": [
       "style.css"
@@ -9,16 +9,28 @@
     "isEntry": true
   },
   "src/js/home/hero-water.js": {
-    "file": "assets/hero-water-D3ZEUM4a.js",
+    "file": "assets/hero-water-CZK1kKTx.js",
     "name": "hero-water",
     "src": "src/js/home/hero-water.js",
     "isDynamicEntry": true,
     "imports": [
       "src/js/main.js"
+    ],
+    "dynamicImports": [
+      "src/js/home/water-renderer.js"
+    ],
+    "assets": [
+      "assets/water.worker-Cw-AQB-c.js"
     ]
   },
+  "src/js/home/water-renderer.js": {
+    "file": "assets/water-renderer-CPtBdXBb.js",
+    "name": "water-renderer",
+    "src": "src/js/home/water-renderer.js",
+    "isDynamicEntry": true
+  },
   "src/js/main.js": {
-    "file": "assets/main-CiKDCD4X.js",
+    "file": "assets/main-CIWYKAx5.js",
     "name": "main",
     "src": "src/js/main.js",
     "isEntry": true,
@@ -28,7 +40,7 @@
     ]
   },
   "src/js/motion.js": {
-    "file": "assets/motion-DofwRgvF.js",
+    "file": "assets/motion-DsxgmnkM.js",
     "name": "motion",
     "src": "src/js/motion.js",
     "isDynamicEntry": true,

@@ -2,7 +2,7 @@
  * Block: stages — "From source to glass".
  * Default (phones, reduced motion, no JS): photos + a numbered list.
  * .is-scene (desktop with motion, set by src/js/home/stages.js): one pinned screen — photo | filter column | the
- * active stage; a drop travels down the column, clear water fills behind it, each stage's impurities dissolve.
+ * active stage; clear water fills the column, each stage's impurities dissolve.
  */
 .stages {
 	padding-top: var(--section-y);
@@ -138,10 +138,6 @@
 .stages__dirt.is-clean circle {
 	opacity: 0;
 	transform: translateY(-6px);
-}
-
-.stages__drop {
-	fill: var(--c-water);
 }
 
 .stages__tick {

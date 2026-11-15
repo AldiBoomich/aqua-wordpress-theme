@@ -34,6 +34,7 @@
 	position: absolute;
 	inset: 0 auto 0 0;
 	width: 200%;
+	max-width: none; /* base.css caps svg at 100%: the drifting layer must stay twice as wide */
 	height: 100%;
 	fill: var(--c-deep);
 	animation: aqua-footer-drift 18s linear infinite;
@@ -212,17 +213,18 @@
 }
 
 /* Same text on top, filled with aqua, masked by a wave whose level follows --fill
-   (mask image: transparent top half, solid bottom half with a wavy edge; 200% tall, so
-   position y = fill × 100% puts the surface at (1 − fill) of the height). Repaints only while scrolling.
+   (mask image: transparent top third, solid below a wavy edge; 300% tall, so position y = fill × 50% puts
+   the surface at (1 − fill) of the height; fill > 1 lifts the waves above the letters: fully filled).
+   Repaints only while scrolling.
    slop-ok: C6 — not decorative gradient text: the letters fill with water (the site's one motif). */
 .site-footer__wordmark-water {
-	--wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' preserveAspectRatio='none'%3E%3Cpath d='M0 200Q50 186 100 200T200 200T300 200T400 200V400H0Z'/%3E%3C/svg%3E");
+	--wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 600' preserveAspectRatio='none'%3E%3Cpath d='M0 200Q50 186 100 200T200 200T300 200T400 200V600H0Z'/%3E%3C/svg%3E");
 
 	position: absolute;
 	inset: 0 var(--wrap-pad);
 	color: var(--c-water);
-	-webkit-mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 100%) / 50% 200% repeat-x;
-	mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 100%) / 50% 200% repeat-x;
+	-webkit-mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 50%) / 50% 300% repeat-x;
+	mask: var(--wave-mask) var(--wave-x, 0%) calc(var(--fill, 0) * 50%) / 50% 300% repeat-x;
 }
 
 .site-footer__bottom {
@@ -255,7 +257,7 @@
 @media (min-width: 62em) {
 	.site-footer__top {
 		grid-template-columns: repeat(12, minmax(0, 1fr));
-		align-items: end;
+		align-items: start;
 	}
 
 	.site-footer__intro {
@@ -273,6 +275,6 @@
 	}
 
 	.site-footer__wordmark-water {
-		--fill: 0.62 !important;
+		--fill: 1.1 !important; /* the end state: filled to the brim */
 	}
 }

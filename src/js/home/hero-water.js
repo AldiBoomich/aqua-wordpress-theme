@@ -1,77 +1,19 @@
 /**
  * Living water: a WebGL (OGL) layer over the hero photo.
  *
- * The surface height is computed analytically in the fragment shader: a slow ambient swell plus up to
- * 16 circular ripples (pointer moves, taps, the opening drop) — no frame buffers, so it runs on WebGL1.
- * The photo is refracted by the slope of that surface and gets a soft specular glint.
+ * The surface is a slow ambient swell plus up to 16 circular ripples (pointer moves, taps, the opening
+ * drop); the photo is refracted by the slope of that surface and gets a soft specular glint
+ * (water-shader.js, drawn by water-renderer.js).
+ *
+ * Rendering runs in a worker on an OffscreenCanvas (water.worker.js), so the page's main thread never
+ * compiles shaders, uploads the photo or waits for a frame; this module only forwards pointer rings,
+ * size and visibility. Browsers without OffscreenCanvas WebGL / module workers render on the main thread.
  *
  * Budget: canvas ≤ 1.5 device pixels per CSS pixel (1.25 on phones), rendering only while the hero is on
  * screen and the tab is visible; the GL context is released on pagehide. Not started for reduced motion,
  * Save-Data, or phones with few cores / little memory (the static photo stays).
  */
-import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
 import { reducedMotion, finePointer } from '../tokens.js';
-
-const MAX_RIPPLES = 16;
-
-const VERTEX = /* glsl */ `
-attribute vec2 uv;
-attribute vec2 position;
-varying vec2 vUv;
-void main() {
-	vUv = uv;
-	gl_Position = vec4(position, 0.0, 1.0);
-}`;
-
-const FRAGMENT = /* glsl */ `
-precision highp float;
-uniform sampler2D tMap;
-uniform vec2 uRes;      // canvas size in CSS px
-uniform vec2 uImg;      // photo size in px
-uniform float uTime;
-uniform vec4 uRipples[${ MAX_RIPPLES }]; // x, y (CSS px, origin bottom-left), start time, strength
-varying vec2 vUv;
-
-// object-fit: cover
-vec2 cover(vec2 uv) {
-	float rs = uRes.x / uRes.y;
-	float ri = uImg.x / uImg.y;
-	vec2 s = rs > ri ? vec2(1.0, ri / rs) : vec2(rs / ri, 1.0);
-	return (uv - 0.5) * s + 0.5;
-}
-
-float surface(vec2 p) {
-	float h = 0.45 * sin(p.x * 0.011 + uTime * 0.6) * sin(p.y * 0.015 - uTime * 0.45);
-	h += 0.25 * sin((p.x + p.y) * 0.019 - uTime * 0.8);
-	for (int i = 0; i < ${ MAX_RIPPLES }; i++) {
-		vec4 r = uRipples[i];
-		float age = uTime - r.z;
-		if (r.w <= 0.0 || age < 0.0 || age > 5.0) continue;
-		float d = distance(p, r.xy);
-		float x = d - age * 240.0;                       // ring travels outward
-		float envelope = exp(-x * x / 9000.0) * exp(-age * 0.85) * r.w;
-		h += sin(x * 0.065) * envelope * 7.0;
-	}
-	return h;
-}
-
-void main() {
-	vec2 p = vUv * uRes;
-	float e = 1.5;
-	vec2 slope = vec2(
-		surface(p + vec2(e, 0.0)) - surface(p - vec2(e, 0.0)),
-		surface(p + vec2(0.0, e)) - surface(p - vec2(0.0, e))
-	) / (2.0 * e);
-
-	vec2 uv = cover(vUv + slope * 16.0 / uRes);
-	vec3 color = texture2D(tMap, uv).rgb;
-
-	vec3 n = normalize(vec3(-slope * 1.3, 1.0));
-	float glint = pow(max(dot(n, normalize(vec3(0.35, 0.5, 1.0))), 0.0), 70.0);
-	color += glint * 0.32;
-
-	gl_FragColor = vec4(color, 1.0);
-}`;
 
 /** Whether this device should run the shader. */
 function capable() {
@@ -132,6 +74,89 @@ function playIntro( hero, x, y, onSplash ) {
 	return true;
 }
 
+/** Can this browser render WebGL on an OffscreenCanvas inside a module worker? */
+function offscreenSupported() {
+	return (
+		typeof Worker === 'function' &&
+		typeof OffscreenCanvas === 'function' &&
+		typeof window.createImageBitmap === 'function' &&
+		'transferControlToOffscreen' in HTMLCanvasElement.prototype &&
+		typeof OffscreenCanvas.prototype.getContext === 'function'
+	);
+}
+
+/** Wall-clock timestamp (ms) shared by the page and the worker. */
+const stamp = () => performance.timeOrigin + performance.now();
+
+/**
+ * Worker backend: same interface as the main-thread one. Starts at once (no waiting for the worker),
+ * so the opening drop keeps its timing; if the worker reports it has no WebGL, onFail() is called.
+ */
+function workerBackend( canvas, bitmap, dpr, size, epoch, onFail ) {
+	const offscreen = canvas.transferControlToOffscreen();
+	const worker = new Worker( new URL( './water.worker.js', import.meta.url ), { type: 'module' } );
+	const fail = () => {
+		worker.terminate();
+		onFail();
+	};
+	worker.addEventListener( 'error', fail, { once: true } );
+	worker.addEventListener( 'message', ( { data } ) => {
+		if ( data.type === 'failed' ) {
+			fail();
+		} else if ( data.type === 'ready' ) {
+			canvas.classList.add( 'is-ready' );
+		}
+	} );
+	worker.postMessage( { type: 'init', canvas: offscreen, bitmap, dpr, width: size.w, height: size.h, epoch }, [ offscreen, bitmap ] );
+	return {
+		resize: ( w, h ) => worker.postMessage( { type: 'resize', width: w, height: h } ),
+		addRipple: ( x, y, strength, at ) => worker.postMessage( { type: 'ripple', x, y, strength, at } ),
+		run: ( on ) => worker.postMessage( { type: 'run', on } ),
+		lose: () => worker.postMessage( { type: 'lose' } ),
+	};
+}
+
+/** Main-thread backend (no OffscreenCanvas): the renderer chunk loads only here. */
+async function mainBackend( canvas, image, dpr, size, epoch ) {
+	const { createWaterRenderer } = await import( './water-renderer.js' );
+	const water = createWaterRenderer( canvas, { dpr, image, width: size.w, height: size.h, flipY: true } );
+	if ( ! water ) {
+		return null;
+	}
+	const now = () => ( stamp() - epoch ) / 1000;
+	let running = false;
+	let raf = 0;
+	let shown = false;
+	const frame = () => {
+		water.render( now() );
+		if ( ! shown ) {
+			shown = true;
+			canvas.classList.add( 'is-ready' );
+		}
+		raf = window.requestAnimationFrame( frame );
+	};
+	return {
+		resize: ( w, h ) => water.resize( w, h ),
+		addRipple: ( x, y, strength, at ) => water.addRipple( x, y, strength, ( at - epoch ) / 1000 ),
+		run: ( on ) => {
+			if ( on === running ) {
+				return;
+			}
+			running = on;
+			if ( on ) {
+				raf = window.requestAnimationFrame( frame );
+			} else {
+				window.cancelAnimationFrame( raf );
+			}
+		},
+		lose: () => {
+			window.cancelAnimationFrame( raf );
+			running = false;
+			water.lose();
+		},
+	};
+}
+
 export function initHeroWater() {
 	const hero = document.querySelector( '[data-water-hero]' );
 	const image = hero ? hero.querySelector( '.water-hero__image' ) : null;
@@ -153,57 +178,21 @@ export function initHeroWater() {
 	}
 
 	const small = ! window.matchMedia( '(min-width: 62em)' ).matches;
-	let renderer;
-	try {
-		renderer = new Renderer( {
-			dpr: Math.min( window.devicePixelRatio || 1, small ? 1.25 : 1.5 ),
-			alpha: false,
-			antialias: false,
-			powerPreference: 'low-power',
-		} );
-	} catch ( error ) {
-		return; // No WebGL: the photo stays.
-	}
-	const gl = renderer.gl;
-	const canvas = gl.canvas;
-	canvas.className = 'water-hero__canvas';
-	canvas.setAttribute( 'aria-hidden', 'true' );
-
-	// A plain Array of vec4s: OGL only uploads uniform arrays given as Array (flattened per frame).
-	const ripples = Array.from( { length: MAX_RIPPLES }, () => [ 0, 0, -10, 0 ] );
-	let next = 0;
-	const texture = new Texture( gl, { generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR } );
-	const program = new Program( gl, {
-		vertex: VERTEX,
-		fragment: FRAGMENT,
-		uniforms: {
-			tMap: { value: texture },
-			uRes: { value: [ 1, 1 ] },
-			uImg: { value: [ 1, 1 ] },
-			uTime: { value: 0 },
-			uRipples: { value: ripples },
-		},
-	} );
-	const mesh = new Mesh( gl, { geometry: new Triangle( gl ), program } );
-
-	const start = performance.now();
-	const now = () => ( performance.now() - start ) / 1000;
-	let size = { w: 1, h: 1 };
-
-	const addRipple = ( x, y, strength ) => {
-		const r = ripples[ next ];
-		r[ 0 ] = x;
-		r[ 1 ] = size.h - y; // shader origin is bottom-left
-		r[ 2 ] = now();
-		r[ 3 ] = strength;
-		next = ( next + 1 ) % MAX_RIPPLES;
+	const dpr = Math.min( window.devicePixelRatio || 1, small ? 1.25 : 1.5 );
+	const epoch = stamp();
+	const measure = () => {
+		const rect = media.getBoundingClientRect();
+		return { w: Math.max( 1, rect.width ), h: Math.max( 1, rect.height ) };
 	};
 
-	const resize = () => {
-		const rect = media.getBoundingClientRect();
-		size = { w: Math.max( 1, rect.width ), h: Math.max( 1, rect.height ) };
-		renderer.setSize( size.w, size.h );
-		program.uniforms.uRes.value = [ size.w, size.h ];
+	let water = null; // backend, once started
+	let onScreen = true;
+	const shouldRun = () => onScreen && ! document.hidden;
+
+	const addRipple = ( x, y, strength ) => {
+		if ( water ) {
+			water.addRipple( x, y, strength, stamp() );
+		}
 	};
 
 	// Pointer: moving makes small rings (throttled), a press makes a big one.
@@ -215,7 +204,7 @@ export function initHeroWater() {
 	if ( finePointer() ) {
 		hero.addEventListener( 'pointermove', ( event ) => {
 			const p = local( event );
-			const t = now();
+			const t = ( stamp() - epoch ) / 1000;
 			const moved = Math.hypot( p.x - last.x, p.y - last.y );
 			if ( t - last.t > 0.06 && moved > 22 ) {
 				addRipple( p.x, p.y, Math.min( 0.55, 0.18 + moved / 180 ) );
@@ -231,63 +220,72 @@ export function initHeroWater() {
 		addRipple( p.x, p.y, 1.1 );
 	} );
 
-	// Render loop: only while visible.
-	let running = false;
-	let raf = 0;
-	let shown = false;
-	const frame = () => {
-		program.uniforms.uTime.value = now();
-		renderer.render( { scene: mesh } );
-		if ( ! shown ) {
-			shown = true;
-			canvas.classList.add( 'is-ready' );
-		}
-		raf = window.requestAnimationFrame( frame );
-	};
-	const setRunning = ( on ) => {
-		if ( on === running ) {
-			return;
-		}
-		running = on;
-		if ( on ) {
-			raf = window.requestAnimationFrame( frame );
-		} else {
-			window.cancelAnimationFrame( raf );
-		}
-	};
-
-	let onScreen = true;
+	// Render only while visible.
 	new IntersectionObserver( ( entries ) => {
 		onScreen = entries[ 0 ].isIntersecting;
-		setRunning( onScreen && ! document.hidden );
-	} ).observe( hero );
-	document.addEventListener( 'visibilitychange', () => setRunning( onScreen && ! document.hidden ) );
-	window.addEventListener( 'pagehide', () => {
-		setRunning( false );
-		const lose = gl.getExtension( 'WEBGL_lose_context' );
-		if ( lose ) {
-			lose.loseContext();
+		if ( water ) {
+			water.run( shouldRun() );
 		}
-	} );
+	} ).observe( hero );
+	document.addEventListener( 'visibilitychange', () => water && water.run( shouldRun() ) );
+	window.addEventListener( 'pagehide', () => water && water.lose() );
 
 	let resizeTimer = 0;
 	window.addEventListener( 'resize', () => {
 		window.clearTimeout( resizeTimer );
-		resizeTimer = window.setTimeout( resize, 100 );
+		resizeTimer = window.setTimeout( () => {
+			if ( water ) {
+				const size = measure();
+				water.resize( size.w, size.h );
+			}
+		}, 100 );
 	} );
 
-	// Start once the photo (the texture) is decoded.
-	const begin = () => {
-		texture.image = image;
-		program.uniforms.uImg.value = [ image.naturalWidth || 1, image.naturalHeight || 1 ];
+	const makeCanvas = () => {
+		const canvas = document.createElement( 'canvas' );
+		canvas.className = 'water-hero__canvas';
+		canvas.setAttribute( 'aria-hidden', 'true' );
+		const size = measure();
+		canvas.width = Math.round( size.w * dpr );
+		canvas.height = Math.round( size.h * dpr );
 		media.insertBefore( canvas, hero.querySelector( '.water-hero__veil' ) );
-		resize();
+		return canvas;
+	};
+
+	const startMain = async () => {
+		const canvas = makeCanvas();
+		water = await mainBackend( canvas, image, dpr, measure(), epoch );
+		if ( ! water ) {
+			canvas.remove(); // No WebGL: the photo stays.
+		}
+		return water;
+	};
+
+	// Start once the photo (the texture) is decoded.
+	const begin = async () => {
+		let bitmap = null;
+		if ( offscreenSupported() ) {
+			// Flipped here: UNPACK_FLIP_Y does not apply to ImageBitmap uploads.
+			bitmap = await window.createImageBitmap( image, { imageOrientation: 'flipY' } ).catch( () => null );
+		}
+		if ( bitmap ) {
+			const canvas = makeCanvas();
+			water = workerBackend( canvas, bitmap, dpr, measure(), epoch, () => {
+				// The worker has no WebGL: a transferred canvas cannot get a context on this thread, so
+				// start over on a fresh canvas.
+				canvas.remove();
+				water = null;
+				startMain().then( ( main ) => main && main.run( shouldRun() ) );
+			} );
+		} else if ( ! ( await startMain() ) ) {
+			return;
+		}
 		const point = introPoint();
 		playIntro( hero, point.x, point.y, () => {
 			addRipple( point.x, point.y, 2.2 );
 			return true;
 		} );
-		setRunning( onScreen && ! document.hidden );
+		water.run( shouldRun() );
 	};
 	const ready = image.complete && image.naturalWidth ? Promise.resolve() : new Promise( ( r ) => image.addEventListener( 'load', r, { once: true } ) );
 	ready.then( () => ( image.decode ? image.decode().catch( () => {} ) : null ) ).then( begin );

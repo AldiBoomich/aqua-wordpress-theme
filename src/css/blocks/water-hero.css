@@ -72,6 +72,13 @@
 	letter-spacing: var(--ls-display);
 }
 
+/* SplitText line masks clip their overflow; with the tight display line-height the descenders (g, y)
+   reach below the line box. The mask grows downwards without changing the layout (negative margin). */
+.water-hero__title .split-line-mask {
+	padding-bottom: 0.2em;
+	margin-bottom: -0.2em;
+}
+
 .water-hero__aside {
 	grid-column: 1 / -1;
 	display: grid;

@@ -1,11 +1,9 @@
 /**
  * "From source to glass": pins the scene on desktop and maps the scroll to the 7 stages.
- * Per frame it only sets transforms and one attribute (the drop's position); stage changes toggle classes.
+ * Per frame it only sets transforms; stage changes toggle classes.
  * Phones and short screens keep the plain list (no pin).
  */
 const DESKTOP = '(min-width: 62em) and (min-height: 600px)';
-const TOP = 40; // filter column drawing: tube top and height (see template-parts/home/stages.php)
-const HEIGHT = 480;
 
 export function initStages( gsap, ScrollTrigger ) {
 	const section = document.querySelector( '[data-stages]' );
@@ -17,7 +15,6 @@ export function initStages( gsap, ScrollTrigger ) {
 	const items = [ ...section.querySelectorAll( '[data-stage]' ) ];
 	const dirt = [ ...section.querySelectorAll( '[data-stages-dirt]' ) ];
 	const ticks = [ ...section.querySelectorAll( '[data-stages-tick]' ) ];
-	const drop = section.querySelector( '[data-stages-drop]' );
 	const clear = section.querySelector( '[data-stages-clear]' );
 	const bar = section.querySelector( '[data-stages-progress]' );
 	const glass = section.querySelector( '.stages__photo--glass' );
@@ -41,9 +38,6 @@ export function initStages( gsap, ScrollTrigger ) {
 
 	const render = ( progress ) => {
 		setActive( Math.min( count - 1, Math.floor( progress * count ) ) );
-		if ( drop ) {
-			drop.setAttribute( 'cy', ( TOP + 10 + progress * ( HEIGHT - 20 ) ).toFixed( 1 ) );
-		}
 		if ( clear ) {
 			clear.style.transform = `scaleY(${ progress.toFixed( 4 ) })`;
 		}

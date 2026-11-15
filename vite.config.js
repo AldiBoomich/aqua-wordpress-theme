@@ -11,6 +11,10 @@ import { defineConfig } from 'vite';
 export default defineConfig( {
 	base: './',
 	publicDir: false,
+	// The hero water worker (src/js/home/water.worker.js) is an ES module worker.
+	worker: {
+		format: 'es',
+	},
 	build: {
 		outDir: 'assets/dist',
 		emptyOutDir: true,

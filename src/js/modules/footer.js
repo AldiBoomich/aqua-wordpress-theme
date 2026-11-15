@@ -2,10 +2,13 @@
  * Footer:
  * - the water line at the top edge drifts only while the footer is on screen (.is-active);
  * - the wordmark is sized to fill the content width (any text from Theme Settings fits);
- * - aqua fills the letters as the footer scrolls into view (--fill 0 → 1, --wave-x follows the scroll,
- *   so nothing repaints while the page is still).
+ * - aqua fills the letters as the footer scrolls into view, to the brim at the bottom of the page
+ *   (--fill 0 → FULL, --wave-x follows the scroll, so nothing repaints while the page is still).
  */
 import { reducedMotion } from '../tokens.js';
+
+/** Fill at the end of the page (see .site-footer__wordmark-water: above 1 the waves clear the letter tops). */
+const FULL = 1.1;
 
 export function initFooter() {
 	const footer = document.querySelector( '[data-footer]' );
@@ -42,10 +45,12 @@ export function initFooter() {
 		}
 		const rect = wordmark.getBoundingClientRect();
 		const vh = window.innerHeight;
-		// 0 when the wordmark's top enters the bottom of the screen, 1 when its bottom is 15% above it.
-		const progress = ( vh - rect.top ) / ( rect.height + vh * 0.35 );
-		// Stops at ~80%: the tops of the letters stay outlined, like a glass that is not filled to the brim.
-		const fill = Math.min( 0.8, Math.max( 0, progress ) );
+		// Starts when the wordmark's top enters the bottom of the screen and ends at the bottom of the page,
+		// where the letters are filled to the brim (FULL > 1 lifts the wave crests above the letters).
+		const maxScroll = document.documentElement.scrollHeight - vh;
+		const topAtEnd = rect.top - Math.max( 0, maxScroll - window.scrollY );
+		const span = Math.max( 1, vh - topAtEnd );
+		const fill = FULL * Math.min( 1, Math.max( 0, ( vh - rect.top ) / span ) );
 		water.style.setProperty( '--fill', fill.toFixed( 3 ) );
 		water.style.setProperty( '--wave-x', `${ ( fill * 120 ).toFixed( 1 ) }%` );
 	};

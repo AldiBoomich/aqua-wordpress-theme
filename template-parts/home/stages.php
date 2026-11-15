@@ -1,7 +1,7 @@
 <?php
 /**
  * Home: "From source to glass" — the 7 purification stages.
- * Desktop with motion: the scene is pinned and the stages follow the scroll: a drop travels down a
+ * Desktop with motion: the scene is pinned and the stages follow the scroll: clear water fills a
  * line-drawn filter column, the impurities of each stage dissolve, the spring photo turns into the glass.
  * Phones / reduced motion / no JS: the same content as a plain numbered list (src/js/home/stages.js).
  *
@@ -106,7 +106,6 @@ $aqua_seg    = $aqua_height / $aqua_count;
 								<?php endfor; ?>
 							</g>
 						<?php endfor; ?>
-						<circle class="stages__drop" data-stages-drop cx="80" cy="<?php echo (int) $aqua_top; ?>" r="7"/>
 					</g>
 					<rect class="stages__tube" x="44" y="<?php echo (int) $aqua_top; ?>" width="72" height="<?php echo (int) $aqua_height; ?>" rx="36"/>
 					<?php for ( $aqua_i = 1; $aqua_i < $aqua_count; $aqua_i++ ) : ?>
