@@ -1657,6 +1657,26 @@
             "placeholder": "What’s included",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_label_label_map",
+            "label": "Map",
+            "name": "label_map",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Name of the map frame on the Contact page (screen readers), followed by the address.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Map",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -1677,5 +1697,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794777164
+    "modified": 1794777641
 }

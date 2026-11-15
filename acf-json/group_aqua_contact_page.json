@@ -237,6 +237,124 @@
             "placeholder": "Telephone",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_contact_hours_label",
+            "label": "Hours Label",
+            "name": "contact_hours_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The hours themselves: Theme Settings → Footer → Business Hours.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 35,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Hours",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_contact_social_label",
+            "label": "Social Label",
+            "name": "contact_social_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 35,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Follow us",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_tab_map",
+            "label": "Map",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_contact_page_map_button",
+            "label": "Button",
+            "name": "map_button",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The map loads only after a click (faster page, no Google cookies until then). Address: Theme Settings → Map.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 35,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Show map",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_map_link_text",
+            "label": "Link",
+            "name": "map_link_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 35,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Open in Google Maps",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_contact_page_map_note",
+            "label": "Note",
+            "name": "map_note",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 100,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "The map is provided by Google and loads when you open it.",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -257,5 +375,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794348649
+    "modified": 1794777596
 }

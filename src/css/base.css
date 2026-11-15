@@ -138,6 +138,19 @@ textarea {
 	word-wrap: normal !important;
 }
 
+/* Contact Form 7 repeats its messages for screen readers in this box (its own CSS that hides it is disabled). */
+.wpcf7 .screen-reader-response {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
 .screen-reader-text:focus {
 	clip: auto !important;
 	width: auto;

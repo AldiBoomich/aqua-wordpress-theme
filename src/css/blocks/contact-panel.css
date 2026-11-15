@@ -1,0 +1,336 @@
+/**
+ * Block: contact-panel — the Contact page body: the form beside the contact details (phone, e-mail, address,
+ * hours, social), details as a list on hairlines.
+ * Block: contact-form — the Contact Form 7 form (markup set in the form editor: .contact-form__grid >
+ * .contact-form__field > label.contact-form__label + input.contact-form__input; submit → <button>, see
+ * inc/contact-form-7.php). Visible labels, 48px fields, 16px+ text, the error under its field.
+ * Block: map-panel — the map on demand (src/js/modules/contact.js).
+ */
+.contact-panel {
+	padding-bottom: var(--section-y);
+}
+
+.contact-panel__grid {
+	display: grid;
+	gap: var(--space-9);
+}
+
+.contact-panel__title {
+	margin-bottom: var(--space-6);
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-light);
+	line-height: var(--lh-heading);
+	letter-spacing: var(--ls-heading);
+}
+
+.contact-panel__details {
+	border-bottom: 1px solid var(--c-line);
+}
+
+.contact-panel__row {
+	display: grid;
+	gap: var(--space-2);
+	padding-block: var(--space-5);
+	border-top: 1px solid var(--c-line);
+}
+
+.contact-panel__label {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.contact-panel__value {
+	margin: 0;
+	font-size: var(--fs-body);
+}
+
+.contact-panel__link {
+	color: var(--c-ink);
+	font-size: var(--fs-h4);
+	letter-spacing: -0.02em;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+	background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+	transition: background-size var(--dur-2) var(--ease-out);
+}
+
+.contact-panel__link:hover {
+	color: var(--c-ink);
+	background-size: 100% 1px;
+}
+
+.contact-panel__hours {
+	display: grid;
+	gap: var(--space-2);
+}
+
+.contact-panel__hour {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--space-1) var(--space-4);
+}
+
+.contact-panel__time {
+	color: var(--c-ink-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.contact-panel__social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.contact-panel__social-link {
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border: 1px solid var(--c-line-strong);
+	border-radius: var(--radius-pill);
+	color: var(--c-ink);
+	transition: border-color var(--dur-1) var(--ease-ui);
+}
+
+.contact-panel__social-link:hover {
+	border-color: var(--c-ink);
+	color: var(--c-ink);
+}
+
+.contact-panel__social-link .ui-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+@media (min-width: 62em) {
+	.contact-panel__grid {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+		align-items: start;
+	}
+
+	.contact-panel__form {
+		grid-column: 1 / span 7;
+	}
+
+	.contact-panel__details {
+		grid-column: 9 / -1;
+		margin-top: calc(var(--fs-h3) * var(--lh-heading) + var(--space-6)); /* line up with the first field */
+	}
+}
+
+/* ---------- contact-form ---------- */
+.contact-form .hidden-fields-container {
+	display: none;
+}
+
+.contact-form__grid {
+	display: grid;
+	gap: var(--space-5) var(--grid-gap);
+}
+
+.contact-form__field {
+	display: grid;
+	align-content: start;
+	gap: var(--space-2);
+}
+
+.contact-form__label {
+	font-size: var(--fs-ui);
+	font-weight: var(--fw-medium);
+}
+
+.contact-form__optional {
+	color: var(--c-ink-muted);
+	font-weight: var(--fw-regular);
+}
+
+.contact-form .wpcf7-form-control-wrap {
+	display: block;
+}
+
+.contact-form__input {
+	width: 100%;
+	min-height: 3rem;
+	padding: 0 var(--space-4);
+	border: 1px solid var(--c-ink-muted);
+	border-radius: var(--radius-s);
+	background: var(--c-surface-raised);
+	color: var(--c-ink);
+	font: inherit;
+	font-size: max(1rem, var(--fs-body)); /* never below 16px: no zoom on iOS */
+	transition: border-color var(--dur-1) var(--ease-ui);
+}
+
+.contact-form__input--textarea {
+	display: block;
+	min-height: 9.5rem;
+	padding-block: var(--space-3);
+	line-height: var(--lh-body);
+	resize: vertical;
+}
+
+.contact-form__input:hover {
+	border-color: var(--c-ink);
+}
+
+.contact-form__input:focus-visible {
+	border-color: var(--c-action);
+	outline: 2px solid var(--c-focus);
+	outline-offset: 1px;
+}
+
+.contact-form .wpcf7-not-valid {
+	border-color: var(--c-error);
+}
+
+.contact-form .wpcf7-not-valid-tip {
+	display: block;
+	margin-top: var(--space-2);
+	color: var(--c-error);
+	font-size: var(--fs-sm);
+}
+
+.contact-form__actions {
+	justify-items: start;
+	margin-top: var(--space-2);
+}
+
+.contact-form .wpcf7-spinner {
+	display: none;
+}
+
+.contact-form .wpcf7-form.submitting .contact-form__submit {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.contact-form .wpcf7-response-output {
+	margin: var(--space-5) 0 0;
+	padding: var(--space-4) var(--space-5);
+	border: 1px solid var(--c-line-strong);
+	border-radius: var(--radius-s);
+	font-size: var(--fs-ui);
+}
+
+.contact-form .wpcf7-form.init .wpcf7-response-output,
+.contact-form .wpcf7-form.resetting .wpcf7-response-output,
+.contact-form .wpcf7-form.submitting .wpcf7-response-output {
+	display: none;
+}
+
+.contact-form .wpcf7-form.sent .wpcf7-response-output {
+	border-color: var(--c-success);
+	color: var(--c-success);
+}
+
+.contact-form .wpcf7-form.invalid .wpcf7-response-output,
+.contact-form .wpcf7-form.unaccepted .wpcf7-response-output,
+.contact-form .wpcf7-form.failed .wpcf7-response-output,
+.contact-form .wpcf7-form.spam .wpcf7-response-output {
+	border-color: var(--c-error);
+	color: var(--c-error);
+}
+
+@media (min-width: 48em) {
+	.contact-form__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.contact-form__field--full {
+		grid-column: 1 / -1;
+	}
+}
+
+/* ---------- map-panel ---------- */
+.map-panel {
+	padding-bottom: var(--section-y);
+}
+
+.map-panel__frame {
+	position: relative;
+	overflow: hidden;
+	border-radius: var(--radius-l);
+	background: var(--c-surface);
+	aspect-ratio: 4 / 5;
+}
+
+/* Rings on still water around the place, as if a drop just fell there (static, decorative). */
+.map-panel__frame::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: repeating-radial-gradient(circle at var(--rings-x, 70%) var(--rings-y, 32%), transparent 0 2.4rem, var(--c-water-soft) 2.4rem calc(2.4rem + 1px));
+	-webkit-mask-image: radial-gradient(circle at var(--rings-x, 70%) var(--rings-y, 32%), #000 0, transparent 70%);
+	mask-image: radial-gradient(circle at var(--rings-x, 70%) var(--rings-y, 32%), #000 0, transparent 70%);
+}
+
+.map-panel__frame.is-open::before {
+	display: none;
+}
+
+.map-panel__cover {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	align-content: end;
+	justify-items: start;
+	gap: var(--space-5);
+	padding: var(--space-6);
+}
+
+.map-panel__icon {
+	font-size: 3.5rem;
+}
+
+.map-panel__title {
+	max-width: 20ch;
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-light);
+	line-height: var(--lh-heading);
+	letter-spacing: var(--ls-heading);
+	text-wrap: balance;
+}
+
+.map-panel__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-4) var(--space-6);
+}
+
+.map-panel__note {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.map-panel__map {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+@media (min-width: 48em) {
+	.map-panel__frame {
+		--rings-y: 50%;
+
+		aspect-ratio: 16 / 9;
+	}
+
+	.map-panel__cover {
+		padding: var(--space-8);
+	}
+}
+
+@media (min-width: 62em) {
+	.map-panel__frame {
+		aspect-ratio: 21 / 9;
+	}
+
+	.map-panel__cover {
+		padding: var(--space-9);
+	}
+}

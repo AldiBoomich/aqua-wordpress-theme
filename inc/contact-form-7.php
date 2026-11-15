@@ -52,3 +52,53 @@ function aqua_cf7_subscribe_form_elements( $html ) {
 	);
 }
 add_filter( 'wpcf7_form_elements', 'aqua_cf7_subscribe_form_elements' );
+
+/**
+ * Contact form (fields with the contact-form__* classes): the submit <input> becomes a <button> with the same
+ * classes and text, so it gets the theme's button hover (the rising fill is a ::before layer).
+ *
+ * @param string $html Form elements HTML.
+ * @return string
+ */
+function aqua_cf7_contact_form_elements( $html ) {
+	if ( false === strpos( $html, 'contact-form__submit' ) ) {
+		return $html;
+	}
+
+	return preg_replace_callback(
+		'/<input\b[^>]*\bcontact-form__submit\b[^>]*>/i',
+		static function ( $match ) {
+			$tag = new WP_HTML_Tag_Processor( $match[0] );
+			if ( ! $tag->next_tag( 'input' ) || 'submit' !== strtolower( (string) $tag->get_attribute( 'type' ) ) ) {
+				return $match[0];
+			}
+			return sprintf(
+				'<button type="submit" class="%1$s">%2$s</button>',
+				esc_attr( (string) $tag->get_attribute( 'class' ) ),
+				esc_html( (string) $tag->get_attribute( 'value' ) )
+			);
+		},
+		$html
+	);
+}
+add_filter( 'wpcf7_form_elements', 'aqua_cf7_contact_form_elements' );
+
+/**
+ * The bottle chosen on the Products page (…/contact/?product=19 L Cooler bottle) fills in the Subject field.
+ *
+ * @param array $tag Form tag (array form, before WPCF7_FormTag is built).
+ * @return array
+ */
+function aqua_cf7_subject_from_product( $tag ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only prefill of a visible field.
+	if ( ! is_array( $tag ) || 'your-subject' !== ( $tag['name'] ?? '' ) || empty( $_GET['product'] ) ) {
+		return $tag;
+	}
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$product = mb_substr( sanitize_text_field( wp_unslash( $_GET['product'] ) ), 0, 80 );
+	if ( '' !== $product ) {
+		$tag['values'] = array( $product );
+	}
+	return $tag;
+}
+add_filter( 'wpcf7_form_tag', 'aqua_cf7_subject_from_product' );

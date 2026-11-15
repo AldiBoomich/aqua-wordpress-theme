@@ -8,6 +8,7 @@ import { initMenuOverlay } from './modules/menu-overlay.js';
 import { initFooter } from './modules/footer.js';
 import { initConceptBar } from './modules/concept-bar.js';
 import { initMarquee } from './modules/marquee.js';
+import { initContact } from './modules/contact.js';
 import { initGpu } from './modules/gpu.js';
 import { reducedMotion } from './tokens.js';
 
@@ -18,6 +19,7 @@ initMenuOverlay();
 initFooter();
 initConceptBar();
 initMarquee();
+initContact();
 
 // Opening drop: decided here, synchronously, once per visit — the hero water plays it and the
 // headline entrance waits for it.

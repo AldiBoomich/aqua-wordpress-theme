@@ -134,3 +134,29 @@
 .page-head__meta-link:hover {
 	color: var(--c-action);
 }
+
+/* Contact: the phone under the lead. */
+.page-head__call {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-1);
+}
+
+.page-head__call-label {
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+}
+
+.page-head__phone {
+	color: var(--c-ink);
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-light);
+	letter-spacing: var(--ls-heading);
+	font-variant-numeric: tabular-nums;
+	text-decoration: none;
+	background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}
+
+.page-head__phone:hover {
+	color: var(--c-action);
+}
