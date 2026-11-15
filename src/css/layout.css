@@ -20,3 +20,13 @@
 	grid-template-columns: repeat(12, minmax(0, 1fr));
 	column-gap: var(--grid-gap);
 }
+
+/* Section rhythm. Every section pads itself top and bottom with --section-y (72 → 200px). Where two sections on
+   the same background meet, both paddings would add up to an empty band (up to 400px). The second section then
+   starts with --section-join instead: one section gap plus a little. A change of background (ground ↔ glacier
+   mist ↔ deep footer) keeps both paddings, since each band breathes inside its own colour. */
+:is(.story, .ledger, .service-list, .shelf, .journal, .business) + :is(.story, .ledger, .service-list, .shelf, .journal, .order-cta),
+.page-head + :is(.story, .service-list, .shelf),
+.stages + .numbers {
+	padding-top: var(--section-join);
+}
