@@ -2,6 +2,8 @@
 /**
  * Home: story ("About") — a large statement, the story text, a portrait photo that opens up,
  * one big number and two proof points with liquid icons. Fields: Home → About.
+ * Args (About page): link — false hides the "Read our story" link; fact, points — false hide the big number and
+ * the two proof points (the About page tells them in its own proof and numbers blocks).
  *
  * @package aqua
  */
@@ -56,14 +58,14 @@ $aqua_button = aqua_link(
 		<div class="story__body">
 			<div class="story__text" data-reveal="lines"><?php echo wp_kses_post( $aqua_text ); ?></div>
 
-			<?php if ( $aqua_number ) : ?>
+			<?php if ( $aqua_number && ( $args['fact'] ?? true ) ) : ?>
 				<p class="story__fact" data-reveal="fade">
 					<span class="story__number" data-count="<?php echo esc_attr( $aqua_number ); ?>"><?php echo esc_html( $aqua_number ); ?></span><?php if ( $aqua_suffix ) : ?><span class="story__suffix"><?php echo esc_html( $aqua_suffix ); ?></span><?php endif; ?>
 					<span class="story__fact-label"><?php echo esc_html( $aqua_label ); ?></span>
 				</p>
 			<?php endif; ?>
 
-			<?php if ( $aqua_points ) : ?>
+			<?php if ( $aqua_points && ( $args['points'] ?? true ) ) : ?>
 				<ul class="story__points">
 					<?php foreach ( $aqua_points as $aqua_point ) : ?>
 						<li class="story__point" data-reveal="fade">
@@ -75,7 +77,11 @@ $aqua_button = aqua_link(
 				</ul>
 			<?php endif; ?>
 
-			<?php echo aqua_link_tag( $aqua_button, 'text-link story__link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php
+			if ( $args['link'] ?? true ) {
+				echo aqua_link_tag( $aqua_button, 'text-link story__link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+			?>
 		</div>
 	</div>
 </section>

@@ -1,0 +1,170 @@
+{
+    "key": "group_aqua_about",
+    "title": "About Page",
+    "fields": [
+        {
+            "key": "field_aqua_about_tab_proof",
+            "label": "Quality & Eco",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_about_proof_title",
+            "label": "Title",
+            "name": "proof_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Proof in every bottle",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_about_proof_text",
+            "label": "Intro",
+            "name": "proof_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Certificates, lab checks and reusable bottles. What we promise on the label, we can show on paper.",
+            "rows": 3,
+            "new_lines": ""
+        },
+        {
+            "key": "field_aqua_about_proof_items",
+            "label": "Proof Points",
+            "name": "proof_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Certificates, lab checks, eco facts. 3–5 rows read best. Empty = the default rows.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 6,
+            "collapsed": "",
+            "button_label": "Add Point",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_aqua_about_proof_item_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 30,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "ISO 22000 certified plant",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_about_proof_items"
+                },
+                {
+                    "key": "field_aqua_about_proof_item_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 50,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Our food-safety system is audited every year, from the spring to the sealed cap.",
+                    "rows": 2,
+                    "new_lines": "",
+                    "parent_repeater": "field_aqua_about_proof_items"
+                },
+                {
+                    "key": "field_aqua_about_proof_item_detail",
+                    "label": "Detail",
+                    "name": "detail",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "A short fact on the right. Optional.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": 20,
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Audited yearly",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_aqua_about_proof_items"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-about.php"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794776741
+}

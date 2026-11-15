@@ -248,3 +248,72 @@
 	transform: scaleX(0);
 	transform-origin: left;
 }
+
+/* --lite (About): the title beside the numbered list; no photos, no pinned scene.
+   One moment: a hairline beside the list fills with water while the list scrolls through the screen
+   (scroll-driven animation where supported; elsewhere and for reduced motion the line is simply full). */
+.stages--lite {
+	padding-bottom: var(--section-y);
+}
+
+.stages__lite {
+	display: grid;
+}
+
+.stages--lite .stages__list {
+	position: relative;
+	padding-left: var(--space-5);
+}
+
+.stages--lite .stages__list::before,
+.stages--lite .stages__list::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 1px;
+	background: var(--c-line-strong);
+}
+
+.stages--lite .stages__list::after {
+	width: 2px;
+	left: -0.5px;
+	background: var(--c-water);
+	transform-origin: top;
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.stages--lite .stages__list::after {
+			animation: stages-lite-fill linear both;
+			animation-timeline: view();
+			animation-range: entry 30% cover 75%;
+		}
+	}
+}
+
+@keyframes stages-lite-fill {
+	from {
+		transform: scaleY(0);
+	}
+}
+
+@media (min-width: 62em) {
+	.stages__lite {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+		align-items: start;
+	}
+
+	.stages--lite .stages__head {
+		position: sticky;
+		top: calc(var(--header-h) + var(--space-6));
+		grid-column: 1 / span 5;
+	}
+
+	.stages--lite .stages__list {
+		grid-column: 7 / -1;
+		padding-left: var(--space-7);
+	}
+}

@@ -203,3 +203,8 @@
 		aspect-ratio: 16 / 9;
 	}
 }
+
+/* Editor text under the blocks of a template page. */
+.page-body--extra {
+	padding-block: var(--section-y-tight);
+}

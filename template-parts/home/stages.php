@@ -4,6 +4,8 @@
  * Desktop with motion: the scene is pinned and the stages follow the scroll: clear water fills a
  * line-drawn filter column, the impurities of each stage dissolve, the spring photo turns into the glass.
  * Phones / reduced motion / no JS: the same content as a plain numbered list (src/js/home/stages.js).
+ * Args: variant — 'lite' (About page): the title beside the numbered list, no photos, no pinned scene; a thin line
+ * beside the list fills with water as it scrolls through (CSS scroll-driven animation, static where unsupported).
  *
  * @package aqua
  */
@@ -57,6 +59,36 @@ $aqua_count  = count( $aqua_stages );
 if ( ! $aqua_count ) {
 	return;
 }
+
+if ( 'lite' === ( $args['variant'] ?? '' ) ) :
+	?>
+	<section class="stages stages--lite" aria-labelledby="stages-title">
+		<div class="stages__lite wrap">
+			<div class="stages__head">
+				<h2 class="section-title" id="stages-title" data-reveal="lines"><?php echo esc_html( $aqua_title ); ?></h2>
+				<?php if ( $aqua_text ) : ?>
+					<p class="stages__lead"><?php echo esc_html( $aqua_text ); ?></p>
+				<?php endif; ?>
+			</div>
+			<ol class="stages__list">
+				<?php foreach ( $aqua_stages as $aqua_i => $aqua_stage ) : ?>
+					<li class="stages__item">
+						<p class="stages__count"><span class="stages__num"><?php echo (int) ( $aqua_i + 1 ); ?></span></p>
+						<h3 class="stages__title"><?php echo esc_html( $aqua_stage['title'] ); ?></h3>
+						<?php if ( ! empty( $aqua_stage['text'] ) ) : ?>
+							<p class="stages__text"><?php echo esc_html( $aqua_stage['text'] ); ?></p>
+						<?php endif; ?>
+						<?php if ( ! empty( $aqua_stage['detail'] ) ) : ?>
+							<p class="stages__detail"><?php echo esc_html( $aqua_stage['detail'] ); ?></p>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+			</ol>
+		</div>
+	</section>
+	<?php
+	return;
+endif;
 
 // Filter column drawing (160 × 560 grid): one segment per stage, a few impurity dots in each.
 $aqua_top    = 40;

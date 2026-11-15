@@ -1,31 +1,23 @@
 <?php
 /**
- * Page content from the editor (regular pages and below the blocks on template pages).
- * The page title is shown in the banner (aqua_breadcrumb()).
+ * Editor content under the blocks of template pages (About, Service, Products, Contact):
+ * a reading column (block "prose"). The title and photo are already in the page head.
  *
  * @package aqua
  */
 
 ?>
-<section class="entry">
-	<div class="container">
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry__content' ); ?>>
-			<?php
-			if ( has_post_thumbnail() ) {
-				the_post_thumbnail( 'large', array( 'class' => 'entry__thumbnail' ) );
-			}
+<section <?php post_class( 'page-body page-body--extra wrap' ); ?>>
+	<div class="prose">
+		<?php
+		the_content();
 
-			the_content();
-
-			wp_link_pages(
-				array(
-					'before' => '<div class="entry__pages">Pages:',
-					'after'  => '</div>',
-				)
-			);
-
-			edit_post_link( 'Edit', '<p class="mt-4 mb-0">', '</p>' );
-			?>
-		</article>
+		wp_link_pages(
+			array(
+				'before' => '<nav class="prose__pages" aria-label="' . esc_attr( aqua_label( 'pagination', 'Pages' ) ) . '">',
+				'after'  => '</nav>',
+			)
+		);
+		?>
 	</div>
 </section>

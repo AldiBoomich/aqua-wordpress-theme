@@ -36,6 +36,9 @@ function aqua_has_page_head() {
 	if ( is_home() || is_archive() || is_singular( 'post' ) ) {
 		return true;
 	}
+	if ( is_page_template( 'page-about.php' ) ) {
+		return true;
+	}
 	// Regular pages (default template). Template pages join as they are rebuilt.
 	return is_page() && ! is_page_template();
 }
