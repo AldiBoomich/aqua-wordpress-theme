@@ -3,11 +3,22 @@
  * usable under the new fixed header. Deleted together with the old CSS when every page is rebuilt.
  */
 @media (max-width: 61.99em) {
-	/* The new header is fixed on phones too; old top sections expected an in-flow bar. */
-	body:not(.has-page-head) .hero,
+	/* The new header is fixed on phones too: the old dark banner runs under it (as on desktop), so the
+	   light-text header sits on the photo, not on the light page. The extra top padding equals the header. */
 	body:not(.has-page-head) .page-banner {
-		margin-top: var(--header-h);
+		padding-top: calc(var(--header-h) + 28px);
 	}
+}
+
+@media (min-width: 48em) and (max-width: 61.99em) {
+	body:not(.has-page-head) .page-banner {
+		padding-top: calc(var(--header-h) + 60px);
+	}
+}
+
+/* An old full-colour section at the end of the page meets the footer wave directly (no light gap). */
+.site-main:has(> :is(.stats, .contact, .blog):last-child) ~ .site-footer {
+	margin-top: 0;
 }
 
 /* Old blocks used Playfair/Open Sans variables; the bridge tokens point them to Switzer. */

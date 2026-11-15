@@ -2,15 +2,19 @@
  * Bottles shelf: on desktop the section is pinned; the title stays on the left while the bottles slide past.
  * Keyboard users: focusing a card scrolls the page to the point where that card is in view.
  * Phones keep the native horizontal scroller.
+ * The scene follows the breakpoint (gsap.matchMedia) and is torn down when the screen gets narrow.
  */
 const DESKTOP = '(min-width: 62em) and (min-height: 600px)';
 
 export function initShelf( gsap, ScrollTrigger, getLenis ) {
 	const section = document.querySelector( '[data-shelf]' );
-	if ( ! section || ! window.matchMedia( DESKTOP ).matches ) {
+	if ( ! section ) {
 		return;
 	}
+	gsap.matchMedia().add( DESKTOP, () => buildScene( section, gsap, getLenis ) );
+}
 
+function buildScene( section, gsap, getLenis ) {
 	const pin = section.querySelector( '[data-shelf-pin]' );
 	const track = section.querySelector( '[data-shelf-track]' );
 	const viewport = section.querySelector( '[data-shelf-viewport]' );
@@ -42,7 +46,7 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 	} );
 
 	// Bring a focused card into view by scrolling to its position on the timeline.
-	track.addEventListener( 'focusin', ( event ) => {
+	const onFocus = ( event ) => {
 		const item = event.target.closest( '.shelf__item' );
 		const st = tween.scrollTrigger;
 		const max = distance();
@@ -57,5 +61,18 @@ export function initShelf( gsap, ScrollTrigger, getLenis ) {
 		} else {
 			window.scrollTo( { top: y, behavior: 'instant' } );
 		}
-	} );
+	};
+	track.addEventListener( 'focusin', onFocus );
+
+	// Leaving the desktop range: matchMedia reverts the tween (track x) and kills the pin.
+	return () => {
+		track.removeEventListener( 'focusin', onFocus );
+		tween.scrollTrigger?.kill();
+		tween.kill();
+		gsap.set( track, { clearProps: 'all' } );
+		section.classList.remove( 'is-scene' );
+		if ( bar ) {
+			bar.style.removeProperty( 'transform' );
+		}
+	};
 }

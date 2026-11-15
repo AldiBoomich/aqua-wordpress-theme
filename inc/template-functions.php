@@ -29,7 +29,99 @@ add_filter( 'body_class', 'aqua_body_classes' );
  * @return bool
  */
 function aqua_has_page_head() {
-	return is_front_page() || is_page_template( 'page-legal.php' );
+	if ( is_front_page() || is_page_template( 'page-legal.php' ) || is_404() || is_search() ) {
+		return true;
+	}
+	// Regular pages (default template). Template pages join as they are rebuilt.
+	return is_page() && ! is_page_template();
+}
+
+/**
+ * Splits a headline into words wrapped in masks, so the page head entrance (pure CSS) can raise
+ * them one by one from the first paint, without waiting for JavaScript.
+ *
+ * @param string $text Plain headline text.
+ * @return string Escaped HTML.
+ */
+function aqua_title_words( $text ) {
+	$words = preg_split( '/\s+/u', trim( (string) $text ), -1, PREG_SPLIT_NO_EMPTY );
+	$html  = array();
+	foreach ( (array) $words as $i => $word ) {
+		$html[] = '<span class="page-head__word" style="--i:' . (int) $i . '"><span class="page-head__word-inner">' . esc_html( $word ) . '</span></span>';
+	}
+	return implode( ' ', $html );
+}
+
+/**
+ * Previous / next + page numbers for archives and search (block "pagination").
+ *
+ * @param WP_Query|null $query Query to paginate (default: the main query).
+ */
+function aqua_pagination( $query = null ) {
+	global $wp_query;
+	$query = $query ? $query : $wp_query;
+	$total = (int) $query->max_num_pages;
+	if ( $total < 2 ) {
+		return;
+	}
+
+	$links = paginate_links(
+		array(
+			'total'     => $total,
+			'current'   => max( 1, (int) get_query_var( 'paged' ) ),
+			'type'      => 'array',
+			'mid_size'  => 1,
+			'prev_text' => esc_html( aqua_label( 'prev', 'Previous' ) ),
+			'next_text' => esc_html( aqua_label( 'next', 'Next' ) ),
+		)
+	);
+	if ( ! $links ) {
+		return;
+	}
+	?>
+	<nav class="pagination" aria-label="<?php echo esc_attr( aqua_label( 'pagination', 'Pages' ) ); ?>">
+		<ul class="pagination__list">
+			<?php foreach ( $links as $link ) : ?>
+				<li class="pagination__item">
+					<?php
+					// paginate_links() returns escaped markup; only the classes are changed here.
+					echo str_replace( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core markup.
+						array( 'page-numbers current', 'prev page-numbers', 'next page-numbers', 'page-numbers dots', 'page-numbers' ),
+						array( 'pagination__link pagination__link--current', 'pagination__link pagination__link--prev', 'pagination__link pagination__link--next', 'pagination__link pagination__link--dots', 'pagination__link' ),
+						$link
+					);
+					?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</nav>
+	<?php
+}
+
+/**
+ * Key pages offered when nothing was found (404, empty search): Theme Settings → Labels decide the titles.
+ *
+ * @return array<int,array{title:string,url:string}>
+ */
+function aqua_helpful_links() {
+	return array(
+		array(
+			'title' => aqua_label( 'link_home', 'Homepage' ),
+			'url'   => home_url( '/' ),
+		),
+		array(
+			'title' => aqua_label( 'link_products', 'Bottles and prices' ),
+			'url'   => aqua_page_url( 'products' ),
+		),
+		array(
+			'title' => aqua_label( 'link_blog', 'Journal' ),
+			'url'   => aqua_blog_url(),
+		),
+		array(
+			'title' => aqua_label( 'link_contact', 'Contact us' ),
+			'url'   => aqua_page_url( 'contact' ),
+		),
+	);
 }
 
 /**

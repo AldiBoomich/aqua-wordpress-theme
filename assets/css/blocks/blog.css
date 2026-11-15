@@ -4,7 +4,8 @@
  * Block: pagination
  */
 
-.blog {
+/* Not ".blog": WordPress puts the same class on <body> of the posts page, which padded the whole page. */
+section.blog {
 	padding: var(--aqua-section-space) 0;
 	background: var(--aqua-light);
 }

@@ -65,8 +65,8 @@
 .shelf__bottle {
 	display: grid;
 	place-items: center;
-	height: 19rem;
-	padding: var(--space-6) 0 var(--space-4);
+	height: 11.5rem;
+	padding: var(--space-5) 0 var(--space-3);
 	background: var(--c-surface);
 }
 
@@ -82,8 +82,8 @@
 .shelf__info {
 	display: grid;
 	align-content: start;
-	gap: var(--space-3);
-	padding: var(--space-5) var(--space-5) var(--space-6);
+	gap: var(--space-2);
+	padding: var(--space-4) var(--space-4) var(--space-5);
 }
 
 .shelf__volume {
@@ -102,7 +102,7 @@
 }
 
 .shelf__features li {
-	padding-block: 0.375rem;
+	padding-block: var(--space-1);
 	border-top: 1px solid var(--c-line);
 	color: var(--c-ink-muted);
 	font-size: var(--fs-sm);
@@ -113,8 +113,14 @@
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--space-3);
-	margin-top: var(--space-3);
+	gap: var(--space-2);
+	margin-top: var(--space-2);
+}
+
+/* Price and button share one line on phones (360 px and up). */
+.shelf__buy .button {
+	flex: none;
+	padding-inline: var(--space-4);
 }
 
 .shelf__amount {
@@ -204,6 +210,6 @@
 
 @media (min-width: 62em) {
 	.shelf__bottle {
-		height: clamp(16rem, 34svh, 22rem);
+		height: clamp(12.5rem, 26svh, 15rem);
 	}
 }

@@ -1,14 +1,14 @@
 {
     "key": "group_aqua_banner",
-    "title": "Page Banner",
+    "title": "Page Head",
     "fields": [
         {
             "key": "field_aqua_banner_title",
-            "label": "Banner Title",
+            "label": "Title",
             "name": "banner_title",
             "aria-label": "",
             "type": "text",
-            "instructions": "Leave empty to use the page title.",
+            "instructions": "Large title at the top of the page. Leave empty to use the page title.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -23,12 +23,32 @@
             "append": ""
         },
         {
+            "key": "field_aqua_banner_lead",
+            "label": "Intro",
+            "name": "banner_lead",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "One or two sentences under the title. Leave empty to show the title only.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 220,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
             "key": "field_aqua_banner_image",
-            "label": "Banner Background",
+            "label": "Photo",
             "name": "banner_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Wide photo, at least 1920 × 600 px. Empty = default background (Theme Settings → Header).",
+            "instructions": "Wide photo under the title (About and Services pages). At least 2560 × 1100 px, calm light photo; the subject in the middle (phones crop it to 4:5).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -78,5 +98,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794348649
+    "modified": 1794769052
 }

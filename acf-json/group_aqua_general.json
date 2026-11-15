@@ -959,6 +959,426 @@
             "append": ""
         },
         {
+            "key": "field_aqua_label_search",
+            "label": "Search Label",
+            "name": "label_search",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Label of the search field (search results, 404).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Search the site",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_search_placeholder",
+            "label": "Search Placeholder",
+            "name": "label_search_placeholder",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Hint inside the search field.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Bottles, delivery, filters…",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_search_submit",
+            "label": "Search Button",
+            "name": "label_search_submit",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Search button text.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Search",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_results_for",
+            "label": "Results Title",
+            "name": "label_results_for",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Search results title, followed by the query in quotes.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Results for",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_result_one",
+            "label": "Result (one)",
+            "name": "label_result_one",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Count under the title: \"1 result\".",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "result",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_result_many",
+            "label": "Results (many)",
+            "name": "label_result_many",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Count under the title: \"12 results\".",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "results",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_results_list",
+            "label": "Results List Name",
+            "name": "label_results_list",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Screen readers: name of the results list.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Search results",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_type_post",
+            "label": "Result Type: Post",
+            "name": "label_type_post",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown above a blog post in the results.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Article",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_type_page",
+            "label": "Result Type: Page",
+            "name": "label_type_page",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown above a page in the results.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Page",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_no_results",
+            "label": "Nothing Found",
+            "name": "label_no_results",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Search found nothing.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 100,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Nothing matched your search. Try a shorter word, or start from one of these pages.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_search_hint",
+            "label": "Empty Search Hint",
+            "name": "label_search_hint",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Search opened without a query.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 100,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Type what you are looking for, or start from one of these pages.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_helpful_links",
+            "label": "Helpful Pages Name",
+            "name": "label_helpful_links",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Screen readers: name of the list of key pages (404, empty search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Helpful pages",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_link_home",
+            "label": "Helpful Link: Home",
+            "name": "label_link_home",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Key pages list (404, empty search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Homepage",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_link_products",
+            "label": "Helpful Link: Products",
+            "name": "label_link_products",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Key pages list (404, empty search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Bottles and prices",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_link_blog",
+            "label": "Helpful Link: Blog",
+            "name": "label_link_blog",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Key pages list (404, empty search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Journal",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_link_contact",
+            "label": "Helpful Link: Contact",
+            "name": "label_link_contact",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Key pages list (404, empty search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Contact us",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_error_code",
+            "label": "404 Note",
+            "name": "label_error_code",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Small line above the 404 title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Error 404",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_back_home",
+            "label": "Back Home Button",
+            "name": "label_back_home",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "404 page button.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Back to homepage",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_prev",
+            "label": "Previous Page",
+            "name": "label_prev",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Pagination (blog, search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Previous",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_next",
+            "label": "Next Page",
+            "name": "label_next",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Pagination (blog, search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Next",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_aqua_label_pagination",
+            "label": "Pagination Name",
+            "name": "label_pagination",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Screen readers: name of the pagination.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Pages",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_aqua_label_concept",
             "label": "Concept Notice Name",
             "name": "label_concept",
@@ -1057,5 +1477,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794685087
+    "modified": 1794769052
 }

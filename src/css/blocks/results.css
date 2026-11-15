@@ -1,0 +1,171 @@
+/**
+ * Block: results — search results as a plain editorial list (type and date, title, excerpt), separated by lines.
+ * Block: helpful-links — the key pages offered when nothing was found (404, empty search).
+ * Block: not-found — the 404 body: a drop of living water beside the helpful links.
+ */
+.results {
+	padding-bottom: var(--section-y);
+}
+
+.results__list {
+	border-top: 1px solid var(--c-line);
+}
+
+.results__item {
+	border-bottom: 1px solid var(--c-line);
+}
+
+.results__entry {
+	position: relative;
+	display: grid;
+	gap: var(--space-2);
+	max-width: 48rem;
+	padding-block: var(--space-6);
+}
+
+.results__meta {
+	display: flex;
+	gap: var(--space-4);
+	color: var(--c-ink-muted);
+	font-size: var(--fs-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+.results__title {
+	font-size: var(--fs-h4);
+	font-weight: var(--fw-regular);
+	line-height: var(--lh-snug);
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+/* The whole row is one link (stretched title link). */
+.results__link {
+	color: var(--c-ink);
+	text-decoration: none;
+}
+
+.results__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.results__link:focus-visible {
+	outline: none;
+}
+
+.results__link:focus-visible::after {
+	outline: 2px solid var(--c-focus);
+	outline-offset: 4px;
+	border-radius: var(--radius-s);
+}
+
+.results__excerpt {
+	color: var(--c-ink-muted);
+	text-wrap: pretty;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.results__title {
+		transition: color var(--dur-1) var(--ease-ui);
+	}
+
+	.results__entry:hover .results__title {
+		color: var(--c-action);
+	}
+}
+
+.results__empty {
+	display: grid;
+	gap: var(--space-6);
+	max-width: 38rem;
+}
+
+.results__empty-text {
+	font-size: var(--fs-lead);
+	line-height: var(--lh-snug);
+}
+
+/* Helpful links: a short list of full-width rows. */
+.helpful-links__list {
+	border-top: 1px solid var(--c-line);
+}
+
+.helpful-links__item {
+	border-bottom: 1px solid var(--c-line);
+}
+
+.helpful-links__link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	min-height: 3.5rem;
+	color: var(--c-ink);
+	font-size: var(--fs-h4);
+	font-weight: var(--fw-light);
+	letter-spacing: -0.02em;
+	text-decoration: none;
+}
+
+.helpful-links__icon {
+	flex: 0 0 auto;
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--c-ink-muted);
+	transform: rotate(-90deg);
+	transition: transform var(--dur-2) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.helpful-links__link:hover {
+		color: var(--c-action);
+	}
+
+	.helpful-links__link:hover .helpful-links__icon {
+		color: currentColor;
+		transform: rotate(-90deg) translateY(4px);
+	}
+}
+
+/* 404 body. */
+.not-found {
+	display: grid;
+	gap: var(--space-7);
+	padding-bottom: var(--section-y);
+}
+
+.not-found__drop {
+	font-size: clamp(4.5rem, 3rem + 8vw, 12rem);
+}
+
+.not-found__body {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-7);
+}
+
+.not-found__body .helpful-links {
+	width: 100%;
+}
+
+@media (min-width: 62em) {
+	.not-found {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+		align-items: start;
+	}
+
+	/* Links line up with the page head text; the drop answers them on the right. */
+	.not-found__drop {
+		grid-row: 1;
+		grid-column: 9 / span 3;
+		justify-self: center;
+	}
+
+	.not-found__body {
+		grid-row: 1;
+		grid-column: 1 / span 6;
+	}
+}

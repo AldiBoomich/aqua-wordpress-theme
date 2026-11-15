@@ -2,15 +2,20 @@
  * "From source to glass": pins the scene on desktop and maps the scroll to the 7 stages.
  * Per frame it only sets transforms; stage changes toggle classes.
  * Phones and short screens keep the plain list (no pin).
+ * The scene follows the breakpoint (gsap.matchMedia): rotating a tablet or narrowing the window tears it down,
+ * otherwise the 12-column desktop grid stays on a narrow screen and makes the page wider than the viewport.
  */
 const DESKTOP = '(min-width: 62em) and (min-height: 600px)';
 
 export function initStages( gsap, ScrollTrigger ) {
 	const section = document.querySelector( '[data-stages]' );
-	if ( ! section || ! window.matchMedia( DESKTOP ).matches ) {
+	if ( ! section ) {
 		return;
 	}
+	gsap.matchMedia().add( DESKTOP, () => buildScene( section, gsap, ScrollTrigger ) );
+}
 
+function buildScene( section, gsap, ScrollTrigger ) {
 	const scene = section.querySelector( '[data-stages-scene]' );
 	const items = [ ...section.querySelectorAll( '[data-stage]' ) ];
 	const dirt = [ ...section.querySelectorAll( '[data-stages-dirt]' ) ];
@@ -60,4 +65,15 @@ export function initStages( gsap, ScrollTrigger ) {
 	} );
 
 	render( 0 );
+
+	// Leaving the desktop range: matchMedia kills the pin; put the plain list back.
+	return () => {
+		section.classList.remove( 'is-scene' );
+		[ ...items, ...ticks ].forEach( ( el ) => el.classList.remove( 'is-active' ) );
+		dirt.forEach( ( el ) => el.classList.remove( 'is-clean' ) );
+		[ clear, bar ].forEach( ( el ) => el && el.style.removeProperty( 'transform' ) );
+		if ( glass ) {
+			glass.style.removeProperty( 'opacity' );
+		}
+	};
 }

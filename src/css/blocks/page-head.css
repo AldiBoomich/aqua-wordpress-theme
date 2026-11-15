@@ -1,10 +1,21 @@
 /**
  * Block: page-head — light title area of inner pages (replaces the old dark photo banner).
- * --compact: text-only pages (legal, search). Extended with media in the inner-pages stage.
+ * Heights differ by role, so inner pages do not all open the same way:
+ *   (default) title + lead (Products, Contact, Blog);
+ *   --media   title + lead, a wide photo below (About, Service);
+ *   --compact text pages (legal, post, search, 404, regular pages).
+ * Entrance: the H1 words rise from masks (pure CSS, from the first paint); the lead is never hidden (LCP).
  */
 .page-head {
 	padding-top: calc(var(--header-h) + var(--section-y-tight));
 	padding-bottom: var(--space-8);
+}
+
+.page-head__text {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr); /* a wide form inside must not stretch the column past the screen */
+	justify-items: start;
+	gap: var(--space-5);
 }
 
 .page-head__title {
@@ -13,6 +24,7 @@
 	font-weight: var(--fw-light);
 	line-height: var(--lh-display);
 	letter-spacing: var(--ls-display);
+	text-wrap: balance;
 }
 
 .page-head--compact .page-head__title {
@@ -23,7 +35,90 @@
 }
 
 .page-head__meta {
-	margin-top: var(--space-5);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-4);
 	color: var(--c-ink-muted);
 	font-size: var(--fs-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Legal pages print the meta under the title, outside the text grid. */
+.page-head__title + .page-head__meta {
+	margin-top: var(--space-5);
+}
+
+.page-head__lead {
+	max-width: 38rem;
+	color: var(--c-ink-muted);
+	font-size: var(--fs-lead);
+	line-height: var(--lh-snug);
+	text-wrap: pretty;
+}
+
+.page-head__after {
+	width: 100%;
+	max-width: 38rem;
+	margin-top: var(--space-2);
+}
+
+.page-head__media {
+	margin-top: var(--space-8);
+	overflow: hidden;
+	border-radius: var(--radius-l);
+	background: var(--c-surface);
+	aspect-ratio: 4 / 5;
+}
+
+.page-head__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (min-width: 48em) {
+	.page-head__media {
+		aspect-ratio: 16 / 9;
+	}
+}
+
+@media (min-width: 62em) {
+	.page-head {
+		padding-bottom: var(--space-9);
+	}
+
+	.page-head--compact {
+		padding-bottom: var(--space-8);
+	}
+
+	.page-head__media {
+		aspect-ratio: 21 / 9;
+	}
+}
+
+/* Word masks: the descenders (g, y) reach below the tight display line box, so the mask grows downwards
+   without changing the layout (negative margin). */
+.page-head__word {
+	display: inline-block;
+	overflow: hidden;
+	padding-bottom: 0.2em;
+	margin-bottom: -0.2em;
+	vertical-align: top;
+}
+
+.page-head__word-inner {
+	display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.page-head__word-inner {
+		animation: page-head-rise 1.1s var(--ease-out) both;
+		animation-delay: calc(0.08s + var(--i, 0) * 0.045s);
+	}
+}
+
+@keyframes page-head-rise {
+	from {
+		transform: translateY(110%);
+	}
 }

@@ -102,6 +102,11 @@ html:not(.concept-bar-closed) .has-concept-bar .water-hero {
 	padding-bottom: calc(var(--space-6) + 3.5rem);
 }
 
+/* Keyboard focus never lands under the pill (WCAG 2.4.11): scrolling into view keeps clear of it. */
+html:not(.concept-bar-closed):not(.concept-bar-closed-now):has(> body.has-concept-bar) {
+	scroll-padding-bottom: calc(var(--space-6) + 3.5rem);
+}
+
 .concept-bar-closed .site-footer__bottom,
 .concept-bar-closed-now .site-footer__bottom {
 	padding-bottom: var(--space-6);

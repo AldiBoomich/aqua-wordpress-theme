@@ -25,6 +25,10 @@
 @import "./blocks/journal.css";
 @import "./blocks/order-cta.css";
 @import "./blocks/legal.css";
+@import "./blocks/prose.css";
+@import "./blocks/search-form.css";
+@import "./blocks/pagination.css";
+@import "./blocks/results.css";
 @import "./blocks/subscribe-form.css";
 @import "./blocks/site-footer.css";
 @import "./blocks/concept-bar.css";

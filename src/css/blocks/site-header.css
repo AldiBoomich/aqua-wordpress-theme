@@ -26,7 +26,18 @@
 	--header-fg: var(--c-on-deep);
 }
 
-.site-header.is-scrolled,
+/* Frosted glass after leaving the top, on every screen (the menu is a sibling, so the blur cannot trap it).
+   slop-ok: K3 — requested in the brief; the only blurred surface, layered over real content. */
+.site-header.is-scrolled {
+	--header-fg: var(--c-ink);
+
+	background-color: rgb(247 249 250 / 0.78);
+	box-shadow: 0 1px 0 var(--c-line);
+	-webkit-backdrop-filter: var(--header-glass);
+	backdrop-filter: var(--header-glass);
+}
+
+/* Over the open full-screen menu the bar stays solid. */
 .has-menu-open .site-header {
 	--header-fg: var(--c-ink);
 
@@ -157,14 +168,6 @@
 
 	.site-header__toggle {
 		display: none;
-	}
-
-	/* Frosted glass only on desktop (on phones a blurred header breaks the fixed menu layer).
-	   slop-ok: K3 — requested in the brief; the only blurred surface, layered over real content. */
-	.site-header.is-scrolled {
-		background-color: rgb(247 249 250 / 0.78);
-		-webkit-backdrop-filter: var(--header-glass);
-		backdrop-filter: var(--header-glass);
 	}
 
 	/* GPU warm-up (src/js/modules/header.js): the first frame of the glass makes the graphics card build the

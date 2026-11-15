@@ -17,7 +17,7 @@ while ( have_posts() ) :
 	?>
 	<article <?php post_class( 'legal' ); ?>>
 		<header class="page-head page-head--compact wrap">
-			<h1 class="page-head__title"><?php the_title(); ?></h1>
+			<h1 class="page-head__title"><?php echo aqua_title_words( get_the_title() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in aqua_title_words(). ?></h1>
 			<p class="page-head__meta">
 				<?php echo esc_html( aqua_label( 'updated', 'Last updated' ) ); ?>
 				<time datetime="<?php echo esc_attr( get_the_modified_date( 'c' ) ); ?>"><?php echo esc_html( get_the_modified_date() ); ?></time>

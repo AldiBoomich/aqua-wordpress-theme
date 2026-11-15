@@ -78,7 +78,14 @@ page → a light typographic page head; a blocking preloader → a short intro p
   button at the bottom; inert when closed, focus kept inside while open.
 - **Footer:** deep water under a drifting water line; intro + newsletter, menu, hours, contacts, social;
   the wordmark that fills with water; © line with the legal link and "Back to top".
-- **Page head:** light title area for inner pages (`--compact` for text pages).
+- **Page head:** light title area for inner pages, different heights by role so pages do not all open alike:
+  default (title + lead: Products, Contact, Blog), `--media` (wide photo under the title, LCP: About, Service),
+  `--compact` (posts, search, 404, regular and legal pages). The H1 words rise from masks in pure CSS; the lead
+  is never hidden. No breadcrumbs, no eyebrow.
+- **Prose:** editor content in a 65ch column; underlined links, quiet aqua rule for quotes, tabular tables.
+- **Search / 404:** a labelled search field, results as a plain list separated by lines; when nothing is found,
+  a short list of key pages (and on the 404, one drop of living water).
+- **Pagination:** round 44px targets, Previous / Next, the current page filled with ink.
 - **Legal:** sticky numbered table of contents from the H2s + a 65ch reading column.
 
 ## Page structure
