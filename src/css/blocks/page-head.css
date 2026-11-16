@@ -96,13 +96,14 @@
 	}
 }
 
-/* Word masks: the descenders (g, y) reach below the tight display line box, so the mask grows downwards
-   without changing the layout (negative margin). */
+/* Word masks: the descenders (g, y) reach below the tight display line box, and the negative letter-spacing
+   lets the last glyph's ink (the arm of a "y") pass the word's right edge, so the mask grows downwards and
+   sideways without changing the layout (negative margins). */
 .page-head__word {
 	display: inline-block;
 	overflow: hidden;
-	padding-bottom: 0.2em;
-	margin-bottom: -0.2em;
+	padding: 0 0.1em 0.2em;
+	margin: 0 -0.1em -0.2em;
 	vertical-align: top;
 }
 
