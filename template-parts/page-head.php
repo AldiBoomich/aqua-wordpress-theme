@@ -41,6 +41,12 @@ $aqua_classes = 'page-head wrap' . ( $aqua_variant ? ' page-head--' . $aqua_vari
 	<?php if ( 'media' === $aqua_variant && $aqua_image ) : ?>
 		<figure class="page-head__media">
 			<?php
+			// On phones the frame is 4:5 and a landscape photo covers it by height, so it is drawn wider than the
+			// frame (frame width × 1.25 × photo aspect): ask for a file that sharp (page-head.css sets the frames).
+			$aqua_frame = 'calc(100vw - 2 * clamp(1rem, 0.4rem + 2.6vw, 3rem))';
+			$aqua_meta  = wp_get_attachment_metadata( (int) aqua_attachment_id( $aqua_image ) );
+			$aqua_cover = ( ! empty( $aqua_meta['width'] ) && ! empty( $aqua_meta['height'] ) ) ? max( 1, 1.25 * $aqua_meta['width'] / $aqua_meta['height'] ) : 1;
+			$aqua_sizes = sprintf( '(max-width: 47.99em) calc(%1$s * %2$s), (min-width: 90em) 1344px, %1$s', $aqua_frame, round( $aqua_cover, 2 ) );
 			// The photo is the LCP element of the screen: eager, high priority.
 			echo aqua_photo( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image() markup.
 				$aqua_image,
@@ -50,7 +56,7 @@ $aqua_classes = 'page-head wrap' . ( $aqua_variant ? ' page-head--' . $aqua_vari
 					'loading'       => 'eager',
 					'fetchpriority' => 'high',
 					'decoding'      => 'async',
-					'sizes'         => '(min-width: 90em) 1344px, calc(100vw - 2 * clamp(1rem, 0.4rem + 2.6vw, 3rem))',
+					'sizes'         => $aqua_sizes,
 				)
 			);
 			?>

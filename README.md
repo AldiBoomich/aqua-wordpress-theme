@@ -4,7 +4,7 @@ A custom WordPress theme for a premium water delivery brand: light, quiet design
 living water — and a fully editable, client-friendly admin. Every text, image, price and link is managed
 from WordPress, no code changes needed.
 
-**Live demo:** https://aqua-drop.shop/ (version 1; version 2 is in progress on the `redesign` branch)
+**Live demo:** https://aqua-drop.shop/ (a portfolio concept, not a real business)
 
 ## Highlights
 
@@ -18,8 +18,23 @@ from WordPress, no code changes needed.
   visible focus rings, WCAG AA contrast, one `<h1>` per page, `prefers-reduced-motion` support.
 - **Fast** — self-hosted variable font with metric-matched fallback (no layout shift), deferred scripts,
   animations on transform/opacity only, motion paused off-screen.
-- **Contact Form 7** — contact and newsletter forms styled to match the design.
+- **Living water** — WebGL ripples over the hero photo (rendered off the main thread, capped at ~60 frames
+  per second on high-refresh screens), a pinned "7 stages" filtration scene, a bottle shelf that slides
+  sideways, liquid line icons and bottles that tilt with the pointer or the phone, and a footer wordmark that
+  fills with water. Every effect has a static fallback for `prefers-reduced-motion` and weaker devices.
+- **Page transitions** — cross-document View Transitions with prefetch on hover; a drop cursor and magnetic
+  buttons for mouse users. All switchable in Theme Settings → Motion.
+- **Contact Form 7** — contact and newsletter forms styled to match the design, errors announced at the field,
+  focus moved to the first field that needs fixing.
+- **Portfolio mode** — a "Concept project" notice, demo forms that send nothing and `noindex`, all toggled in
+  Theme Settings → Portfolio.
 - **Client help** — "How to edit this website" dashboard widget and hints next to every field.
+
+## Tested on
+
+Chrome and WebKit (the Safari engine), on 15 screen setups from a 360 px Android phone to a 2560 px monitor:
+phones at 2–3× pixel density, a phone turned sideways, iPad portrait and landscape, laptops and desktops.
+No horizontal scrolling, one `<h1>` per page and no script errors on any of them.
 
 ## Requirements
 

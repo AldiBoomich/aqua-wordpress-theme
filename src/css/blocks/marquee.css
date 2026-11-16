@@ -53,8 +53,20 @@
 	stroke: var(--c-water);
 }
 
+/* The ribbon fades out before the pause button, so moving words never run under it. */
+.marquee::after {
+	position: absolute;
+	inset-block: 0;
+	right: 0;
+	width: calc(var(--wrap-pad) + 2.75rem + var(--space-8));
+	background: linear-gradient(to right, transparent, var(--c-ground) 55%);
+	content: "";
+	pointer-events: none;
+}
+
 .marquee__toggle {
 	position: absolute;
+	z-index: 1;
 	right: var(--wrap-pad);
 	top: 50%;
 	display: grid;
@@ -73,6 +85,14 @@
 .marquee__toggle .ui-icon {
 	width: 1rem;
 	height: 1rem;
+}
+
+/* Touch screens: a full-size target. */
+@media (pointer: coarse) {
+	.marquee__toggle {
+		width: 2.75rem;
+		height: 2.75rem;
+	}
 }
 
 .marquee__toggle .ui-icon--play,
@@ -97,7 +117,8 @@
 	}
 
 	.marquee__list[aria-hidden="true"],
-	.marquee__toggle {
+	.marquee__toggle,
+	.marquee::after {
 		display: none;
 	}
 

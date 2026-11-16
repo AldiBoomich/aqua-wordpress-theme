@@ -48,6 +48,9 @@ function initLines() {
 				type: 'lines',
 				mask: 'lines',
 				linesClass: 'split-line',
+				// Lines keep whole words in reading order, so screen readers read the text as it is. The default
+				// ("auto") copies it into aria-label, which is not allowed on <p> (axe: aria-prohibited-attr).
+				aria: 'none',
 				autoSplit: true,
 				onSplit: ( self ) =>
 					gsap.from( self.lines, {
@@ -146,6 +149,7 @@ function initHeroEntrance() {
 			type: 'lines',
 			mask: 'lines',
 			linesClass: 'split-line',
+			aria: 'none', // see initLines()
 			autoSplit: true,
 			onSplit: ( self ) => gsap.from( self.lines, { yPercent: 115, duration: 1.25, ease: EASE.out, stagger: 0.09, delay } ),
 		} );

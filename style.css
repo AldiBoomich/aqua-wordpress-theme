@@ -1,9 +1,10 @@
 /*!
 Theme Name: Aqua
-Theme URI: https://aqua.local/
-Author: Aqua Theme
-Description: Drinking water delivery theme. Fully editable with ACF PRO (homepage blocks, theme settings, forms), BEM-structured CSS, no jQuery.
-Version: 1.2.0
+Theme URI: https://aqua-drop.shop/
+Author: Aldi1988
+Description: Drinking water delivery theme (portfolio concept). Light, quiet design built around living water: WebGL hero, scroll scenes, page transitions. Fully editable with ACF PRO, BEM CSS built with Vite, no jQuery.
+Version: 2.0.0
+Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -11,10 +12,11 @@ License URI: LICENSE
 Text Domain: aqua
 
 Based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc. (GPL v2 or later).
-HTML template "Acuas" by HTML Codex https://htmlcodex.com (credit link kept in the footer).
+Version 1 was converted from the HTML template "Acuas" by HTML Codex https://htmlcodex.com;
+version 2 is a complete redesign with new markup, styles and scripts.
 
-Theme styles live in assets/css/: base.css + one file per BEM block in assets/css/blocks/.
-This file only contains WordPress core styles.
+Theme styles live in src/css/ (tokens, base, layout + one file per BEM block in src/css/blocks/),
+built by Vite into assets/dist/. This file only contains WordPress core styles.
 */
 
 /* Accessibility: text for screen readers only. */

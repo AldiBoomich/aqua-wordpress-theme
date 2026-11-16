@@ -116,3 +116,12 @@
 		--header-h: 5.5rem;
 	}
 }
+
+/* Phones turned sideways (short, wide screens): the width-based heading sizes would fill the whole
+   screen and push the hero buttons below it — cap them by the screen height instead. */
+@media (orientation: landscape) and (max-height: 32rem) {
+	:root {
+		--fs-h1: clamp(2.25rem, 12svh, 3.5rem);
+		--fs-h2: clamp(1.875rem, 9.5svh, 2.75rem);
+	}
+}

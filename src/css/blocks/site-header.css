@@ -86,6 +86,8 @@
 .site-header__phone {
 	display: none;
 	align-items: center;
+	/* A taller hit area than the one line of text (WCAG 2.5.8), centred, so nothing moves. */
+	min-height: 2.75rem;
 	gap: var(--space-2);
 	color: inherit;
 	font-size: var(--fs-ui);

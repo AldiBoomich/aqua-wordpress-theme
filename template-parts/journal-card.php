@@ -22,7 +22,7 @@ $aqua_cats  = get_the_category();
 				'1536x1536',
 				array(
 					'class' => 'journal-card__image',
-					'sizes' => $args['sizes'] ?? ( $aqua_large ? '(min-width: 62em) 58vw, 100vw' : '(min-width: 62em) 30vw, 100vw' ),
+					'sizes' => $args['sizes'] ?? ( $aqua_large ? '(min-width: 62em) 58vw, 100vw' : '(min-width: 62em) 30vw, (min-width: 48em) 48vw, 100vw' ),
 					'alt'   => '',
 				)
 			);

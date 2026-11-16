@@ -55,6 +55,12 @@ $aqua_facts     = aqua_home_rows(
 				<source media="(max-width: 47.99em)" srcset="<?php echo esc_attr( (string) wp_get_attachment_image_srcset( $aqua_mobile, 'large' ) ); ?>" sizes="100vw">
 			<?php endif; ?>
 			<?php
+			// The photo covers a full-height hero: on screens narrower than the photo (phones, portrait tablets)
+			// it is drawn as wide as the screen height × its aspect, not 100vw — ask for a file that sharp.
+			$aqua_meta  = wp_get_attachment_metadata( (int) aqua_attachment_id( $aqua_image ) );
+			$aqua_w     = ! empty( $aqua_meta['width'] ) ? (int) $aqua_meta['width'] : 3;
+			$aqua_h     = ! empty( $aqua_meta['height'] ) ? (int) $aqua_meta['height'] : 2;
+			$aqua_sizes = sprintf( '(max-aspect-ratio: %1$d/%2$d) %3$dvh, 100vw', $aqua_w, $aqua_h, (int) ceil( 100 * $aqua_w / $aqua_h ) );
 			echo aqua_photo( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image() / escaped fallback.
 				$aqua_image,
 				'hero-water.webp',
@@ -62,7 +68,7 @@ $aqua_facts     = aqua_home_rows(
 					'class'   => 'water-hero__image',
 					'alt'     => '',
 					'loading' => 'eager',
-					'sizes'   => '100vw',
+					'sizes'   => $aqua_sizes,
 				)
 			);
 			?>
