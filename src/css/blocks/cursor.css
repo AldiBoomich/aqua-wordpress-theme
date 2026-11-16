@@ -1,0 +1,69 @@
+/**
+ * Block: cursor — the water drop that trails the mouse (src/js/modules/cursor.js).
+ * The system arrow stays. The drop is a 32px circle drawn small (scale) so every state is crisp;
+ * only transform and opacity change.
+ */
+.cursor {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: calc(var(--z-skip) - 1);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity var(--dur-2) var(--ease-ui);
+}
+
+.cursor.is-visible {
+	opacity: 1;
+}
+
+.cursor__drop {
+	--cursor-scale: 0.3125; /* 10px */
+	--cursor-press: 1;
+
+	display: block;
+	width: 32px;
+	height: 32px;
+	margin: -16px 0 0 -16px;
+	border: 1px solid transparent;
+	border-radius: 50%;
+	background: var(--c-action);
+	transform: scale(calc(var(--cursor-scale) * var(--cursor-press)));
+	transition:
+		transform var(--dur-3) var(--ease-out),
+		background-color var(--dur-2) var(--ease-ui),
+		border-color var(--dur-2) var(--ease-ui);
+}
+
+/* Over links and buttons: a soft lens. */
+.cursor.is-link .cursor__drop {
+	--cursor-scale: 1.25;
+
+	border-color: color-mix(in srgb, var(--c-action) 35%, transparent);
+	background: color-mix(in srgb, var(--c-action) 12%, transparent);
+}
+
+.cursor.is-text .cursor__drop {
+	--cursor-scale: 0;
+}
+
+.cursor.is-pressed .cursor__drop {
+	--cursor-press: 0.75;
+}
+
+/* Deep backgrounds: brand aqua reads on ink. */
+.cursor.is-light .cursor__drop {
+	background: var(--c-water);
+}
+
+/* A light rim: stays visible over the aqua buttons of deep sections (aqua on aqua would vanish). */
+.cursor.is-light.is-link .cursor__drop {
+	border-color: color-mix(in srgb, var(--c-on-deep) 70%, transparent);
+	background: color-mix(in srgb, var(--c-on-deep) 12%, transparent);
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+	.cursor {
+		display: none;
+	}
+}

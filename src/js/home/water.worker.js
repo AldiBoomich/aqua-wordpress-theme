@@ -10,7 +10,7 @@
  * Clock: seconds since `epoch` (a performance.timeOrigin-based timestamp shared with the page), so
  * rings start exactly when the pointer event happened.
  */
-import { createWaterRenderer } from './water-renderer.js';
+import { createWaterRenderer, createPacer } from './water-renderer.js';
 
 let water = null;
 let epoch = 0;
@@ -23,14 +23,19 @@ const hasRaf = typeof self.requestAnimationFrame === 'function';
 const schedule = ( f ) => ( hasRaf ? self.requestAnimationFrame( f ) : self.setTimeout( f, 16 ) );
 const unschedule = ( id ) => ( hasRaf ? self.cancelAnimationFrame( id ) : self.clearTimeout( id ) );
 
-const frame = () => {
+// About 60 drawn frames a second on any display (see createPacer); the callback itself runs every display frame.
+const pacer = createPacer();
+
+const frame = ( t ) => {
 	if ( ! running ) {
 		return;
 	}
-	water.render( now() );
-	if ( ! shown ) {
-		shown = true;
-		self.postMessage( { type: 'ready', software: water.software } );
+	if ( pacer.due( typeof t === 'number' ? t : performance.now() ) ) {
+		water.render( now() );
+		if ( ! shown ) {
+			shown = true;
+			self.postMessage( { type: 'ready', software: water.software } );
+		}
 	}
 	handle = schedule( frame );
 };
@@ -41,6 +46,7 @@ const setRunning = ( on ) => {
 	}
 	running = on;
 	if ( on ) {
+		pacer.reset();
 		handle = schedule( frame );
 	} else {
 		unschedule( handle );

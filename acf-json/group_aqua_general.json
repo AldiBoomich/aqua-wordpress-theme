@@ -683,6 +683,122 @@
             "preview_size": "medium"
         },
         {
+            "key": "field_aqua_general_tab_motion",
+            "label": "Motion",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_aqua_motion_hint",
+            "label": "Motion & Interaction",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "These effects run only on computers with a mouse. Phones, tablets and visitors who ask their system for reduced motion never get them.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_aqua_motion_page_transitions",
+            "label": "Page Transitions",
+            "name": "motion_page_transitions",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "Pages change with a short cross-fade instead of a blank flash (modern browsers)",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_motion_prefetch",
+            "label": "Faster Links",
+            "name": "motion_prefetch",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "Start loading a page when the pointer rests on its link, so it opens almost instantly",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_motion_cursor",
+            "label": "Water Drop Cursor",
+            "name": "motion_cursor",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "A small drop follows the mouse and grows over links and buttons (the normal arrow stays)",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_aqua_motion_magnetic",
+            "label": "Magnetic Buttons",
+            "name": "motion_magnetic",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": 50,
+                "class": "",
+                "id": ""
+            },
+            "message": "Main buttons lean a few pixels towards the mouse and spring back",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_aqua_general_tab_labels",
             "label": "Labels",
             "name": "",
@@ -1697,5 +1813,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794777641
+    "modified": 1794782642
 }

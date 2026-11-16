@@ -6,9 +6,19 @@
 }
 
 .order-cta__grid {
+	position: relative;
 	display: grid;
 	gap: var(--space-7);
 	padding-top: var(--space-8);
+}
+
+/* The line spans the content, not the side padding of .wrap (a border would run edge to edge of the padding). */
+.order-cta__grid::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: var(--wrap-pad);
+	left: var(--wrap-pad);
 	border-top: 1px solid var(--c-line-strong);
 }
 

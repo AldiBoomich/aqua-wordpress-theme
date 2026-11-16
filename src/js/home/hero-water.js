@@ -9,8 +9,9 @@
  * compiles shaders, uploads the photo or waits for a frame; this module only forwards pointer rings,
  * size and visibility. Browsers without OffscreenCanvas WebGL / module workers render on the main thread.
  *
- * Budget: canvas ≤ 1.5 device pixels per CSS pixel (1.25 on phones), rendering only while the hero is on
- * screen and the tab is visible; the GL context is released on pagehide. Not started for reduced motion,
+ * Budget: canvas ≤ 1.5 device pixels per CSS pixel (1.25 on phones), about 60 drawn frames a second on any
+ * display (createPacer in water-renderer.js), rendering only while the hero is on screen and the tab is
+ * visible; the GL context is released on pagehide. Not started for reduced motion,
  * Save-Data, or phones with few cores / little memory (the static photo stays).
  */
 import { reducedMotion, finePointer } from '../tokens.js';
@@ -125,7 +126,7 @@ function workerBackend( canvas, bitmap, dpr, size, epoch, onFail ) {
 
 /** Main-thread backend (no OffscreenCanvas): the renderer chunk loads only here. */
 async function mainBackend( canvas, image, dpr, size, epoch ) {
-	const { createWaterRenderer } = await import( './water-renderer.js' );
+	const { createWaterRenderer, createPacer } = await import( './water-renderer.js' );
 	const water = createWaterRenderer( canvas, { dpr, image, width: size.w, height: size.h, flipY: true } );
 	if ( ! water ) {
 		return null;
@@ -134,12 +135,15 @@ async function mainBackend( canvas, image, dpr, size, epoch ) {
 	let running = false;
 	let raf = 0;
 	let shown = false;
-	const frame = () => {
-		water.render( now() );
-		if ( ! shown ) {
-			shown = true;
-			canvas.classList.add( 'is-ready' );
-			announceGpu( water.software );
+	const pacer = createPacer(); // about 60 drawn frames a second on any display
+	const frame = ( t ) => {
+		if ( pacer.due( t ) ) {
+			water.render( now() );
+			if ( ! shown ) {
+				shown = true;
+				canvas.classList.add( 'is-ready' );
+				announceGpu( water.software );
+			}
 		}
 		raf = window.requestAnimationFrame( frame );
 	};
@@ -152,6 +156,7 @@ async function mainBackend( canvas, image, dpr, size, epoch ) {
 			}
 			running = on;
 			if ( on ) {
+				pacer.reset();
 				raf = window.requestAnimationFrame( frame );
 			} else {
 				window.cancelAnimationFrame( raf );

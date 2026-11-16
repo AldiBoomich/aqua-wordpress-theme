@@ -37,7 +37,6 @@
 .prose h3,
 .prose h4 {
 	text-wrap: balance;
-	scroll-margin-top: calc(var(--header-h) + var(--space-5));
 }
 
 .prose h2 {

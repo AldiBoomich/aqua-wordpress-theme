@@ -14,6 +14,54 @@ import { MAX_RIPPLES, VERTEX, FRAGMENT, SLOPE_FRAGMENT, COMPOSITE_FRAGMENT, pack
 const SLOPE_STEP = 3;
 
 /**
+ * Frame pacing: the water is drawn about 60 times a second on any display.
+ * On a 60–90 Hz screen that is every frame; on 120 / 144 / 165 / 240 Hz every 2nd / 2nd / 3rd / 4th one, evenly
+ * spaced. The shader clock is real time, so the swell and the rings move exactly as fast as before; the graphics
+ * card just gets a third of the full-screen passes and the page scrolls at the display's full rate.
+ *
+ * The display interval is the lower quartile of the last 30 callback intervals (late frames are multiples of it),
+ * re-estimated all the time, so moving the window to another monitor is picked up within half a second.
+ *
+ * @return {{due: function(number): boolean, reset: function(): void}} due( timestamp in ms ) — draw this frame?
+ */
+export function createPacer() {
+	const SAMPLES = 30;
+	const recent = new Float64Array( SAMPLES );
+	let count = 0;
+	let prev = 0;
+	let last = -1e9;
+	let gap = 12; // ms, until the display interval is known: every frame up to 75 Hz
+
+	return {
+		/** Call when the loop restarts after a pause: the gap across the pause is not a frame interval. */
+		reset() {
+			prev = 0;
+		},
+		due( t ) {
+			if ( prev ) {
+				const dt = t - prev;
+				if ( dt > 2 && dt < 250 ) {
+					recent[ count % SAMPLES ] = dt;
+					count++;
+					if ( count >= SAMPLES && count % SAMPLES === 0 ) {
+						const base = Array.from( recent ).sort( ( a, b ) => a - b )[ Math.floor( SAMPLES / 4 ) ];
+						const hz = 1000 / base;
+						const every = hz < 100 ? 1 : Math.round( hz / 60 );
+						gap = ( every - 0.5 ) * base;
+					}
+				}
+			}
+			prev = t;
+			if ( t - last < gap ) {
+				return false;
+			}
+			last = t;
+			return true;
+		},
+	};
+}
+
+/**
  * @param {HTMLCanvasElement|OffscreenCanvas} canvas
  * @param {{dpr: number, image: TexImageSource, width: number, height: number, flipY: boolean}} options
  *        flipY: false when the image is an ImageBitmap that is already flipped (UNPACK_FLIP_Y does not apply to it)

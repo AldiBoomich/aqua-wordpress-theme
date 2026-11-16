@@ -7,7 +7,9 @@
  *     data-reveal="image"  — the frame opens (clip-path) while the photo settles, then drifts slightly (parallax).
  * - data-count — numbers count up once on view (the final value is printed by PHP).
  * - Homepage scenes: hero entrance, 7 stages (pinned), bottles shelf (horizontal).
- * Reduced motion: no smooth scroll, no reveals, no scenes — content is simply there.
+ * - Pointer effects (mouse only, Theme Settings → Motion): water drop cursor, magnetic buttons.
+ * Reduced motion: no smooth scroll, no reveals, no scenes, no pointer effects — content is simply there.
+ * Page transitions are CSS only (src/css/blocks/page-transition.css + inc/motion.php).
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -16,6 +18,8 @@ import Lenis from 'lenis';
 import { EASE, finePointer, reducedMotion } from './tokens.js';
 import { initStages } from './home/stages.js';
 import { initShelf } from './home/shelf.js';
+import { initCursor } from './modules/cursor.js';
+import { initMagnetic } from './modules/magnetic.js';
 
 gsap.registerPlugin( ScrollTrigger, SplitText );
 
@@ -26,7 +30,8 @@ function initLenis() {
 	if ( ! finePointer() ) {
 		return;
 	}
-	lenis = new Lenis( { lerp: 0.1, anchors: { offset: -96 }, autoRaf: false } );
+	// Anchor offset comes from CSS (html scroll-padding-top); Lenis reads it, so no extra offset here.
+	lenis = new Lenis( { lerp: 0.1, anchors: true, autoRaf: false } );
 	lenis.on( 'scroll', ScrollTrigger.update );
 	gsap.ticker.add( ( time ) => lenis.raf( time * 1000 ) );
 	gsap.ticker.lagSmoothing( 0 );
@@ -100,7 +105,8 @@ function initCounters() {
 		}
 		const format = ( value ) => Math.round( value ).toLocaleString( 'en-US' );
 		const state = { value: 0 };
-		el.textContent = format( 0 );
+		let shown = format( 0 );
+		el.textContent = shown;
 		ScrollTrigger.create( {
 			trigger: el,
 			start: 'top 90%',
@@ -110,7 +116,15 @@ function initCounters() {
 					value: target,
 					duration: 1.8,
 					ease: 'power3.out',
-					onUpdate: () => ( el.textContent = format( state.value ) ),
+					// The text node is replaced only when the printed number changes (a small number repeats for many
+					// frames; every replacement is a layout).
+					onUpdate: () => {
+						const text = format( state.value );
+						if ( text !== shown ) {
+							shown = text;
+							el.textContent = text;
+						}
+					},
 				} ),
 		} );
 	} );
@@ -151,16 +165,54 @@ export function initMotion() {
 
 	initLenis();
 	initHeroEntrance();
-	initLines();
-	initFades();
-	initImages();
-	initCounters();
-	initStages( gsap, ScrollTrigger );
-	initShelf( gsap, ScrollTrigger, () => lenis );
+
+	// Pointer effects: mouse only; switched in Theme Settings → Motion (<html data-motion="cursor magnetic">).
+	if ( finePointer() ) {
+		const features = ( document.documentElement.dataset.motion || '' ).split( ' ' );
+		if ( features.includes( 'cursor' ) ) {
+			initCursor( gsap );
+		}
+		if ( features.includes( 'magnetic' ) ) {
+			initMagnetic( gsap );
+		}
+	}
+
+	runInSteps( [
+		initLines,
+		initFades,
+		initImages,
+		initCounters,
+		() => initStages( gsap, ScrollTrigger ),
+		() => initShelf( gsap, ScrollTrigger, () => lenis ),
+	] );
+}
+
+/** Lets the browser paint between steps (scheduler.yield where available). */
+function nextTask() {
+	if ( window.scheduler && typeof window.scheduler.yield === 'function' ) {
+		return window.scheduler.yield();
+	}
+	return new Promise( ( resolve ) => setTimeout( resolve, 0 ) );
+}
+
+/**
+ * The rest of the motion setup, same order as before, one step per task: together it is 30–50 ms on the homepage,
+ * which as one block dropped frames of the page transition. Trigger positions are refreshed once at the end.
+ */
+async function runInSteps( steps ) {
+	for ( const step of steps ) {
+		await nextTask();
+		step();
+	}
+	await nextTask();
 
 	// Late layout changes (fonts, images) move trigger positions.
-	if ( document.fonts && document.fonts.ready ) {
+	if ( document.readyState === 'complete' ) {
+		ScrollTrigger.refresh();
+	} else {
+		window.addEventListener( 'load', () => ScrollTrigger.refresh(), { once: true } );
+	}
+	if ( document.fonts && document.fonts.status !== 'loaded' ) {
 		document.fonts.ready.then( () => ScrollTrigger.refresh() );
 	}
-	window.addEventListener( 'load', () => ScrollTrigger.refresh(), { once: true } );
 }

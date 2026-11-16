@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Bump on every asset change to bust the browser cache.
-	define( '_S_VERSION', '2.0.0-dev.3' );
+	define( '_S_VERSION', '2.0.0-dev.6' );
 }
 
 /**
@@ -67,6 +67,7 @@ require get_template_directory() . '/inc/assets.php';
 require get_template_directory() . '/inc/meta.php';
 require get_template_directory() . '/inc/media.php';
 require get_template_directory() . '/inc/portfolio.php';
+require get_template_directory() . '/inc/motion.php';
 require get_template_directory() . '/inc/ui-icons.php';
 require get_template_directory() . '/inc/icons.php';
 require get_template_directory() . '/inc/bottles.php';

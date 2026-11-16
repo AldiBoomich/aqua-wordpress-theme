@@ -37,6 +37,8 @@ function buildScene( section, gsap, getLenis ) {
 			scrub: true,
 			anticipatePin: 1,
 			invalidateOnRefresh: true,
+			// Pins refresh first, then triggers in page order (see stages.js).
+			refreshPriority: 1,
 			onUpdate: ( self ) => {
 				if ( bar ) {
 					bar.style.transform = `scaleX(${ self.progress.toFixed( 4 ) })`;

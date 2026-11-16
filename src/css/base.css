@@ -10,6 +10,7 @@
 html {
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
+	/* The one anchor offset (under the fixed header). Lenis reads it too — do not add scroll-margin on targets. */
 	scroll-padding-top: calc(var(--header-h) + var(--space-5));
 }
 

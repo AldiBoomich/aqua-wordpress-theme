@@ -1,0 +1,45 @@
+/**
+ * Page transition (cross-document View Transitions; opt-in printed by inc/motion.php).
+ * The header stays where it is and shows its new state at once. The old page lifts away and fades (300ms),
+ * then the new one rises 40px from below and fades in (600ms, starting as the old one is nearly gone, so the two
+ * pages barely overlap). Reduced motion and no hardware acceleration: no transition (inc/motion.php).
+ * Chrome already holds the old frame until the new page paints, so a shorter, softer fade reads as no transition.
+ */
+.site-header {
+	view-transition-name: site-header;
+}
+
+/* Header: no morph, no fade — the new header is simply there, on top. */
+::view-transition-group(site-header) {
+	animation: none;
+}
+
+::view-transition-old(site-header) {
+	display: none;
+}
+
+::view-transition-new(site-header) {
+	animation: none;
+}
+
+::view-transition-old(root) {
+	animation: aqua-page-out 300ms var(--ease-in-out) both;
+}
+
+::view-transition-new(root) {
+	animation: aqua-page-in var(--dur-3) var(--ease-out) 240ms both;
+}
+
+@keyframes aqua-page-out {
+	to {
+		opacity: 0;
+		transform: translateY(-24px);
+	}
+}
+
+@keyframes aqua-page-in {
+	from {
+		opacity: 0;
+		transform: translateY(40px);
+	}
+}

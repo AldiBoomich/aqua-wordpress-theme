@@ -61,7 +61,20 @@ page → a light typographic page head; a blocking preloader → a short intro p
 - Only transform, opacity and clip-path are animated. Infinite motion pauses off-screen and in background tabs.
 - Moments per page: one entrance (hero / page head) + at most two scroll moments. Hovers answer the pointer:
   button fill rises like water, link underlines flow in from the left and out to the right.
-- `prefers-reduced-motion: reduce` → no WebGL, no smooth scroll, no parallax; content simply appears.
+- Between pages: cross-document View Transitions — the header stays put, the old page lifts 24px and fades (300ms),
+  then the new one rises from 40px below and fades in (600ms, from 240ms: the pages barely overlap). Skipped without
+  hardware acceleration (`html.no-gpu`: a software-drawn full-screen fade stutters). Links prefetch on hover
+  (WordPress Speculation Rules, "moderate").
+- During a transition the new page stays light: motion setup runs in small tasks (never one long block), and the
+  hero water starts when the transition has finished (`window.aquaRevealed`; its canvas fades in over the same photo).
+- Mouse only: a 10px water drop trails the pointer (the system arrow stays) and swells into a lens over links and
+  buttons (a light rim on deep sections); over the hero water it stays a plain drop (the water itself answers the
+  pointer). Primary and light buttons and the round toggles lean up to 8px towards the pointer and spring back
+  (CSS `translate`, so the press scale and the rising fill keep working).
+- Anchors: one offset, `html { scroll-padding-top }`; Lenis reads it — never add `scroll-margin` on targets.
+- Every one of these is switchable in Theme Settings → Motion.
+- `prefers-reduced-motion: reduce` → no WebGL, no smooth scroll, no parallax, no page transitions, no cursor or
+  magnetic buttons; content simply appears.
 - Content is visible without JavaScript.
 
 ## Imagery

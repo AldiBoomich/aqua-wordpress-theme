@@ -40,5 +40,12 @@ if ( hero && hero.hasAttribute( 'data-intro' ) && ! reducedMotion() ) {
 import( './motion.js' ).then( ( m ) => m.initMotion() );
 
 if ( hero ) {
-	import( './home/hero-water.js' ).then( ( m ) => m.initHeroWater() );
+	const startWater = () => import( './home/hero-water.js' ).then( ( m ) => m.initHeroWater() );
+	// The water canvas fades in over the same photo once it is ready, so after a page transition it can start when
+	// the transition has finished (its WebGL start-up dropped transition frames). The opening drop keeps its timing.
+	if ( window.aquaRevealed && ! hero.hasAttribute( 'data-intro-playing' ) ) {
+		window.aquaRevealed.then( startWater );
+	} else {
+		startWater();
+	}
 }

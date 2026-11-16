@@ -61,6 +61,9 @@ function buildScene( section, gsap, ScrollTrigger ) {
 		pin: true,
 		anticipatePin: 1,
 		invalidateOnRefresh: true,
+		// Reveals are created before the scenes (and again after a breakpoint change), so ScrollTrigger is asked to
+		// sort: pins refresh first, then every trigger in page order — the pin length is in the positions below it.
+		refreshPriority: 1,
 		onUpdate: ( self ) => render( self.progress ),
 	} );
 

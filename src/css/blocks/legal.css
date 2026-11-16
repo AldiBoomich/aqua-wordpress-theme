@@ -66,7 +66,6 @@
 	font-size: var(--fs-h4);
 	font-weight: var(--fw-medium);
 	letter-spacing: -0.02em;
-	scroll-margin-top: calc(var(--header-h) + var(--space-5));
 }
 
 .legal__content h2:first-child {
